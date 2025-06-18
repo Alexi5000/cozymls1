@@ -18,11 +18,11 @@ export function StatsCard({ title, value, change, icon: Icon, trend = 'neutral' 
   };
 
   return (
-    <Card className="boardco-card p-6 border-0">
+    <Card className="cozy-card p-6 border-0">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
         <CardTitle className="text-sm font-semibold text-gray-600 uppercase tracking-wide">{title}</CardTitle>
-        <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
-          <Icon className="h-6 w-6 text-blue-600" />
+        <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center">
+          <Icon className="h-6 w-6 text-orange-600" />
         </div>
       </CardHeader>
       <CardContent className="pt-0">

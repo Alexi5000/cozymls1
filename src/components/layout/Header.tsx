@@ -19,7 +19,7 @@ export function Header({ title }: HeaderProps) {
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
           <Input
-            placeholder="Search contacts, deals..."
+            placeholder="Search properties, agents..."
             className="pl-10 w-80 bg-gray-50 border-gray-200 focus:bg-white"
           />
         </div>
@@ -34,7 +34,7 @@ export function Header({ title }: HeaderProps) {
             <Settings className="h-5 w-5" />
           </Button>
           
-          <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center ml-2">
+          <div className="w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center ml-2">
             <User className="h-4 w-4 text-white" />
           </div>
         </div>

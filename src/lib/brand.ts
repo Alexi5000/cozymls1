@@ -1,19 +1,19 @@
 
-// HavenCRM Brand System - BoardCo Inspired Theme
+// CozyMLS Brand System - Real Estate Platform
 export const brand = {
   colors: {
     primary: {
-      50: '#f0f7ff',
-      100: '#e0efff',
-      200: '#b9dfff',
-      300: '#7cc4ff',
-      400: '#36a5ff',
-      500: '#0284c7',
-      600: '#0369a1',
-      700: '#1e3a8a',
-      800: '#1e40af',
-      900: '#1e3a8a',
-      950: '#0f172a',
+      50: '#fef7f0',
+      100: '#fdeee0',
+      200: '#fbd9c0',
+      300: '#f7be96',
+      400: '#f2996a',
+      500: '#ed7849',
+      600: '#de5f35',
+      700: '#b84a2d',
+      800: '#923d2a',
+      900: '#773327',
+      950: '#401912',
     },
     secondary: {
       50: '#f8fafc',
@@ -28,16 +28,28 @@ export const brand = {
       900: '#0f172a',
     },
     accent: {
-      50: '#f0f9ff',
-      100: '#e0f2fe',
-      200: '#bae6fd',
-      300: '#7dd3fc',
-      400: '#38bdf8',
-      500: '#0ea5e9',
-      600: '#0284c7',
-      700: '#0369a1',
-      800: '#075985',
-      900: '#0c4a6e',
+      50: '#fef3f2',
+      100: '#fee5e3',
+      200: '#fdd0cc',
+      300: '#faaea8',
+      400: '#f57e76',
+      500: '#ed544c',
+      600: '#da3732',
+      700: '#b92b27',
+      800: '#992724',
+      900: '#7f2623',
+    },
+    cozy: {
+      50: '#fffcf5',
+      100: '#fef8ea',
+      200: '#fdeec9',
+      300: '#fbe09d',
+      400: '#f8cd6f',
+      500: '#f5b849',
+      600: '#e89d24',
+      700: '#c1791b',
+      800: '#9c5e1c',
+      900: '#804e1b',
     },
     success: {
       500: '#10b981',
@@ -55,6 +67,7 @@ export const brand = {
   typography: {
     fontFamily: {
       sans: ['Inter', 'system-ui', 'sans-serif'],
+      serif: ['Georgia', 'serif'],
       mono: ['JetBrains Mono', 'monospace'],
     },
   },

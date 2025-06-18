@@ -18,9 +18,9 @@ import { cn } from '@/lib/utils';
 
 const navigation = [
   { name: 'Dashboard', href: '/', icon: Home },
-  { name: 'Contacts', href: '/contacts', icon: Users },
-  { name: 'Deals', href: '/deals', icon: Target },
-  { name: 'Activities', href: '/activities', icon: Calendar },
+  { name: 'Properties', href: '/contacts', icon: Target },
+  { name: 'Agents', href: '/deals', icon: Users },
+  { name: 'Showings', href: '/activities', icon: Calendar },
   { name: 'Reports', href: '/reports', icon: BarChart3 },
   { name: 'Settings', href: '/settings', icon: Settings },
 ];
@@ -31,25 +31,25 @@ export function Sidebar() {
 
   return (
     <div className={cn(
-      'boardco-sidebar text-white transition-all duration-300 flex flex-col shadow-xl',
+      'cozy-sidebar text-white transition-all duration-300 flex flex-col shadow-xl',
       collapsed ? 'w-20' : 'w-72'
     )}>
       {/* Header */}
-      <div className="p-6 border-b border-blue-700/50">
+      <div className="p-6 border-b border-orange-700/50">
         <div className="flex items-center justify-between">
           {!collapsed && (
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-                <div className="w-4 h-4 bg-blue-600 rounded"></div>
+                <div className="w-4 h-4 bg-orange-600 rounded"></div>
               </div>
-              <h2 className="text-xl font-bold">HavenCRM</h2>
+              <h2 className="text-xl font-bold">CozyMLS</h2>
             </div>
           )}
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setCollapsed(!collapsed)}
-            className="text-blue-200 hover:text-white hover:bg-blue-700/50 h-8 w-8"
+            className="text-orange-200 hover:text-white hover:bg-orange-700/50 h-8 w-8"
           >
             {collapsed ? <Menu className="h-4 w-4" /> : <X className="h-4 w-4" />}
           </Button>
@@ -66,7 +66,7 @@ export function Sidebar() {
                 key={item.name}
                 to={item.href}
                 className={cn(
-                  'boardco-nav-item',
+                  'cozy-nav-item',
                   isActive && 'active',
                   collapsed && 'justify-center px-3'
                 )}
@@ -81,16 +81,16 @@ export function Sidebar() {
       
       {/* User Profile */}
       {!collapsed && (
-        <div className="p-4 border-t border-blue-700/50">
-          <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-blue-700/30 cursor-pointer transition-colors">
-            <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+        <div className="p-4 border-t border-orange-700/50">
+          <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-orange-700/30 cursor-pointer transition-colors">
+            <div className="w-10 h-10 bg-orange-600 rounded-full flex items-center justify-center">
               <User className="h-5 w-5 text-white" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">Sarah Johnson</p>
-              <p className="text-xs text-blue-200">Admin</p>
+              <p className="text-sm font-medium text-white truncate">Sarah Thompson</p>
+              <p className="text-xs text-orange-200">Real Estate Agent</p>
             </div>
-            <ChevronDown className="h-4 w-4 text-blue-200" />
+            <ChevronDown className="h-4 w-4 text-orange-200" />
           </div>
         </div>
       )}
