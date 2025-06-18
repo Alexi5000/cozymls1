@@ -1,18 +1,19 @@
 
-// HavenCRM Brand System
+// HavenCRM Brand System - BoardCo Inspired Theme
 export const brand = {
   colors: {
     primary: {
-      50: '#f0f9ff',
-      100: '#e0f2fe',
-      200: '#bae6fd',
-      300: '#7dd3fc',
-      400: '#38bdf8',
-      500: '#0ea5e9',
-      600: '#0284c7',
-      700: '#0369a1',
-      800: '#075985',
-      900: '#0c4a6e',
+      50: '#f0f7ff',
+      100: '#e0efff',
+      200: '#b9dfff',
+      300: '#7cc4ff',
+      400: '#36a5ff',
+      500: '#0284c7',
+      600: '#0369a1',
+      700: '#1e3a8a',
+      800: '#1e40af',
+      900: '#1e3a8a',
+      950: '#0f172a',
     },
     secondary: {
       50: '#f8fafc',
@@ -25,6 +26,18 @@ export const brand = {
       700: '#334155',
       800: '#1e293b',
       900: '#0f172a',
+    },
+    accent: {
+      50: '#f0f9ff',
+      100: '#e0f2fe',
+      200: '#bae6fd',
+      300: '#7dd3fc',
+      400: '#38bdf8',
+      500: '#0ea5e9',
+      600: '#0284c7',
+      700: '#0369a1',
+      800: '#075985',
+      900: '#0c4a6e',
     },
     success: {
       500: '#10b981',
@@ -47,7 +60,7 @@ export const brand = {
   },
   spacing: {
     sidebar: '280px',
-    header: '64px',
+    header: '72px',
   }
 } as const;
 

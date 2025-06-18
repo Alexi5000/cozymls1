@@ -11,12 +11,18 @@ export default function Dashboard() {
 
   return (
     <Layout title="Dashboard">
-      <div className="space-y-6">
+      <div className="space-y-8">
+        {/* Welcome Section */}
+        <div>
+          <h2 className="text-lg font-semibold text-gray-600 mb-2">Welcome back, Sarah 👋</h2>
+          <p className="text-gray-500">Here's what's happening with your business today.</p>
+        </div>
+
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatsCard
             title="Total Contacts"
-            value={stats.totalContacts}
+            value={stats.totalContacts.toLocaleString()}
             change="+12% from last month"
             icon={Users}
             trend="up"
@@ -45,7 +51,7 @@ export default function Dashboard() {
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <RecentActivity />
           <DealsOverview />
         </div>

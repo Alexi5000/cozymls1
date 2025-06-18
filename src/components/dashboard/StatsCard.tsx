@@ -14,19 +14,21 @@ export function StatsCard({ title, value, change, icon: Icon, trend = 'neutral' 
   const trendColor = {
     up: 'text-green-600',
     down: 'text-red-600',
-    neutral: 'text-gray-600'
+    neutral: 'text-gray-500'
   };
 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium text-gray-600">{title}</CardTitle>
-        <Icon className="h-4 w-4 text-gray-400" />
+    <Card className="boardco-card p-6 border-0">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+        <CardTitle className="text-sm font-semibold text-gray-600 uppercase tracking-wide">{title}</CardTitle>
+        <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
+          <Icon className="h-6 w-6 text-blue-600" />
+        </div>
       </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold text-gray-900">{value}</div>
+      <CardContent className="pt-0">
+        <div className="text-3xl font-bold text-gray-900 mb-2">{value}</div>
         {change && (
-          <p className={`text-xs ${trendColor[trend]}`}>
+          <p className={`text-sm font-medium ${trendColor[trend]}`}>
             {change}
           </p>
         )}

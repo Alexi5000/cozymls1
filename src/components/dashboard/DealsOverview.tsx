@@ -12,7 +12,7 @@ export function DealsOverview() {
   const totalDeals = mockDeals.length;
   const stageColors = {
     prospect: 'bg-gray-500',
-    qualified: 'bg-blue-500',
+    qualified: 'bg-blue-600',
     proposal: 'bg-yellow-500',
     negotiation: 'bg-orange-500',
     'closed-won': 'bg-green-500',
@@ -20,23 +20,25 @@ export function DealsOverview() {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Deals Pipeline</CardTitle>
+    <Card className="boardco-card">
+      <CardHeader className="pb-4">
+        <CardTitle className="text-xl font-bold text-gray-900">Deals Pipeline</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <div className="space-y-6">
           {Object.entries(dealsByStage).map(([stage, count]) => {
             const percentage = (count / totalDeals) * 100;
             return (
-              <div key={stage} className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="capitalize font-medium">
+              <div key={stage} className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="capitalize font-semibold text-gray-700">
                     {stage.replace('-', ' ')}
                   </span>
-                  <span className="text-gray-500">{count} deals</span>
+                  <span className="text-sm font-medium text-gray-500">{count} deals</span>
                 </div>
-                <Progress value={percentage} className="h-2" />
+                <div className="relative">
+                  <Progress value={percentage} className="h-3 bg-gray-100" />
+                </div>
               </div>
             );
           })}
