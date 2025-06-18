@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { 
   Home, 
   Users, 
-  Target, 
+  Building2, 
   Calendar, 
   BarChart3, 
   Settings,
@@ -18,7 +18,8 @@ import { cn } from '@/lib/utils';
 
 const navigation = [
   { name: 'Dashboard', href: '/', icon: Home },
-  { name: 'Properties', href: '/contacts', icon: Target },
+  { name: 'Properties', href: '/properties', icon: Building2 },
+  { name: 'Contacts', href: '/contacts', icon: Users },
   { name: 'Agents', href: '/deals', icon: Users },
   { name: 'Showings', href: '/activities', icon: Calendar },
   { name: 'Reports', href: '/reports', icon: BarChart3 },
