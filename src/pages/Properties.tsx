@@ -15,7 +15,8 @@ import {
   Square, 
   Calendar,
   Eye,
-  Heart
+  Heart,
+  Building2
 } from 'lucide-react';
 
 export default function Properties() {
