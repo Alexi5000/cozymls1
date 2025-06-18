@@ -1,380 +1,271 @@
 
 import { Layout } from '@/components/layout/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { User, Bell, Shield, Database, Users, Home } from 'lucide-react';
+import { 
+  Building, 
+  Users, 
+  Globe, 
+  Bell, 
+  Shield, 
+  CreditCard,
+  Mail,
+  Phone,
+  MapPin,
+  Save
+} from 'lucide-react';
 
 export default function Settings() {
   return (
     <Layout title="Settings">
-      <div className="max-w-4xl mx-auto space-y-6">
-        <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="notifications">Notifications</TabsTrigger>
-            <TabsTrigger value="security">Security</TabsTrigger>
-            <TabsTrigger value="mls">MLS Settings</TabsTrigger>
-            <TabsTrigger value="team">Team</TabsTrigger>
-          </TabsList>
+      <div className="space-y-8">
+        {/* Header */}
+        <div className="flex justify-between items-center">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">Agency Settings</h2>
+            <p className="text-gray-600 mt-1">Configure your real estate agency preferences</p>
+          </div>
+          <Button className="bg-orange-600 hover:bg-orange-700">
+            <Save className="h-4 w-4 mr-2" />
+            Save Changes
+          </Button>
+        </div>
 
-          <TabsContent value="profile" className="space-y-6">
+        {/* Settings Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Agency Information */}
+          <div className="lg:col-span-2 space-y-6">
             <Card className="cozy-card">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <User className="h-5 w-5" />
-                  Personal Information
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center gap-6">
-                  <div className="w-20 h-20 bg-orange-600 rounded-full flex items-center justify-center">
-                    <User className="h-10 w-10 text-white" />
-                  </div>
-                  <div className="space-y-2">
-                    <Button variant="outline" size="sm">Change Photo</Button>
-                    <p className="text-sm text-gray-600">JPG, GIF or PNG. 1MB max.</p>
-                  </div>
-                </div>
-                
-                <Separator />
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="firstName">First Name</Label>
-                    <Input id="firstName" placeholder="Sarah" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="lastName">Last Name</Label>
-                    <Input id="lastName" placeholder="Thompson" />
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" placeholder="sarah@cozyhomes.com" />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone</Label>
-                  <Input id="phone" placeholder="+1 (555) 123-4567" />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="license">Real Estate License</Label>
-                  <Input id="license" placeholder="RE12345678" />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="brokerage">Brokerage</Label>
-                  <Input id="brokerage" placeholder="Cozy Homes Realty" />
-                </div>
-                
-                <Button className="bg-orange-600 hover:bg-orange-700">Save Changes</Button>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="notifications" className="space-y-6">
-            <Card className="cozy-card">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Bell className="h-5 w-5" />
-                  Notification Preferences
+              <CardHeader className="pb-4">
+                <CardTitle className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                  <Building className="h-5 w-5 text-orange-600" />
+                  Agency Information
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="font-medium">New Property Listings</div>
-                      <div className="text-sm text-gray-600">Get notified when new properties match your criteria</div>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="font-medium">Showing Requests</div>
-                      <div className="text-sm text-gray-600">Receive alerts for new showing requests</div>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="font-medium">Price Changes</div>
-                      <div className="text-sm text-gray-600">Alerts when properties change price</div>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="font-medium">Client Updates</div>
-                      <div className="text-sm text-gray-600">Updates from your assigned clients</div>
-                    </div>
-                    <Switch />
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="font-medium">Market Reports</div>
-                      <div className="text-sm text-gray-600">Weekly market analysis and trends</div>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-                </div>
-                
-                <Separator />
-                
-                <div className="space-y-4">
-                  <h3 className="font-medium">Notification Methods</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <Switch defaultChecked />
-                      <Label>Email notifications</Label>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Switch />
-                      <Label>SMS notifications</Label>
-                      <Badge variant="secondary">Premium</Badge>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Switch defaultChecked />
-                      <Label>In-app notifications</Label>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="security" className="space-y-6">
-            <Card className="cozy-card">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Shield className="h-5 w-5" />
-                  Security Settings
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <h3 className="font-medium mb-3">Change Password</h3>
-                    <div className="space-y-3">
-                      <div className="space-y-2">
-                        <Label htmlFor="currentPassword">Current Password</Label>
-                        <Input id="currentPassword" type="password" />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="newPassword">New Password</Label>
-                        <Input id="newPassword" type="password" />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="confirmPassword">Confirm New Password</Label>
-                        <Input id="confirmPassword" type="password" />
-                      </div>
-                      <Button variant="outline">Update Password</Button>
-                    </div>
+                    <Label htmlFor="agency-name">Agency Name</Label>
+                    <Input id="agency-name" defaultValue="CozyMLS Realty" className="mt-1" />
                   </div>
-                  
-                  <Separator />
-                  
-                  <div className="space-y-4">
-                    <h3 className="font-medium">Two-Factor Authentication</h3>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="font-medium">Enable 2FA</div>
-                        <div className="text-sm text-gray-600">Add an extra layer of security to your account</div>
-                      </div>
-                      <Switch />
-                    </div>
+                  <div>
+                    <Label htmlFor="license-number">License Number</Label>
+                    <Input id="license-number" defaultValue="RE-2024-789123" className="mt-1" />
                   </div>
-                  
-                  <Separator />
-                  
-                  <div className="space-y-4">
-                    <h3 className="font-medium">Active Sessions</h3>
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                        <div>
-                          <div className="font-medium">Current Session</div>
-                          <div className="text-sm text-gray-600">Chrome on MacOS • Los Angeles, CA</div>
-                        </div>
-                        <Badge variant="secondary">Active</Badge>
-                      </div>
-                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                        <div>
-                          <div className="font-medium">Mobile App</div>
-                          <div className="text-sm text-gray-600">iOS App • Last active 2 hours ago</div>
-                        </div>
-                        <Button variant="outline" size="sm">Revoke</Button>
-                      </div>
-                    </div>
+                </div>
+                
+                <div>
+                  <Label htmlFor="address">Business Address</Label>
+                  <Input id="address" defaultValue="123 Main Street, Downtown, CA 90210" className="mt-1" />
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="phone">Phone Number</Label>
+                    <Input id="phone" defaultValue="(555) 123-4567" className="mt-1" />
                   </div>
+                  <div>
+                    <Label htmlFor="email">Business Email</Label>
+                    <Input id="email" defaultValue="info@cozymls.com" className="mt-1" />
+                  </div>
+                </div>
+                
+                <div>
+                  <Label htmlFor="website">Website</Label>
+                  <Input id="website" defaultValue="www.cozymls.com" className="mt-1" />
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
 
-          <TabsContent value="mls" className="space-y-6">
+            {/* MLS Integration */}
             <Card className="cozy-card">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Database className="h-5 w-5" />
+              <CardHeader className="pb-4">
+                <CardTitle className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                  <Globe className="h-5 w-5 text-orange-600" />
                   MLS Integration
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg border border-green-200">
+                  <div className="flex items-center gap-3">
+                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                     <div>
-                      <div className="font-medium">Auto-sync listings</div>
-                      <div className="text-sm text-gray-600">Automatically sync new listings every 15 minutes</div>
+                      <h4 className="font-semibold text-gray-900">Regional MLS Connected</h4>
+                      <p className="text-sm text-gray-600">Last sync: 2 minutes ago</p>
                     </div>
-                    <Switch defaultChecked />
                   </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="font-medium">Price change alerts</div>
-                      <div className="text-sm text-gray-600">Get notified when property prices change</div>
-                    </div>
-                    <Switch defaultChecked />
+                  <Badge className="bg-green-100 text-green-700">Active</Badge>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="mls-id">MLS Provider ID</Label>
+                    <Input id="mls-id" defaultValue="RMLS-2024-CA" className="mt-1" />
                   </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="font-medium">Status updates</div>
-                      <div className="text-sm text-gray-600">Sync property status changes (pending, sold, etc.)</div>
-                    </div>
-                    <Switch defaultChecked />
+                  <div>
+                    <Label htmlFor="api-key">API Key</Label>
+                    <Input id="api-key" defaultValue="••••••••••••••••" type="password" className="mt-1" />
                   </div>
                 </div>
                 
-                <Separator />
-                
-                <div className="space-y-4">
-                  <h3 className="font-medium">Connected MLS Systems</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                      <div>
-                        <div className="font-medium">California Regional MLS</div>
-                        <div className="text-sm text-gray-600">Connected • Last sync: 5 minutes ago</div>
-                      </div>
-                      <Badge className="bg-green-100 text-green-700">Connected</Badge>
-                    </div>
-                    <Button variant="outline" className="w-full">
-                      <Home className="h-4 w-4 mr-2" />
-                      Connect Additional MLS
-                    </Button>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium text-gray-900">Auto-sync listings</h4>
+                    <p className="text-sm text-gray-600">Automatically sync new listings every hour</p>
                   </div>
+                  <Switch defaultChecked />
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
 
-          <TabsContent value="team" className="space-y-6">
+            {/* Commission Structure */}
             <Card className="cozy-card">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="h-5 w-5" />
-                  Team Management
+              <CardHeader className="pb-4">
+                <CardTitle className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                  <CreditCard className="h-5 w-5 text-orange-600" />
+                  Commission Structure
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="flex items-center justify-between">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
-                    <h3 className="font-medium">Team Members</h3>
-                    <p className="text-sm text-gray-600">Manage your real estate team</p>
+                    <Label htmlFor="listing-commission">Listing Commission (%)</Label>
+                    <Input id="listing-commission" defaultValue="3.0" className="mt-1" />
                   </div>
-                  <Button className="bg-orange-600 hover:bg-orange-700">
-                    <Users className="h-4 w-4 mr-2" />
-                    Invite Member
-                  </Button>
-                </div>
-                
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-orange-600 rounded-full flex items-center justify-center">
-                        <User className="h-5 w-5 text-white" />
-                      </div>
-                      <div>
-                        <div className="font-medium">Sarah Thompson</div>
-                        <div className="text-sm text-gray-600">Lead Agent • Owner</div>
-                      </div>
-                    </div>
-                    <Badge>Owner</Badge>
+                  <div>
+                    <Label htmlFor="buying-commission">Buying Commission (%)</Label>
+                    <Input id="buying-commission" defaultValue="3.0" className="mt-1" />
                   </div>
-                  
-                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center">
-                        <User className="h-5 w-5 text-white" />
-                      </div>
-                      <div>
-                        <div className="font-medium">Michael Chen</div>
-                        <div className="text-sm text-gray-600">Senior Agent</div>
-                      </div>
-                    </div>
-                    <Button variant="outline" size="sm">Manage</Button>
-                  </div>
-                  
-                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center">
-                        <User className="h-5 w-5 text-white" />
-                      </div>
-                      <div>
-                        <div className="font-medium">Jennifer Davis</div>
-                        <div className="text-sm text-gray-600">Agent</div>
-                      </div>
-                    </div>
-                    <Button variant="outline" size="sm">Manage</Button>
+                  <div>
+                    <Label htmlFor="agent-split">Agent Split (%)</Label>
+                    <Input id="agent-split" defaultValue="70" className="mt-1" />
                   </div>
                 </div>
                 
-                <Separator />
+                <div className="p-4 bg-orange-50 rounded-lg border border-orange-200">
+                  <h4 className="font-medium text-gray-900 mb-2">Commission Calculator Preview</h4>
+                  <p className="text-sm text-gray-600">
+                    On a $500,000 sale: Total commission $30,000 | Agent receives $21,000 | Agency keeps $9,000
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Sidebar Settings */}
+          <div className="space-y-6">
+            {/* Team Management */}
+            <Card className="cozy-card">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                  <Users className="h-5 w-5 text-orange-600" />
+                  Team Management
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-gray-900">12</div>
+                  <p className="text-sm text-gray-600">Active Agents</p>
+                </div>
                 
-                <div className="space-y-4">
-                  <h3 className="font-medium">Team Permissions</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="font-medium">Lead assignment</div>
-                        <div className="text-sm text-gray-600">Allow team members to assign leads</div>
-                      </div>
-                      <Switch defaultChecked />
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="font-medium">Property editing</div>
-                        <div className="text-sm text-gray-600">Allow editing of property information</div>
-                      </div>
-                      <Switch />
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="font-medium">Report access</div>
-                        <div className="text-sm text-gray-600">Access to team performance reports</div>
-                      </div>
-                      <Switch defaultChecked />
-                    </div>
+                <Button variant="outline" className="w-full">
+                  <Users className="h-4 w-4 mr-2" />
+                  Manage Agents
+                </Button>
+                
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-600">Licenses expiring soon</span>
+                    <Badge variant="secondary">3</Badge>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-600">Training due</span>
+                    <Badge variant="secondary">1</Badge>
                   </div>
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
-        </Tabs>
+
+            {/* Notifications */}
+            <Card className="cozy-card">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                  <Bell className="h-5 w-5 text-orange-600" />
+                  Notifications
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium text-gray-900">New listings</h4>
+                    <p className="text-xs text-gray-600">Email notifications</p>
+                  </div>
+                  <Switch defaultChecked />
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium text-gray-900">Price changes</h4>
+                    <p className="text-xs text-gray-600">SMS alerts</p>
+                  </div>
+                  <Switch defaultChecked />
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium text-gray-900">Showings scheduled</h4>
+                    <p className="text-xs text-gray-600">Push notifications</p>
+                  </div>
+                  <Switch />
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium text-gray-900">Contract updates</h4>
+                    <p className="text-xs text-gray-600">Email + SMS</p>
+                  </div>
+                  <Switch defaultChecked />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Security */}
+            <Card className="cozy-card">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                  <Shield className="h-5 w-5 text-orange-600" />
+                  Security
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium text-gray-900">Two-factor auth</h4>
+                    <p className="text-xs text-gray-600">Required for all agents</p>
+                  </div>
+                  <Switch defaultChecked />
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium text-gray-900">Session timeout</h4>
+                    <p className="text-xs text-gray-600">30 minutes</p>
+                  </div>
+                  <Switch defaultChecked />
+                </div>
+                
+                <Button variant="outline" className="w-full">
+                  <Shield className="h-4 w-4 mr-2" />
+                  Security Audit
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
     </Layout>
   );

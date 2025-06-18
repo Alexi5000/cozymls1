@@ -1,210 +1,189 @@
 
 import { Layout } from '@/components/layout/Layout';
-import { StatsCard } from '@/components/dashboard/StatsCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BarChart, DollarSign, Home, TrendingUp, Calendar, Users } from 'lucide-react';
-import { mockMLSStats } from '@/lib/mock-mls-data';
+import { Progress } from '@/components/ui/progress';
+import { Badge } from '@/components/ui/badge';
+import { 
+  BarChart3, 
+  TrendingUp, 
+  DollarSign, 
+  Home, 
+  Users, 
+  Calendar,
+  FileText,
+  Download
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export default function Reports() {
-  const stats = mockMLSStats;
+  const salesMetrics = {
+    monthlyListings: 45,
+    activeSales: 28,
+    avgDaysOnMarket: 32,
+    totalCommission: 125000,
+    monthlyGrowth: 12.5
+  };
+
+  const agentPerformance = [
+    { name: 'Sarah Thompson', listings: 12, sales: 8, commission: 45000 },
+    { name: 'Mike Rodriguez', listings: 10, sales: 6, commission: 32000 },
+    { name: 'Emma Chen', listings: 8, sales: 7, commission: 38000 },
+    { name: 'David Wilson', listings: 15, sales: 7, commission: 28000 }
+  ];
+
+  const marketTrends = [
+    { area: 'Downtown', avgPrice: 485000, growth: 8.2, properties: 156 },
+    { area: 'Suburbia West', avgPrice: 325000, growth: 5.7, properties: 234 },
+    { area: 'Riverside', avgPrice: 675000, growth: 12.1, properties: 89 },
+    { area: 'Historic District', avgPrice: 425000, growth: 3.4, properties: 167 }
+  ];
 
   return (
     <Layout title="Reports & Analytics">
-      <div className="space-y-6">
-        {/* Key Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <StatsCard
-            title="Total Properties"
-            value={stats.totalProperties.toLocaleString()}
-            change="+12% from last month"
-            icon={Home}
-            trend="up"
-          />
-          <StatsCard
-            title="Active Listings"
-            value={stats.activeListings}
-            change="+5% from last week"
-            icon={TrendingUp}
-            trend="up"
-          />
-          <StatsCard
-            title="Avg. Days on Market"
-            value={stats.avgDaysOnMarket}
-            change="-3 days from last month"
-            icon={Calendar}
-            trend="up"
-          />
-          <StatsCard
-            title="Avg. Property Price"
-            value={`$${(stats.avgPrice / 1000).toFixed(0)}K`}
-            change="+8% from last quarter"
-            icon={DollarSign}
-            trend="up"
-          />
+      <div className="space-y-8">
+        {/* Header */}
+        <div className="flex justify-between items-center">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">Real Estate Analytics</h2>
+            <p className="text-gray-600 mt-1">Track performance and market insights</p>
+          </div>
+          <Button className="bg-orange-600 hover:bg-orange-700">
+            <Download className="h-4 w-4 mr-2" />
+            Export Report
+          </Button>
         </div>
 
-        {/* Detailed Reports */}
-        <Tabs defaultValue="market" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="market">Market Overview</TabsTrigger>
-            <TabsTrigger value="performance">Agent Performance</TabsTrigger>
-            <TabsTrigger value="inventory">Inventory Analysis</TabsTrigger>
-            <TabsTrigger value="pricing">Pricing Trends</TabsTrigger>
-          </TabsList>
+        {/* Key Metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <Card className="cozy-card p-6">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
+                Monthly Listings
+              </CardTitle>
+              <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center">
+                <Home className="h-6 w-6 text-orange-600" />
+              </div>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="text-3xl font-bold text-gray-900 mb-2">{salesMetrics.monthlyListings}</div>
+              <p className="text-sm font-medium text-green-600">+{salesMetrics.monthlyGrowth}% from last month</p>
+            </CardContent>
+          </Card>
 
-          <TabsContent value="market" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card className="cozy-card">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <BarChart className="h-5 w-5" />
-                    Monthly Sales Volume
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-orange-600 mb-2">
-                    ${(stats.monthlyVolume / 1000000).toFixed(1)}M
+          <Card className="cozy-card p-6">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
+                Active Sales
+              </CardTitle>
+              <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center">
+                <TrendingUp className="h-6 w-6 text-orange-600" />
+              </div>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="text-3xl font-bold text-gray-900 mb-2">{salesMetrics.activeSales}</div>
+              <p className="text-sm font-medium text-gray-500">Properties in escrow</p>
+            </CardContent>
+          </Card>
+
+          <Card className="cozy-card p-6">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
+                Avg Days on Market
+              </CardTitle>
+              <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center">
+                <Calendar className="h-6 w-6 text-orange-600" />
+              </div>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="text-3xl font-bold text-gray-900 mb-2">{salesMetrics.avgDaysOnMarket}</div>
+              <p className="text-sm font-medium text-blue-600">5 days faster than avg</p>
+            </CardContent>
+          </Card>
+
+          <Card className="cozy-card p-6">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
+                Total Commission
+              </CardTitle>
+              <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center">
+                <DollarSign className="h-6 w-6 text-orange-600" />
+              </div>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="text-3xl font-bold text-gray-900 mb-2">
+                ${(salesMetrics.totalCommission / 1000).toFixed(0)}K
+              </div>
+              <p className="text-sm font-medium text-green-600">+18% from last month</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Agent Performance & Market Trends */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Agent Performance */}
+          <Card className="cozy-card">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                <Users className="h-5 w-5 text-orange-600" />
+                Agent Performance
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {agentPerformance.map((agent, index) => (
+                  <div key={agent.name} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-gray-900">{agent.name}</h4>
+                      <div className="flex items-center gap-4 mt-1 text-sm text-gray-600">
+                        <span>{agent.listings} listings</span>
+                        <span>{agent.sales} sales</span>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-lg font-bold text-gray-900">
+                        ${(agent.commission / 1000).toFixed(0)}K
+                      </div>
+                      <div className="text-sm text-gray-500">commission</div>
+                    </div>
                   </div>
-                  <p className="text-sm text-gray-600">
-                    Total transaction volume this month
-                  </p>
-                </CardContent>
-              </Card>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
 
-              <Card className="cozy-card">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Home className="h-5 w-5" />
-                    New Listings
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-orange-600 mb-2">
-                    {stats.newListings}
-                  </div>
-                  <p className="text-sm text-gray-600">
-                    Properties added this week
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-
-            <Card className="cozy-card">
-              <CardHeader>
-                <CardTitle>Market Activity by Region</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {[
-                    { region: 'Downtown', listings: 45, avgPrice: '$850K', change: '+12%' },
-                    { region: 'Westside', listings: 32, avgPrice: '$1.2M', change: '+8%' },
-                    { region: 'North Hills', listings: 28, avgPrice: '$675K', change: '+15%' },
-                    { region: 'East Side', listings: 19, avgPrice: '$550K', change: '+5%' },
-                  ].map((region) => (
-                    <div key={region.region} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+          {/* Market Trends */}
+          <Card className="cozy-card">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                <BarChart3 className="h-5 w-5 text-orange-600" />
+                Market Trends by Area
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {marketTrends.map((area) => (
+                  <div key={area.area} className="space-y-3">
+                    <div className="flex justify-between items-start">
                       <div>
-                        <div className="font-medium">{region.region}</div>
-                        <div className="text-sm text-gray-600">{region.listings} active listings</div>
+                        <h4 className="font-semibold text-gray-900">{area.area}</h4>
+                        <p className="text-sm text-gray-600">{area.properties} properties</p>
                       </div>
                       <div className="text-right">
-                        <div className="font-medium">{region.avgPrice}</div>
-                        <div className="text-sm text-green-600">{region.change}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="performance" className="space-y-6">
-            <Card className="cozy-card">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="h-5 w-5" />
-                  Top Performing Agents
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {[
-                    { name: 'Sarah Thompson', sales: 12, volume: '$4.2M', listings: 8 },
-                    { name: 'Michael Chen', sales: 9, volume: '$3.8M', listings: 6 },
-                    { name: 'Jennifer Davis', sales: 7, volume: '$2.9M', listings: 5 },
-                  ].map((agent, index) => (
-                    <div key={agent.name} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center text-white font-bold">
-                          {index + 1}
+                        <div className="text-lg font-bold text-gray-900">
+                          ${(area.avgPrice / 1000).toFixed(0)}K
                         </div>
-                        <div>
-                          <div className="font-medium">{agent.name}</div>
-                          <div className="text-sm text-gray-600">{agent.listings} active listings</div>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="font-medium">{agent.volume}</div>
-                        <div className="text-sm text-gray-600">{agent.sales} sales this month</div>
+                        <Badge className={area.growth > 5 ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}>
+                          +{area.growth}%
+                        </Badge>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="inventory" className="space-y-6">
-            <Card className="cozy-card">
-              <CardHeader>
-                <CardTitle>Inventory Distribution</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                  {[
-                    { type: 'Single Family', count: 156, percentage: 45 },
-                    { type: 'Condos', count: 89, percentage: 26 },
-                    { type: 'Townhomes', count: 67, percentage: 20 },
-                    { type: 'Multi-Family', count: 30, percentage: 9 },
-                  ].map((item) => (
-                    <div key={item.type} className="text-center p-4 bg-gray-50 rounded-lg">
-                      <div className="text-2xl font-bold text-orange-600 mb-1">{item.count}</div>
-                      <div className="text-sm font-medium">{item.type}</div>
-                      <div className="text-xs text-gray-600">{item.percentage}% of total</div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="pricing" className="space-y-6">
-            <Card className="cozy-card">
-              <CardHeader>
-                <CardTitle>Price Range Analysis</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {[
-                    { range: '$0 - $500K', count: 45, trend: '+8%' },
-                    { range: '$500K - $750K', count: 78, trend: '+12%' },
-                    { range: '$750K - $1M', count: 89, trend: '+15%' },
-                    { range: '$1M - $1.5M', count: 67, trend: '+5%' },
-                    { range: '$1.5M+', count: 63, trend: '+18%' },
-                  ].map((price) => (
-                    <div key={price.range} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                      <div>
-                        <div className="font-medium">{price.range}</div>
-                        <div className="text-sm text-gray-600">{price.count} properties</div>
-                      </div>
-                      <div className="text-green-600 font-medium">{price.trend}</div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+                    <Progress value={(area.growth / 15) * 100} className="h-2" />
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </Layout>
   );
