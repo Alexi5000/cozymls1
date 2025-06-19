@@ -3,7 +3,7 @@ import { Layout } from '@/components/layout/Layout';
 import { StatsCard } from '@/components/dashboard/StatsCard';
 import { RecentActivity } from '@/components/dashboard/RecentActivity';
 import { DealsOverview } from '@/components/dashboard/DealsOverview';
-import { mockDashboardStats } from '@/lib/mock-data';
+import { mockDashboardStats } from '@/lib/mock-data/dashboard';
 import { Home, Users, DollarSign, TrendingUp } from 'lucide-react';
 
 export default function Dashboard() {

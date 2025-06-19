@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { mockActivities } from '@/lib/mock-data';
+import { mockActivities } from '@/lib/mock-data/activities';
 import { Calendar, Phone, Mail, Users } from 'lucide-react';
 
 const activityIcons = {
@@ -22,7 +22,7 @@ export function RecentActivity() {
   const recentActivities = mockActivities.slice(0, 6);
 
   return (
-    <Card className="boardco-card">
+    <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-lg transition-shadow duration-200">
       <CardHeader className="pb-4">
         <CardTitle className="text-xl font-bold text-gray-900">Recent Activities</CardTitle>
       </CardHeader>

@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { mockDeals } from '@/lib/mock-data';
+import { mockDeals } from '@/lib/mock-data/deals';
 
 export function DealsOverview() {
   const dealsByStage = mockDeals.reduce((acc, deal) => {
@@ -10,17 +10,9 @@ export function DealsOverview() {
   }, {} as Record<string, number>);
 
   const totalDeals = mockDeals.length;
-  const stageColors = {
-    prospect: 'bg-gray-500',
-    qualified: 'bg-blue-600',
-    proposal: 'bg-yellow-500',
-    negotiation: 'bg-orange-500',
-    'closed-won': 'bg-green-500',
-    'closed-lost': 'bg-red-500',
-  };
 
   return (
-    <Card className="boardco-card">
+    <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-lg transition-shadow duration-200">
       <CardHeader className="pb-4">
         <CardTitle className="text-xl font-bold text-gray-900">Deals Pipeline</CardTitle>
       </CardHeader>
@@ -37,7 +29,7 @@ export function DealsOverview() {
                   <span className="text-sm font-medium text-gray-500">{count} deals</span>
                 </div>
                 <div className="relative">
-                  <Progress value={percentage} className="h-3 bg-gray-100" />
+                  <Progress value={percentage} className="h-3" />
                 </div>
               </div>
             );

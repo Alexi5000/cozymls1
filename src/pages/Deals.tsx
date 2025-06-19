@@ -4,7 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { mockDeals, mockContacts } from '@/lib/mock-data';
+import { mockDeals } from '@/lib/mock-data/deals';
+import { mockContacts } from '@/lib/mock-data/contacts';
 import { Plus, Calendar, DollarSign } from 'lucide-react';
 
 export default function Deals() {
