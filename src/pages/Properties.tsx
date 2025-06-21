@@ -42,15 +42,25 @@ export default function Properties() {
     }).format(price);
   };
 
-  // Function to get property image with proper fallback
+  // Fixed function to get property image with proper URL handling
   const getPropertyImage = (property: any) => {
     if (property.images && Array.isArray(property.images) && property.images.length > 0) {
       const imageUrl = property.images[0];
-      // Check if it's a placeholder image pattern
-      if (typeof imageUrl === 'string' && imageUrl.includes('photo-')) {
-        return `https://images.unsplash.com/${imageUrl}?w=400&h=300&fit=crop`;
+      
+      if (typeof imageUrl === 'string') {
+        // If it's already a complete Unsplash URL, use it directly
+        if (imageUrl.startsWith('https://images.unsplash.com/')) {
+          return imageUrl;
+        }
+        
+        // If it's just a photo ID, construct the full URL
+        if (imageUrl.includes('photo-')) {
+          return `https://images.unsplash.com/${imageUrl}?w=400&h=300&fit=crop`;
+        }
+        
+        // Return the URL as-is for other cases
+        return imageUrl;
       }
-      return imageUrl;
     }
     return null;
   };
@@ -119,7 +129,7 @@ export default function Properties() {
             return (
               <Card key={property.id} className="overflow-hidden hover:shadow-lg transition-all duration-200">
                 {/* Property Image */}
-                <div className="relative h-48 bg-gray-200">
+                <div className="relative h-48 bg-gray-100">
                   {propertyImage ? (
                     <img 
                       src={propertyImage} 
@@ -129,11 +139,14 @@ export default function Properties() {
                         console.log(`Failed to load image for property ${property.id}:`, propertyImage);
                         const target = e.target as HTMLImageElement;
                         target.style.display = 'none';
-                        target.nextElementSibling?.classList.remove('hidden');
+                        const fallbackDiv = target.nextElementSibling as HTMLElement;
+                        if (fallbackDiv) {
+                          fallbackDiv.classList.remove('hidden');
+                        }
                       }}
                     />
                   ) : null}
-                  <div className={`w-full h-full flex items-center justify-center text-gray-400 ${propertyImage ? 'hidden' : ''}`}>
+                  <div className={`absolute inset-0 flex items-center justify-center text-gray-400 bg-gray-100 ${propertyImage ? 'hidden' : ''}`}>
                     <Building2 className="h-12 w-12" />
                   </div>
                   <div className="absolute top-3 left-3">
