@@ -42,6 +42,19 @@ export default function Properties() {
     }).format(price);
   };
 
+  // Function to get property image with proper fallback
+  const getPropertyImage = (property: any) => {
+    if (property.images && Array.isArray(property.images) && property.images.length > 0) {
+      const imageUrl = property.images[0];
+      // Check if it's a placeholder image pattern
+      if (typeof imageUrl === 'string' && imageUrl.includes('photo-')) {
+        return `https://images.unsplash.com/${imageUrl}?w=400&h=300&fit=crop`;
+      }
+      return imageUrl;
+    }
+    return null;
+  };
+
   return (
     <Layout title="Properties">
       <div className="space-y-8">
@@ -100,95 +113,104 @@ export default function Properties() {
 
         {/* Properties Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-          {mockProperties.map((property) => (
-            <Card key={property.id} className="overflow-hidden hover:shadow-lg transition-all duration-200">
-              {/* Property Image */}
-              <div className="relative h-48 bg-gray-200">
-                {property.images && property.images[0] ? (
-                  <img 
-                    src={property.images[0]} 
-                    alt={property.title}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-gray-400">
+          {mockProperties.map((property) => {
+            const propertyImage = getPropertyImage(property);
+            
+            return (
+              <Card key={property.id} className="overflow-hidden hover:shadow-lg transition-all duration-200">
+                {/* Property Image */}
+                <div className="relative h-48 bg-gray-200">
+                  {propertyImage ? (
+                    <img 
+                      src={propertyImage} 
+                      alt={property.title}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        console.log(`Failed to load image for property ${property.id}:`, propertyImage);
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        target.nextElementSibling?.classList.remove('hidden');
+                      }}
+                    />
+                  ) : null}
+                  <div className={`w-full h-full flex items-center justify-center text-gray-400 ${propertyImage ? 'hidden' : ''}`}>
                     <Building2 className="h-12 w-12" />
                   </div>
-                )}
-                <div className="absolute top-3 left-3">
-                  <Badge className={`${statusColors[property.status]} font-medium`}>
-                    {property.status.toUpperCase()}
-                  </Badge>
-                </div>
-                <div className="absolute top-3 right-3 flex gap-2">
-                  <Button size="icon" variant="secondary" className="h-8 w-8 bg-white/90 hover:bg-white">
-                    <Heart className="h-4 w-4" />
-                  </Button>
-                  <Button size="icon" variant="secondary" className="h-8 w-8 bg-white/90 hover:bg-white">
-                    <Eye className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-
-              <CardHeader className="pb-3">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <CardTitle className="text-xl font-bold text-gray-900">
-                      {formatPrice(property.price)}
-                    </CardTitle>
-                    <p className="text-sm text-gray-600 mt-1">{property.title}</p>
+                  <div className="absolute top-3 left-3">
+                    <Badge className={`${statusColors[property.status]} font-medium`}>
+                      {property.status.toUpperCase()}
+                    </Badge>
                   </div>
-                  <Badge className={`${typeColors[property.type]} font-medium`}>
-                    {property.type.replace('-', ' ')}
-                  </Badge>
-                </div>
-              </CardHeader>
-
-              <CardContent className="pt-0">
-                <div className="space-y-3">
-                  {/* Address */}
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <MapPin className="h-4 w-4 text-gray-400" />
-                    <span className="truncate">
-                      {property.address.street}, {property.address.city}, {property.address.state}
-                    </span>
-                  </div>
-
-                  {/* Property Details */}
-                  <div className="flex items-center gap-4 text-sm text-gray-600">
-                    <div className="flex items-center gap-1">
-                      <Bed className="h-4 w-4 text-gray-400" />
-                      <span>{property.bedrooms} bed</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Bath className="h-4 w-4 text-gray-400" />
-                      <span>{property.bathrooms} bath</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Square className="h-4 w-4 text-gray-400" />
-                      <span>{property.squareFeet?.toLocaleString()} sqft</span>
-                    </div>
-                  </div>
-
-                  {/* MLS ID and Days on Market */}
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-500">MLS ID: {property.mlsId}</span>
-                    <div className="flex items-center gap-1 text-gray-500">
-                      <Calendar className="h-4 w-4" />
-                      <span>{property.daysOnMarket} days</span>
-                    </div>
-                  </div>
-
-                  {/* Listing Agent */}
-                  <div className="pt-2 border-t border-gray-100">
-                    <p className="text-xs text-gray-500">Listed by</p>
-                    <p className="text-sm font-medium text-gray-700">{property.listingAgent.name}</p>
-                    <p className="text-xs text-gray-500">{property.listingAgent.brokerage}</p>
+                  <div className="absolute top-3 right-3 flex gap-2">
+                    <Button size="icon" variant="secondary" className="h-8 w-8 bg-white/90 hover:bg-white">
+                      <Heart className="h-4 w-4" />
+                    </Button>
+                    <Button size="icon" variant="secondary" className="h-8 w-8 bg-white/90 hover:bg-white">
+                      <Eye className="h-4 w-4" />
+                    </Button>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+
+                <CardHeader className="pb-3">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <CardTitle className="text-xl font-bold text-gray-900">
+                        {formatPrice(property.price)}
+                      </CardTitle>
+                      <p className="text-sm text-gray-600 mt-1">{property.title}</p>
+                    </div>
+                    <Badge className={`${typeColors[property.type]} font-medium`}>
+                      {property.type.replace('-', ' ')}
+                    </Badge>
+                  </div>
+                </CardHeader>
+
+                <CardContent className="pt-0">
+                  <div className="space-y-3">
+                    {/* Address */}
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <MapPin className="h-4 w-4 text-gray-400" />
+                      <span className="truncate">
+                        {property.address.street}, {property.address.city}, {property.address.state}
+                      </span>
+                    </div>
+
+                    {/* Property Details */}
+                    <div className="flex items-center gap-4 text-sm text-gray-600">
+                      <div className="flex items-center gap-1">
+                        <Bed className="h-4 w-4 text-gray-400" />
+                        <span>{property.bedrooms} bed</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Bath className="h-4 w-4 text-gray-400" />
+                        <span>{property.bathrooms} bath</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Square className="h-4 w-4 text-gray-400" />
+                        <span>{property.squareFeet?.toLocaleString()} sqft</span>
+                      </div>
+                    </div>
+
+                    {/* MLS ID and Days on Market */}
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-gray-500">MLS ID: {property.mlsId}</span>
+                      <div className="flex items-center gap-1 text-gray-500">
+                        <Calendar className="h-4 w-4" />
+                        <span>{property.daysOnMarket} days</span>
+                      </div>
+                    </div>
+
+                    {/* Listing Agent */}
+                    <div className="pt-2 border-t border-gray-100">
+                      <p className="text-xs text-gray-500">Listed by</p>
+                      <p className="text-sm font-medium text-gray-700">{property.listingAgent.name}</p>
+                      <p className="text-xs text-gray-500">{property.listingAgent.brokerage}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </div>
     </Layout>
