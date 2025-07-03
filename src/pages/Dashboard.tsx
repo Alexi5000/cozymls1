@@ -14,12 +14,12 @@ export default function Dashboard() {
       <div className="space-y-8">
         {/* Welcome Section */}
         <div>
-          <h2 className="text-lg font-semibold text-gray-600 mb-2">Welcome back, Sarah 👋</h2>
-          <p className="text-gray-500">Here's what's happening with your real estate business today.</p>
+          <h2 className="text-base md:text-lg font-semibold text-gray-600 mb-2">Welcome back, Sarah 👋</h2>
+          <p className="text-sm md:text-base text-gray-500">Here's what's happening with your real estate business today.</p>
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
           <StatsCard
             title="Active Properties"
             value={stats.totalContacts.toLocaleString()}

@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const navigation = [
   { name: 'Dashboard', href: '/', icon: Home },
@@ -29,16 +30,21 @@ const navigation = [
 export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
+  const isMobile = useIsMobile();
+
+  // Auto-collapse on mobile, allow manual toggle on desktop
+  const isCollapsed = isMobile || collapsed;
 
   return (
     <div className={cn(
       'cozy-sidebar text-white transition-all duration-300 flex flex-col shadow-xl',
-      collapsed ? 'w-20' : 'w-72'
+      'md:relative fixed md:translate-x-0 z-50',
+      isMobile ? (collapsed ? '-translate-x-full w-0' : 'translate-x-0 w-64') : (collapsed ? 'w-16' : 'w-64')
     )}>
       {/* Header */}
       <div className="p-6 border-b border-orange-700/50">
         <div className="flex items-center justify-between">
-          {!collapsed && (
+          {!isCollapsed && (
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
                 <div className="w-4 h-4 bg-orange-600 rounded"></div>
@@ -66,14 +72,15 @@ export function Sidebar() {
               <Link
                 key={item.name}
                 to={item.href}
-                className={cn(
-                  'cozy-nav-item',
-                  isActive && 'active',
-                  collapsed && 'justify-center px-3'
-                )}
+                 className={cn(
+                   'cozy-nav-item',
+                   isActive && 'active',
+                   isCollapsed && 'justify-center px-3'
+                 )}
+                 onClick={() => isMobile && setCollapsed(true)}
               >
                 <item.icon className="h-5 w-5 flex-shrink-0" />
-                {!collapsed && <span className="font-medium">{item.name}</span>}
+                {!isCollapsed && <span className="font-medium">{item.name}</span>}
               </Link>
             );
           })}
@@ -81,7 +88,7 @@ export function Sidebar() {
       </nav>
       
       {/* User Profile */}
-      {!collapsed && (
+      {!isCollapsed && (
         <div className="p-4 border-t border-orange-700/50">
           <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-orange-700/30 cursor-pointer transition-colors">
             <div className="w-10 h-10 bg-orange-600 rounded-full flex items-center justify-center">
