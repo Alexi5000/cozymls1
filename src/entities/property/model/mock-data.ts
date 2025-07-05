@@ -1,0 +1,91 @@
+import { Property } from './types';
+
+export const mockProperties: Property[] = [
+  {
+    id: '1',
+    mlsId: 'MLS001',
+    address: '123 Oak Street',
+    city: 'San Francisco',
+    state: 'CA',
+    zipCode: '94102',
+    price: 1250000,
+    bedrooms: 3,
+    bathrooms: 2,
+    squareFeet: 1800,
+    lotSize: 0.15,
+    yearBuilt: 1920,
+    propertyType: 'single-family',
+    status: 'active',
+    listingDate: new Date('2024-01-15'),
+    daysOnMarket: 45,
+    description: 'Beautiful Victorian home in the heart of San Francisco with original hardwood floors and modern updates.',
+    features: ['Hardwood Floors', 'Updated Kitchen', 'Garden', 'Parking'],
+    images: ['https://images.unsplash.com/photo-1568605114967-8130f3a36994'],
+    agent: {
+      id: 'agent1',
+      name: 'Sarah Thompson',
+      phone: '(555) 123-4567',
+      email: 'sarah@cozymls.com'
+    },
+    createdAt: new Date('2024-01-01'),
+    updatedAt: new Date('2024-01-15')
+  },
+  {
+    id: '2',
+    mlsId: 'MLS002',
+    address: '456 Pine Avenue',
+    city: 'Oakland',
+    state: 'CA',
+    zipCode: '94610',
+    price: 850000,
+    bedrooms: 2,
+    bathrooms: 2,
+    squareFeet: 1200,
+    lotSize: 0.1,
+    yearBuilt: 2015,
+    propertyType: 'condo',
+    status: 'pending',
+    listingDate: new Date('2024-02-01'),
+    daysOnMarket: 30,
+    description: 'Modern condo with stunning bay views and premium finishes throughout.',
+    features: ['Bay Views', 'Modern Kitchen', 'In-unit Laundry', 'Gym Access'],
+    images: ['https://images.unsplash.com/photo-1560448204-e02f11c3d0e2'],
+    agent: {
+      id: 'agent2',
+      name: 'Mike Johnson',
+      phone: '(555) 234-5678',
+      email: 'mike@cozymls.com'
+    },
+    createdAt: new Date('2024-01-20'),
+    updatedAt: new Date('2024-02-01')
+  },
+  {
+    id: '3',
+    mlsId: 'MLS003',
+    address: '789 Elm Drive',
+    city: 'Berkeley',
+    state: 'CA',
+    zipCode: '94704',
+    price: 950000,
+    bedrooms: 4,
+    bathrooms: 3,
+    squareFeet: 2200,
+    lotSize: 0.25,
+    yearBuilt: 1985,
+    propertyType: 'single-family',
+    status: 'active',
+    listingDate: new Date('2024-01-20'),
+    daysOnMarket: 25,
+    description: 'Spacious family home near UC Berkeley with large backyard and updated amenities.',
+    features: ['Large Backyard', 'Updated Bathrooms', 'Near Schools', 'Deck'],
+    images: ['https://images.unsplash.com/photo-1570129477492-45c003edd2be'],
+    agent: {
+      id: 'agent3',
+      name: 'Emily Davis',
+      phone: '(555) 345-6789',
+      email: 'emily@cozymls.com'
+    },
+    createdAt: new Date('2024-01-15'),
+    updatedAt: new Date('2024-01-20')
+  }
+];
