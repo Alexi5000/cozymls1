@@ -1,13 +1,16 @@
 import { Layout } from '@/widgets/layout';
+import { MobileLayout } from '@/widgets/mobile';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
 import { Progress } from '@/shared/ui/progress';
 import { mockDeals } from '@/entities/deal';
 import { mockContacts } from '@/entities/contact';
+import { useIsMobile } from '@/shared/hooks/use-mobile';
 import { Plus, Calendar, DollarSign } from 'lucide-react';
 
 export function DealsPage() {
+  const isMobile = useIsMobile();
   const stageColors = {
     prospect: 'bg-gray-100 text-gray-800',
     qualified: 'bg-blue-100 text-blue-800',
@@ -21,58 +24,74 @@ export function DealsPage() {
     return mockContacts.find(c => c.id === contactId)?.name || 'Unknown';
   };
 
+  const handleRefresh = async () => {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  };
+
+  const content = (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-lg font-semibold">All Deals</h2>
+        <Button>
+          <Plus className="h-4 w-4 mr-2" />
+          Add Deal
+        </Button>
+      </div>
+
+      <div className={`grid gap-6 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
+        {mockDeals.map((deal) => (
+          <Card key={deal.id} className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <div className="flex justify-between items-start">
+                <div className="flex-1">
+                  <CardTitle className="text-lg">{deal.title}</CardTitle>
+                  <p className="text-sm text-muted-foreground">{getContactName(deal.contactId)}</p>
+                </div>
+                <Badge className={stageColors[deal.stage]}>
+                  {deal.stage.replace('-', ' ')}
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <DollarSign className="h-4 w-4 text-green-600" />
+                  <span className="text-lg font-semibold">
+                    ${deal.value.toLocaleString()}
+                  </span>
+                </div>
+                
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm text-muted-foreground">Probability</span>
+                    <span className="text-sm font-medium">{deal.probability}%</span>
+                  </div>
+                  <Progress value={deal.probability} className="h-2" />
+                </div>
+                
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Calendar className="h-4 w-4" />
+                  <span>Expected: {deal.expectedCloseDate.toLocaleDateString()}</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+
+  if (isMobile) {
+    return (
+      <MobileLayout title="Deals" onRefresh={handleRefresh}>
+        {content}
+      </MobileLayout>
+    );
+  }
+
   return (
     <Layout title="Deals">
-      <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <h2 className="text-lg font-semibold">All Deals</h2>
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Add Deal
-          </Button>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {mockDeals.map((deal) => (
-            <Card key={deal.id} className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <CardTitle className="text-lg">{deal.title}</CardTitle>
-                    <p className="text-sm text-gray-600">{getContactName(deal.contactId)}</p>
-                  </div>
-                  <Badge className={stageColors[deal.stage]}>
-                    {deal.stage.replace('-', ' ')}
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <DollarSign className="h-4 w-4 text-green-600" />
-                    <span className="text-lg font-semibold">
-                      ${deal.value.toLocaleString()}
-                    </span>
-                  </div>
-                  
-                  <div>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm text-gray-600">Probability</span>
-                      <span className="text-sm font-medium">{deal.probability}%</span>
-                    </div>
-                    <Progress value={deal.probability} className="h-2" />
-                  </div>
-                  
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <Calendar className="h-4 w-4" />
-                    <span>Expected: {deal.expectedCloseDate.toLocaleDateString()}</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
+      {content}
     </Layout>
   );
 }

@@ -2,10 +2,32 @@ import { Layout } from '@/widgets/layout';
 import { MobileLayout } from '@/widgets/mobile';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
+import { mockDeals } from '@/entities/deal';
+import { mockContacts } from '@/entities/contact';
+import { mockActivities } from '@/entities/activity';
 import { BarChart3, TrendingUp, Users, DollarSign } from 'lucide-react';
 
 export function ReportsPage() {
   const isMobile = useIsMobile();
+  
+  // Calculate real statistics from mock data
+  const totalSalesValue = mockDeals
+    .filter(deal => deal.stage === 'closed-won')
+    .reduce((sum, deal) => sum + deal.value, 0);
+  
+  const activeListings = mockDeals.filter(deal => 
+    ['prospect', 'qualified', 'proposal', 'negotiation'].includes(deal.stage)
+  ).length;
+  
+  const totalClients = mockContacts.length;
+  
+  const totalCommission = totalSalesValue * 0.03; // 3% commission rate
+  
+  const newContactsThisWeek = mockContacts.filter(contact => {
+    const weekAgo = new Date();
+    weekAgo.setDate(weekAgo.getDate() - 7);
+    return contact.createdAt > weekAgo;
+  }).length;
   
   const handleRefresh = async () => {
     await new Promise(resolve => setTimeout(resolve, 1000));
@@ -21,8 +43,8 @@ export function ReportsPage() {
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$2.4M</div>
-            <p className="text-xs text-muted-foreground">+12.5% from last month</p>
+            <div className="text-2xl font-bold">${totalSalesValue.toLocaleString()}</div>
+            <p className="text-xs text-muted-foreground">Closed won deals</p>
           </CardContent>
         </Card>
         
@@ -32,8 +54,8 @@ export function ReportsPage() {
             <BarChart3 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">847</div>
-            <p className="text-xs text-muted-foreground">+8 new this week</p>
+            <div className="text-2xl font-bold">{activeListings}</div>
+            <p className="text-xs text-muted-foreground">In pipeline</p>
           </CardContent>
         </Card>
         
@@ -43,8 +65,8 @@ export function ReportsPage() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">1,247</div>
-            <p className="text-xs text-muted-foreground">+23 new contacts</p>
+            <div className="text-2xl font-bold">{totalClients}</div>
+            <p className="text-xs text-muted-foreground">{newContactsThisWeek} new this week</p>
           </CardContent>
         </Card>
         
@@ -54,8 +76,8 @@ export function ReportsPage() {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$72,000</div>
-            <p className="text-xs text-muted-foreground">+15% from last quarter</p>
+            <div className="text-2xl font-bold">${totalCommission.toLocaleString()}</div>
+            <p className="text-xs text-muted-foreground">From closed deals</p>
           </CardContent>
         </Card>
       </div>
