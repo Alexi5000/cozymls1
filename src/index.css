@@ -131,4 +131,75 @@
   .boardco-nav-item.active {
     @apply bg-orange-600 text-white shadow-lg;
   }
+  
+  /* Mobile-optimized components */
+  .mobile-touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+  
+  .mobile-safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .mobile-safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .mobile-safe-area-left {
+    padding-left: env(safe-area-inset-left);
+  }
+  
+  .mobile-safe-area-right {
+    padding-right: env(safe-area-inset-right);
+  }
+  
+  .mobile-scroll-momentum {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .mobile-no-select {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  .mobile-tap-highlight-none {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Enhanced mobile cards */
+  .mobile-card {
+    @apply cozy-card mobile-tap-highlight-none;
+    @apply active:scale-[0.98] transition-transform duration-150;
+  }
+  
+  /* Mobile navigation improvements */
+  .mobile-nav-safe {
+    @apply mobile-safe-area-bottom;
+  }
+  
+  /* Touch-friendly inputs */
+  .mobile-input {
+    @apply mobile-touch-target text-base; /* Prevents zoom on iOS */
+  }
+  
+  /* Swipe indicators */
+  .swipe-indicator {
+    @apply w-1 h-8 bg-muted-foreground/20 rounded-full;
+    @apply absolute right-2 top-1/2 transform -translate-y-1/2;
+  }
+  
+  /* Mobile-optimized spacing */
+  .mobile-spacing {
+    @apply p-4 space-y-4;
+  }
+  
+  @media (max-width: 640px) {
+    .mobile-spacing {
+      @apply p-3 space-y-3;
+    }
+  }
 }
