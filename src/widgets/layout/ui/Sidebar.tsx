@@ -35,13 +35,26 @@ export function Sidebar() {
   const isCollapsed = isMobile || collapsed;
 
   return (
-    <div className={cn(
+    <>
+      {/* Mobile backdrop overlay */}
+      {isMobile && !collapsed && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={() => setCollapsed(true)}
+          aria-hidden="true"
+        />
+      )}
+      
+      <div className={cn(
       'cozy-sidebar text-white transition-all duration-300 flex flex-col shadow-xl',
-      'md:relative fixed md:translate-x-0 z-50',
-      isMobile ? (collapsed ? '-translate-x-full w-0' : 'translate-x-0 w-64') : (collapsed ? 'w-16' : 'w-64')
+      'md:relative fixed md:translate-x-0 z-50 h-full',
+      isMobile ? (collapsed ? '-translate-x-full w-0' : 'translate-x-0 w-72 mobile-safe-area-left') : (collapsed ? 'w-16' : 'w-64')
     )}>
       {/* Header */}
-      <div className="p-6 border-b border-orange-700/50">
+      <div className={cn(
+        "p-6 border-b border-orange-700/50",
+        isMobile && "mobile-safe-area-top pt-8"
+      )}>
         <div className="flex items-center justify-between">
           {!isCollapsed && (
             <div className="flex items-center gap-3">
@@ -55,7 +68,10 @@ export function Sidebar() {
             variant="ghost"
             size="icon"
             onClick={() => setCollapsed(!collapsed)}
-            className="text-orange-200 hover:text-white hover:bg-orange-700/50 h-8 w-8"
+            className={cn(
+              "text-orange-200 hover:text-white hover:bg-orange-700/50 h-8 w-8",
+              isMobile && "mobile-touch-target"
+            )}
           >
             {collapsed ? <Menu className="h-4 w-4" /> : <X className="h-4 w-4" />}
           </Button>
@@ -68,16 +84,17 @@ export function Sidebar() {
           {navigation.map((item) => {
             const isActive = location.pathname === item.href;
             return (
-              <Link
+               <Link
                 key={item.name}
                 to={item.href}
                  className={cn(
-                   'cozy-nav-item',
+                   'cozy-nav-item mobile-tap-highlight-none',
                    isActive && 'active',
-                   isCollapsed && 'justify-center px-3'
+                   isCollapsed && 'justify-center px-3',
+                   isMobile && 'mobile-touch-target py-4'
                  )}
                  onClick={() => isMobile && setCollapsed(true)}
-              >
+               >
                 <item.icon className="h-5 w-5 flex-shrink-0" />
                 {!isCollapsed && <span className="font-medium">{item.name}</span>}
               </Link>
@@ -88,8 +105,14 @@ export function Sidebar() {
       
       {/* User Profile */}
       {!isCollapsed && (
-        <div className="p-4 border-t border-orange-700/50">
-          <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-orange-700/30 cursor-pointer transition-colors">
+        <div className={cn(
+          "p-4 border-t border-orange-700/50",
+          isMobile && "mobile-safe-area-bottom pb-8"
+        )}>
+          <div className={cn(
+            "flex items-center gap-3 p-3 rounded-lg hover:bg-orange-700/30 cursor-pointer transition-colors",
+            isMobile && "mobile-touch-target mobile-tap-highlight-none"
+          )}>
             <div className="w-10 h-10 bg-orange-600 rounded-full flex items-center justify-center">
               <User className="h-5 w-5 text-white" />
             </div>
@@ -101,6 +124,7 @@ export function Sidebar() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

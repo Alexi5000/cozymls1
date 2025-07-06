@@ -28,6 +28,8 @@ export * from './menubar';
 export * from './mobile-card';
 export * from './mobile-drawer';
 export * from './mobile-tab-bar';
+export * from './mobile-optimized-card';
+export * from './mobile-list-item';
 export * from './navigation-menu';
 export * from './pagination';
 export * from './popover';

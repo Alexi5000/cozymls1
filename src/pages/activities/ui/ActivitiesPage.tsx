@@ -3,6 +3,7 @@ import { MobileLayout } from '@/widgets/mobile';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { TouchButton } from '@/shared/ui/touch-button';
 import { Badge } from '@/shared/ui/badge';
+import { MobileListItem } from '@/shared/ui/mobile-list-item';
 import { mockActivities } from '@/entities/activity';
 import { mockContacts } from '@/entities/contact';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
@@ -44,13 +45,37 @@ export function ActivitiesPage() {
         </TouchButton>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3">
         {mockActivities.map((activity) => {
           const contact = mockContacts.find(c => c.id === activity.contactId);
           const Icon = activityIcons[activity.type];
           
+          if (isMobile) {
+            return (
+              <MobileListItem
+                key={activity.id}
+                title={activity.title}
+                subtitle={contact ? `Contact: ${contact.name}` : undefined}
+                description={activity.description}
+                icon={<Icon className="h-5 w-5 text-primary" />}
+                badge={
+                  <div className="flex items-center gap-2">
+                    <Badge className={`text-xs ${typeColors[activity.type]}`}>
+                      {activity.type}
+                    </Badge>
+                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <Clock className="h-3 w-3" />
+                      {activity.dueDate ? new Date(activity.dueDate).toLocaleDateString() : 'No due date'}
+                    </div>
+                  </div>
+                }
+                enableHaptic
+              />
+            );
+          }
+          
           return (
-            <Card key={activity.id} className={isMobile ? "mobile-card" : ""}>
+            <Card key={activity.id}>
               <CardContent className="p-4 md:p-6">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">

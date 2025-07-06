@@ -202,4 +202,61 @@
       @apply p-3 space-y-3;
     }
   }
+
+  /* Enhanced mobile typography */
+  .mobile-title {
+    @apply text-lg font-semibold leading-tight;
+  }
+  
+  .mobile-subtitle {
+    @apply text-sm text-muted-foreground;
+  }
+  
+  .mobile-body {
+    @apply text-sm leading-relaxed;
+  }
+  
+  .mobile-caption {
+    @apply text-xs text-muted-foreground;
+  }
+  
+  /* Mobile-first responsive utilities */
+  .mobile-stack {
+    @apply flex flex-col space-y-2;
+  }
+  
+  .mobile-row {
+    @apply flex items-center justify-between;
+  }
+  
+  .mobile-grid-2 {
+    @apply grid grid-cols-2 gap-3;
+  }
+  
+  .mobile-grid-3 {
+    @apply grid grid-cols-3 gap-2;
+  }
+  
+  /* Enhanced mobile interactions */
+  .mobile-press {
+    @apply active:scale-[0.98] transition-transform duration-100;
+  }
+  
+  .mobile-bounce {
+    @apply active:animate-pulse;
+  }
+  
+  /* Mobile-optimized shadows */
+  .mobile-shadow {
+    @apply shadow-sm;
+  }
+  
+  .mobile-shadow-lg {
+    @apply shadow-md;
+  }
+  
+  /* Better mobile focus states */
+  .mobile-focus {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+  }
 }

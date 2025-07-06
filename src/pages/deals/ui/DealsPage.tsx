@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
 import { Progress } from '@/shared/ui/progress';
+import { MobileOptimizedCard } from '@/shared/ui/mobile-optimized-card';
 import { mockDeals } from '@/entities/deal';
 import { mockContacts } from '@/entities/contact';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
@@ -38,9 +39,14 @@ export function DealsPage() {
         </Button>
       </div>
 
-      <div className={`grid gap-6 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
-        {mockDeals.map((deal) => (
-          <Card key={deal.id} className="hover:shadow-lg transition-shadow">
+      <div className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
+        {mockDeals.map((deal) => {
+          const DealCard = isMobile ? MobileOptimizedCard : Card;
+          return (
+          <DealCard key={deal.id} 
+            className={isMobile ? "" : "hover:shadow-lg transition-shadow"}
+            {...(isMobile && { enableHaptic: true })}
+          >
             <CardHeader>
               <div className="flex justify-between items-start">
                 <div className="flex-1">
@@ -75,8 +81,8 @@ export function DealsPage() {
                 </div>
               </div>
             </CardContent>
-          </Card>
-        ))}
+          </DealCard>
+        )})}
       </div>
     </div>
   );

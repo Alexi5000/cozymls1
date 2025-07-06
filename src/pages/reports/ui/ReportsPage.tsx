@@ -35,49 +35,49 @@ export function ReportsPage() {
 
   const content = (
     <div className="space-y-6">
-      <div className={`grid gap-6 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4'}`}>
+      <div className={`grid gap-3 ${isMobile ? 'grid-cols-1' : 'md:grid-cols-2 lg:grid-cols-4'}`}>
         {/* Sample Report Cards */}
-        <Card>
+        <Card className={isMobile ? "mobile-shadow" : ""}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Sales Performance</CardTitle>
+            <CardTitle className={isMobile ? "mobile-subtitle" : "text-sm font-medium"}>Sales Performance</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${totalSalesValue.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">Closed won deals</p>
+            <div className={isMobile ? "mobile-title" : "text-2xl font-bold"}>${totalSalesValue.toLocaleString()}</div>
+            <p className={isMobile ? "mobile-caption" : "text-xs text-muted-foreground"}>Closed won deals</p>
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className={isMobile ? "mobile-shadow" : ""}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Listings</CardTitle>
+            <CardTitle className={isMobile ? "mobile-subtitle" : "text-sm font-medium"}>Active Listings</CardTitle>
             <BarChart3 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{activeListings}</div>
-            <p className="text-xs text-muted-foreground">In pipeline</p>
+            <div className={isMobile ? "mobile-title" : "text-2xl font-bold"}>{activeListings}</div>
+            <p className={isMobile ? "mobile-caption" : "text-xs text-muted-foreground"}>In pipeline</p>
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className={isMobile ? "mobile-shadow" : ""}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Clients</CardTitle>
+            <CardTitle className={isMobile ? "mobile-subtitle" : "text-sm font-medium"}>Total Clients</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalClients}</div>
-            <p className="text-xs text-muted-foreground">{newContactsThisWeek} new this week</p>
+            <div className={isMobile ? "mobile-title" : "text-2xl font-bold"}>{totalClients}</div>
+            <p className={isMobile ? "mobile-caption" : "text-xs text-muted-foreground"}>{newContactsThisWeek} new this week</p>
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className={isMobile ? "mobile-shadow" : ""}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Commission</CardTitle>
+            <CardTitle className={isMobile ? "mobile-subtitle" : "text-sm font-medium"}>Commission</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${totalCommission.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">From closed deals</p>
+            <div className={isMobile ? "mobile-title" : "text-2xl font-bold"}>${totalCommission.toLocaleString()}</div>
+            <p className={isMobile ? "mobile-caption" : "text-xs text-muted-foreground"}>From closed deals</p>
           </CardContent>
         </Card>
       </div>
