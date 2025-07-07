@@ -11,7 +11,7 @@ export interface Property {
   squareFeet: number;
   lotSize: number;
   yearBuilt: number;
-  propertyType: 'single-family' | 'condo' | 'townhouse' | 'multi-family' | 'land' | 'commercial';
+  propertyType: 'house' | 'apartment' | 'townhouse' | 'duplex' | 'land' | 'commercial';
   status: 'active' | 'pending' | 'sold' | 'off-market';
   listingDate: Date;
   daysOnMarket: number;

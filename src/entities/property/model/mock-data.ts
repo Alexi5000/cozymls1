@@ -1,62 +1,63 @@
 import { Property } from './types';
 
 const agents = [
-  { id: 'user1', name: 'Sarah Thompson', phone: '(555) 123-4567', email: 'sarah@cozymls.com' },
-  { id: 'user2', name: 'Mike Johnson', phone: '(555) 234-5678', email: 'mike@cozymls.com' },
-  { id: 'user3', name: 'Emily Davis', phone: '(555) 345-6789', email: 'emily@cozymls.com' },
-  { id: 'user4', name: 'David Rodriguez', phone: '(555) 456-7890', email: 'david@cozymls.com' },
-  { id: 'user5', name: 'Lisa Chen', phone: '(555) 567-8901', email: 'lisa@cozymls.com' },
-  { id: 'user6', name: 'James Wilson', phone: '(555) 678-9012', email: 'james@cozymls.com' },
-  { id: 'user7', name: 'Amanda Foster', phone: '(555) 789-0123', email: 'amanda@cozymls.com' },
-  { id: 'user8', name: 'Robert Kim', phone: '(555) 890-1234', email: 'robert@cozymls.com' },
-  { id: 'user9', name: 'Jennifer Martinez', phone: '(555) 901-2345', email: 'jennifer@cozymls.com' },
-  { id: 'user10', name: 'Michael Brown', phone: '(555) 012-3456', email: 'michael@cozymls.com' }
+  { id: 'user1', name: 'Siobhan O\'Sullivan', phone: '+353 1 456 7890', email: 'siobhan@dublinestate.ie' },
+  { id: 'user2', name: 'Cian Murphy', phone: '+353 87 123 4567', email: 'cian@dublinestate.ie' },
+  { id: 'user3', name: 'Aoife Kelly', phone: '+353 1 234 5678', email: 'aoife@dublinestate.ie' },
+  { id: 'user4', name: 'Padraig O\'Brien', phone: '+353 86 567 8901', email: 'padraig@dublinestate.ie' },
+  { id: 'user5', name: 'Niamh Ryan', phone: '+353 1 345 6789', email: 'niamh@dublinestate.ie' },
+  { id: 'user6', name: 'Eoin Walsh', phone: '+353 85 234 5678', email: 'eoin@dublinestate.ie' },
+  { id: 'user7', name: 'Caoimhe Byrne', phone: '+353 1 567 8901', email: 'caoimhe@dublinestate.ie' },
+  { id: 'user8', name: 'Ruairi McCarthy', phone: '+353 83 678 9012', email: 'ruairi@dublinestate.ie' },
+  { id: 'user9', name: 'Grainne Fitzgerald', phone: '+353 1 678 9012', email: 'grainne@dublinestate.ie' },
+  { id: 'user10', name: 'Oisin Donovan', phone: '+353 87 789 0123', email: 'oisin@dublinestate.ie' }
 ];
 
-const cities = [
-  { name: 'San Francisco', state: 'CA', zip: '94102' },
-  { name: 'Oakland', state: 'CA', zip: '94610' },
-  { name: 'Berkeley', state: 'CA', zip: '94704' },
-  { name: 'Palo Alto', state: 'CA', zip: '94301' },
-  { name: 'San Jose', state: 'CA', zip: '95110' },
-  { name: 'Mountain View', state: 'CA', zip: '94041' },
-  { name: 'Sunnyvale', state: 'CA', zip: '94085' },
-  { name: 'Fremont', state: 'CA', zip: '94536' },
-  { name: 'Hayward', state: 'CA', zip: '94541' },
-  { name: 'Union City', state: 'CA', zip: '94587' },
-  { name: 'Redwood City', state: 'CA', zip: '94061' },
-  { name: 'Daly City', state: 'CA', zip: '94014' }
+const dublinAreas = [
+  { name: 'Temple Bar', county: 'Dublin', eircode: 'D02' },
+  { name: 'Ballsbridge', county: 'Dublin', eircode: 'D04' },
+  { name: 'Donnybrook', county: 'Dublin', eircode: 'D04' },
+  { name: 'Ranelagh', county: 'Dublin', eircode: 'D06' },
+  { name: 'Rathmines', county: 'Dublin', eircode: 'D06' },
+  { name: 'Sandymount', county: 'Dublin', eircode: 'D04' },
+  { name: 'Rathgar', county: 'Dublin', eircode: 'D06' },
+  { name: 'Dalkey', county: 'Dublin', eircode: 'A96' },
+  { name: 'Dun Laoghaire', county: 'Dublin', eircode: 'A96' },
+  { name: 'Blackrock', county: 'Dublin', eircode: 'A94' },
+  { name: 'Stillorgan', county: 'Dublin', eircode: 'A94' },
+  { name: 'Dundrum', county: 'Dublin', eircode: 'D14' }
 ];
 
-const streets = [
-  'Oak Street', 'Pine Avenue', 'Elm Drive', 'Maple Lane', 'Cedar Boulevard',
-  'Birch Way', 'Willow Court', 'Ash Street', 'Poplar Avenue', 'Spruce Drive',
-  'Walnut Lane', 'Cherry Boulevard', 'Magnolia Way', 'Hickory Court', 'Cypress Street',
-  'Redwood Avenue', 'Sequoia Drive', 'Laurel Lane', 'Jasmine Boulevard', 'Rose Way'
+const dublinStreets = [
+  'Grafton Street', 'O\'Connell Street', 'Nassau Street', 'Dame Street', 'Pearse Street',
+  'Baggot Street', 'Leeson Street', 'Fitzwilliam Square', 'Merrion Square', 'Stephen\'s Green',
+  'Harcourt Street', 'Dawson Street', 'Kildare Street', 'Molesworth Street', 'Burlington Road',
+  'Morehampton Road', 'Appian Way', 'Lesson Park', 'Pembroke Road', 'Clyde Road'
 ];
 
-const propertyTypes = ['single-family', 'condo', 'townhouse', 'multi-family'] as const;
+const propertyTypes = ['house', 'apartment', 'townhouse', 'duplex'] as const;
 const statuses = ['active', 'pending', 'sold'] as const;
 
-const features = [
-  'Hardwood Floors', 'Updated Kitchen', 'Garden', 'Parking', 'Bay Views', 'Modern Kitchen',
-  'In-unit Laundry', 'Gym Access', 'Large Backyard', 'Updated Bathrooms', 'Near Schools',
-  'Deck', 'Pool', 'Fireplace', 'Walk-in Closet', 'Granite Counters', 'Stainless Appliances',
-  'Central Air', 'High Ceilings', 'Balcony', 'Storage', 'Pet Friendly', 'Elevator',
-  'Security System', 'Solar Panels', 'Smart Home', 'Wine Cellar', 'Home Office'
+const dublinFeatures = [
+  'Period Features', 'Original Sash Windows', 'Private Garden', 'Off-Street Parking', 'Dublin Bay Views', 'Modern Kitchen',
+  'Utility Room', 'DART Access', 'Rear Garden', 'Renovated Bathrooms', 'Near Schools',
+  'Patio', 'Fireplace', 'Built-in Wardrobes', 'Granite Worktops', 'Integrated Appliances',
+  'Central Heating', 'High Ceilings', 'Balcony', 'Storage Room', 'Pet Friendly', 'Lift Access',
+  'Alarm System', 'BER Rating A', 'Smart Home', 'Wine Cellar', 'Home Office',
+  'Victorian Features', 'Georgian Character', 'Sea Views', 'City Centre Location'
 ];
 
-const descriptions = [
-  'Beautiful Victorian home with original hardwood floors and modern updates.',
-  'Modern condo with stunning bay views and premium finishes throughout.',
-  'Spacious family home with large backyard and updated amenities.',
-  'Charming craftsman style home with original details and character.',
-  'Contemporary townhouse with open floor plan and designer finishes.',
-  'Elegant colonial home with mature landscaping and premium location.',
-  'Luxurious penthouse with panoramic city views and top-tier amenities.',
-  'Cozy cottage style home perfect for first-time buyers.',
-  'Investment opportunity with multiple units and stable rental income.',
-  'Historic property with period features and modern conveniences.'
+const dublinDescriptions = [
+  'Stunning Victorian period home with original features and contemporary updates throughout.',
+  'Modern apartment with breathtaking Dublin Bay views and premium finishes.',
+  'Spacious family home with private rear garden and excellent transport links.',
+  'Charming Georgian terrace with original period details and character features.',
+  'Contemporary townhouse with open-plan living and designer kitchen.',
+  'Elegant Edwardian home with mature gardens in sought-after location.',
+  'Luxurious penthouse with panoramic city views and access to Grand Canal.',
+  'Charming cottage-style home perfect for first-time buyers near DART.',
+  'Excellent investment opportunity with strong rental yield potential.',
+  'Historic property with period charm and all modern conveniences.'
 ];
 
 // Unique Unsplash photo IDs for variety
@@ -109,46 +110,49 @@ const getRandomElements = <T>(array: T[], count: number): T[] => {
 };
 
 export const mockProperties: Property[] = Array.from({ length: 100 }, (_, index) => {
-  const city = getRandomElement(cities);
+  const area = getRandomElement(dublinAreas);
   const agent = getRandomElement(agents);
   const propertyType = getRandomElement(propertyTypes);
   const status = getRandomElement(statuses);
-  const houseNumber = Math.floor(Math.random() * 9999) + 1;
-  const street = getRandomElement(streets);
+  const houseNumber = Math.floor(Math.random() * 199) + 1;
+  const street = getRandomElement(dublinStreets);
   const address = `${houseNumber} ${street}`;
   
-  // Price ranges based on property type
+  // Price ranges based on property type (in Euros)
   const priceRanges = {
-    'single-family': [800000, 2500000],
-    'condo': [500000, 1500000],
-    'townhouse': [600000, 1800000],
-    'multi-family': [1000000, 3500000]
+    'house': [450000, 1800000],
+    'apartment': [280000, 850000],
+    'townhouse': [380000, 1200000],
+    'duplex': [550000, 2200000]
   };
   
   const [minPrice, maxPrice] = priceRanges[propertyType];
   const price = Math.floor(Math.random() * (maxPrice - minPrice) + minPrice);
   
   // Bedrooms and bathrooms based on property type
-  const bedroomOptions = propertyType === 'condo' ? [1, 2, 3] : [2, 3, 4, 5, 6];
+  const bedroomOptions = propertyType === 'apartment' ? [1, 2, 3] : [2, 3, 4, 5, 6];
   const bedrooms = getRandomElement(bedroomOptions);
   const bathrooms = Math.max(1, bedrooms - Math.floor(Math.random() * 2));
   
-  // Square footage
-  const sqftBase = propertyType === 'condo' ? 800 : 1200;
-  const squareFeet = sqftBase + (bedrooms * 400) + Math.floor(Math.random() * 800);
+  // Square meters (instead of square feet)
+  const sqmBase = propertyType === 'apartment' ? 55 : 85;
+  const squareMeters = sqmBase + (bedrooms * 25) + Math.floor(Math.random() * 40);
   
-  // Lot size (condos have smaller lots)
-  const lotSize = propertyType === 'condo' ? 
-    0.05 + Math.random() * 0.1 : 
-    0.1 + Math.random() * 0.4;
+  // Convert to square feet for compatibility
+  const squareFeet = Math.round(squareMeters * 10.764);
   
-  // Year built
-  const yearBuilt = 1960 + Math.floor(Math.random() * 64); // 1960-2024
+  // Lot size in acres (Irish properties often have smaller gardens)
+  const lotSize = propertyType === 'apartment' ? 
+    0.02 + Math.random() * 0.05 : 
+    0.05 + Math.random() * 0.25;
+  
+  // Year built (Dublin has many period properties)
+  const yearBuilt = 1850 + Math.floor(Math.random() * 174); // 1850-2024
   
   // Days on market
   const daysOnMarket = status === 'sold' ? 
-    Math.floor(Math.random() * 60) + 30 : 
-    Math.floor(Math.random() * 120) + 1;
+    Math.floor(Math.random() * 90) + 45 : 
+    Math.floor(Math.random() * 150) + 1;
   
   // Listing date
   const listingDate = new Date();
@@ -163,11 +167,11 @@ export const mockProperties: Property[] = Array.from({ length: 100 }, (_, index)
   
   return {
     id: `${index + 1}`,
-    mlsId: `MLS${String(index + 1).padStart(3, '0')}`,
+    mlsId: `DUB${String(index + 1).padStart(3, '0')}`,
     address,
-    city: city.name,
-    state: city.state,
-    zipCode: city.zip,
+    city: area.name,
+    state: area.county,
+    zipCode: area.eircode,
     price,
     bedrooms,
     bathrooms,
@@ -178,8 +182,8 @@ export const mockProperties: Property[] = Array.from({ length: 100 }, (_, index)
     status,
     listingDate,
     daysOnMarket,
-    description: getRandomElement(descriptions),
-    features: getRandomElements(features, 3 + Math.floor(Math.random() * 5)),
+    description: getRandomElement(dublinDescriptions),
+    features: getRandomElements(dublinFeatures, 3 + Math.floor(Math.random() * 5)),
     images: [`https://images.unsplash.com/${photoIds[index]}`],
     agent,
     createdAt,
