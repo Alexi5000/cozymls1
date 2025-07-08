@@ -388,7 +388,7 @@
   
   /* Enhanced mobile cards */
   .mobile-card {
-    @apply cozy-card mobile-tap-highlight-none;
+    @apply luxury-card mobile-tap-highlight-none;
     @apply active:scale-[0.98] transition-transform duration-150;
   }
   
