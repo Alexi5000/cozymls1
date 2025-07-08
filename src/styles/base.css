@@ -49,10 +49,12 @@
     /* Divine Shadows & Effects */
     --shadow-divine: 0 20px 60px -12px hsl(var(--primary) / 0.4);
     --shadow-glow: 0 0 60px hsl(var(--primary-glow) / 0.6);
-    --shadow-glass: 0 8px 32px rgba(25, 95, 53, 0.12);
+    --shadow-glass: 0 8px 32px hsl(var(--primary) / 0.12);
     --shadow-luxury: 0 30px 80px -15px hsl(var(--primary) / 0.3);
     --shadow-floating: 0 15px 35px -5px hsl(var(--primary) / 0.2);
-    --shadow-inner: inset 0 2px 4px rgba(255, 255, 255, 0.1);
+    --shadow-inner: inset 0 2px 4px hsl(var(--foreground) / 0.1);
+    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.3);
+    --shadow-soft: 0 4px 12px hsl(var(--primary) / 0.15);
     
     /* Typography Scale */
     --font-display: 'Playfair Display', serif;

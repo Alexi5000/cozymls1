@@ -87,6 +87,8 @@ export default {
 				'glass': 'var(--shadow-glass)',
 				'luxury': 'var(--shadow-luxury)',
 				'floating': 'var(--shadow-floating)',
+				'elegant': 'var(--shadow-elegant)',
+				'soft': 'var(--shadow-soft)',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
