@@ -1,7 +1,7 @@
 import { Contact } from './types';
 
 const firstNames = [
-  'John', 'Sarah', 'Michael', 'Emily', 'David', 'Jessica', 'Robert', 'Ashley', 'James', 'Amanda',
+  'John', 'Dawn', 'Michael', 'Emily', 'David', 'Jessica', 'Robert', 'Ashley', 'James', 'Amanda',
   'William', 'Jennifer', 'Christopher', 'Lisa', 'Daniel', 'Michelle', 'Matthew', 'Kimberly', 'Andrew', 'Amy',
   'Joshua', 'Angela', 'Anthony', 'Brenda', 'Kevin', 'Emma', 'Brian', 'Olivia', 'Ryan', 'Cynthia',
   'Jacob', 'Marie', 'Nicholas', 'Janet', 'Gary', 'Catherine', 'Steven', 'Frances', 'Kenneth', 'Christine',

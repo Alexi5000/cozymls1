@@ -16,7 +16,7 @@ export const mockActivities: Activity[] = [
     id: '2',
     type: 'meeting',
     title: 'Property showing - Pine Avenue',
-    description: 'Show condo to Sarah Johnson',
+    description: 'Show condo to Dawn Johnson',
     contactId: '2',
     priority: 'medium',
     dueDate: new Date('2024-02-18'),

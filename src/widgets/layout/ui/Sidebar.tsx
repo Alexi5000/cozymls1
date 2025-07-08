@@ -108,7 +108,7 @@ export function Sidebar() {
               <User className="h-5 w-5 text-white" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">Sarah Thompson</p>
+              <p className="text-sm font-medium text-white truncate">Dawn Fintch</p>
               <p className="text-xs text-white/70">Real Estate Agent</p>
             </div>
             <ChevronDown className="h-4 w-4 text-white/70" />

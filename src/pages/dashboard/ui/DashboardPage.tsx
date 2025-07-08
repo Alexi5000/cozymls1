@@ -30,7 +30,7 @@ export function DashboardPage() {
   const content = (
     <div className="space-y-8 md:space-y-12">
       {/* Hero Section */}
-      <HeroSection userName="Sarah" stats={heroStats} />
+      <HeroSection userName="Dawn" stats={heroStats} />
 
       {/* Main Content with Scroll Animation */}
       <div 

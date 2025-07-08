@@ -15,7 +15,7 @@ interface HeroSectionProps {
 }
 
 export function HeroSection({ 
-  userName = "Sarah", 
+  userName = "Dawn", 
   stats 
 }: HeroSectionProps) {
   const [isVisible, setIsVisible] = useState(false);
