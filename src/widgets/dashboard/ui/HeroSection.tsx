@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
 import { TrendingUp, Home, Users, DollarSign, Sparkles, ArrowUpRight } from 'lucide-react';
+import { AddPropertyDialog } from '@/widgets/properties/ui/AddPropertyDialog';
 
 interface HeroSectionProps {
   userName?: string;
@@ -19,6 +21,7 @@ export function HeroSection({
   stats 
 }: HeroSectionProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsVisible(true);
@@ -124,11 +127,17 @@ export function HeroSection({
 
           {/* Quick Actions */}
           <div className="flex flex-col sm:flex-row gap-4 mt-8">
-            <Button className="glass-effect border-white/30 text-white hover:bg-white/20 px-6 py-3">
-              Add New Property
-              <ArrowUpRight className="w-4 h-4 ml-2" />
-            </Button>
-            <Button variant="outline" className="glass-effect border-white/30 text-white hover:bg-white/20 px-6 py-3">
+            <AddPropertyDialog>
+              <Button className="glass-effect border-white/30 text-white hover:bg-white/20 px-6 py-3">
+                Add New Property
+                <ArrowUpRight className="w-4 h-4 ml-2" />
+              </Button>
+            </AddPropertyDialog>
+            <Button 
+              variant="outline" 
+              className="glass-effect border-white/30 text-white hover:bg-white/20 px-6 py-3"
+              onClick={() => navigate('/reports')}
+            >
               View Analytics
             </Button>
           </div>
