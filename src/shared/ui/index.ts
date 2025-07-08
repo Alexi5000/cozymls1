@@ -56,3 +56,5 @@ export * from './toggle';
 export * from './tooltip';
 export * from './touch-button';
 export * from './use-toast';
+export * from './property-skeleton';
+export * from './error-boundary';

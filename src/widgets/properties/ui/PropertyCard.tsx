@@ -1,3 +1,4 @@
+import React, { memo, useCallback, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
@@ -8,21 +9,55 @@ interface PropertyCardProps {
   property: Property;
 }
 
-export function PropertyCard({ property }: PropertyCardProps) {
-  const statusColors = {
+export const PropertyCard = memo(function PropertyCard({ property }: PropertyCardProps) {
+  // Memoized status colors for performance
+  const statusColors = useMemo(() => ({
     active: 'bg-emerald-500/20 text-emerald-700 border-emerald-500/30',
     pending: 'bg-amber-500/20 text-amber-700 border-amber-500/30',
     sold: 'bg-blue-500/20 text-blue-700 border-blue-500/30',
     'off-market': 'bg-muted text-muted-foreground border-border',
-  };
+  }), []);
 
-  const formatPrice = (price: number) => {
+  // Memoized price formatter for performance
+  const formatPrice = useCallback((price: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 0,
     }).format(price);
-  };
+  }, []);
+
+  // Memoized property values
+  const formattedPrice = useMemo(() => formatPrice(property.price), [formatPrice, property.price]);
+  const agentInitials = useMemo(() => 
+    property.agent.name.split(' ').map(n => n[0]).join(''), 
+    [property.agent.name]
+  );
+  const fullAddress = useMemo(() => 
+    `${property.city}, ${property.state} ${property.zipCode}`,
+    [property.city, property.state, property.zipCode]
+  );
+
+  // Event handlers with useCallback for performance
+  const handleFavorite = useCallback(() => {
+    console.log('Favorite:', property.id);
+  }, [property.id]);
+
+  const handleShare = useCallback(() => {
+    console.log('Share:', property.id);
+  }, [property.id]);
+
+  const handleView = useCallback(() => {
+    console.log('View:', property.id);
+  }, [property.id]);
+
+  const handleCall = useCallback(() => {
+    console.log('Call:', property.agent.name);
+  }, [property.agent.name]);
+
+  const handleEmail = useCallback(() => {
+    console.log('Email:', property.agent.name);
+  }, [property.agent.name]);
 
   return (
     <Card className="property-card hover-lift group animate-scale-in overflow-hidden">
@@ -51,10 +86,10 @@ export function PropertyCard({ property }: PropertyCardProps) {
         
         {/* Action Buttons Overlay */}
         <div className="absolute top-3 left-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-          <Button size="sm" variant="glass" className="w-8 h-8 p-0 rounded-full">
+          <Button size="sm" variant="glass" className="w-8 h-8 p-0 rounded-full" onClick={handleFavorite}>
             <Heart className="w-4 h-4" />
           </Button>
-          <Button size="sm" variant="glass" className="w-8 h-8 p-0 rounded-full">
+          <Button size="sm" variant="glass" className="w-8 h-8 p-0 rounded-full" onClick={handleShare}>
             <Share2 className="w-4 h-4" />
           </Button>
         </div>
@@ -63,7 +98,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
         <div className="absolute bottom-3 left-3 right-3">
           <div className="glass-effect rounded-lg p-3 text-white transform translate-y-2 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
             <div className="text-xl font-bold font-display mb-1">
-              {formatPrice(property.price)}
+              {formattedPrice}
             </div>
             <div className="text-sm opacity-90 flex items-center gap-1">
               <MapPin className="w-3 h-3" />
@@ -80,15 +115,15 @@ export function PropertyCard({ property }: PropertyCardProps) {
         <div className="flex justify-between items-start">
           <div className="flex-1">
             <CardTitle className="text-xl font-bold font-display text-foreground group-hover:text-primary transition-colors">
-              {formatPrice(property.price)}
+              {formattedPrice}
             </CardTitle>
             <p className="text-sm text-muted-foreground font-medium flex items-center gap-1 mt-1">
               <MapPin className="w-3 h-3" />
               {property.address}
             </p>
-            <p className="text-xs text-muted-foreground">{property.city}, {property.state} {property.zipCode}</p>
+            <p className="text-xs text-muted-foreground">{fullAddress}</p>
           </div>
-          <Button size="sm" variant="ghost" className="opacity-0 group-hover:opacity-100 transition-opacity hover-glow">
+          <Button size="sm" variant="ghost" className="opacity-0 group-hover:opacity-100 transition-opacity hover-glow" onClick={handleView}>
             <Eye className="w-4 h-4" />
           </Button>
         </div>
@@ -140,17 +175,17 @@ export function PropertyCard({ property }: PropertyCardProps) {
             </div>
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center shadow-elegant">
-                <span className="text-xs font-bold text-white">{property.agent.name.split(' ').map(n => n[0]).join('')}</span>
+                <span className="text-xs font-bold text-white">{agentInitials}</span>
               </div>
             </div>
           </div>
           
           <div className="grid grid-cols-2 gap-2">
-            <Button size="sm" variant="outline" className="hover-glow group">
+            <Button size="sm" variant="outline" className="hover-glow group" onClick={handleCall}>
               <Phone className="h-3 w-3 mr-1 group-hover:animate-bounce" />
               Call
             </Button>
-            <Button size="sm" className="btn-primary group">
+            <Button size="sm" className="btn-primary group" onClick={handleEmail}>
               <Mail className="h-3 w-3 mr-1 group-hover:animate-bounce" />
               Email
             </Button>
@@ -159,4 +194,4 @@ export function PropertyCard({ property }: PropertyCardProps) {
       </CardContent>
     </Card>
   );
-}
+});

@@ -1,3 +1,4 @@
+import React, { memo, useCallback, useMemo } from 'react';
 import { TouchButton } from '@/shared/ui/touch-button';
 import { MobileCard } from '@/shared/ui/mobile-card';
 import { Badge } from '@/shared/ui/badge';
@@ -11,21 +12,34 @@ interface MobilePropertyCardProps {
   onTap?: () => void;
 }
 
-export function MobilePropertyCard({ property, onCall, onEmail, onTap }: MobilePropertyCardProps) {
-  const statusColors = {
-    active: 'bg-green-100 text-green-800',
-    pending: 'bg-yellow-100 text-yellow-800',
-    sold: 'bg-blue-100 text-blue-800',
-    'off-market': 'bg-gray-100 text-gray-800',
-  };
+export const MobilePropertyCard = memo(function MobilePropertyCard({ property, onCall, onEmail, onTap }: MobilePropertyCardProps) {
+  // Memoized status colors using semantic tokens
+  const statusColors = useMemo(() => ({
+    active: 'bg-emerald-500/20 text-emerald-700 border-emerald-500/30',
+    pending: 'bg-amber-500/20 text-amber-700 border-amber-500/30',
+    sold: 'bg-blue-500/20 text-blue-700 border-blue-500/30',
+    'off-market': 'bg-muted text-muted-foreground border-border',
+  }), []);
 
-  const formatPrice = (price: number) => {
+  // Memoized price formatter
+  const formatPrice = useCallback((price: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 0,
     }).format(price);
-  };
+  }, []);
+
+  // Memoized values for performance
+  const formattedPrice = useMemo(() => formatPrice(property.price), [formatPrice, property.price]);
+  const fullAddress = useMemo(() => 
+    `${property.city}, ${property.state} ${property.zipCode}`,
+    [property.city, property.state, property.zipCode]
+  );
+  const formattedSquareFeet = useMemo(() => 
+    property.squareFeet.toLocaleString(),
+    [property.squareFeet]
+  );
 
   return (
     <MobileCard 
@@ -56,13 +70,13 @@ export function MobilePropertyCard({ property, onCall, onEmail, onTap }: MobileP
         {/* Price and Address */}
         <div>
           <div className="text-xl font-bold text-foreground mb-1">
-            {formatPrice(property.price)}
+            {formattedPrice}
           </div>
           <div className="flex items-start gap-1 text-sm text-muted-foreground">
             <MapPin className="h-3 w-3 mt-0.5 flex-shrink-0" />
             <div>
               <div>{property.address}</div>
-              <div>{property.city}, {property.state} {property.zipCode}</div>
+              <div>{fullAddress}</div>
             </div>
           </div>
         </div>
@@ -81,7 +95,7 @@ export function MobilePropertyCard({ property, onCall, onEmail, onTap }: MobileP
           </div>
           <div className="flex items-center gap-1 text-sm">
             <Square className="h-4 w-4 text-muted-foreground" />
-            <span className="font-medium">{property.squareFeet.toLocaleString()}</span>
+            <span className="font-medium">{formattedSquareFeet}</span>
             <span className="text-muted-foreground">sqft</span>
           </div>
         </div>
@@ -114,4 +128,4 @@ export function MobilePropertyCard({ property, onCall, onEmail, onTap }: MobileP
       </div>
     </MobileCard>
   );
-}
+});
