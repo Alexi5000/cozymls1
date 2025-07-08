@@ -1,6 +1,18 @@
-/* CozyMLS Mobile Optimizations - Touch, Responsive, Safe Areas */
+/* CozyMLS Mobile Optimizations - Divine Glass Morphic Touch Experience */
 
 @layer components {
+  /* Mobile-specific divine glass effects */
+  .mobile-glass {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: var(--transition-glass);
+  }
+
+  .mobile-glass:active {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(20px);
+  }
   /* Mobile-optimized base components */
   .mobile-touch-target {
     @apply min-h-[44px] min-w-[44px];
@@ -39,10 +51,11 @@
     -webkit-tap-highlight-color: transparent;
   }
   
-  /* Enhanced mobile cards */
+  /* Enhanced mobile cards with divine glass */
   .mobile-card {
-    @apply luxury-card mobile-tap-highlight-none;
+    @apply luxury-card mobile-tap-highlight-none mobile-glass;
     @apply active:scale-[0.98] transition-transform duration-150;
+    @apply hover:shadow-glow hover:bg-white/15;
   }
   
   /* Mobile navigation improvements */

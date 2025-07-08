@@ -1,0 +1,60 @@
+/* CozyMLS Divine Transitions & Interactions */
+
+@layer utilities {
+  /* Smooth Transitions */
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+  
+  .transition-divine {
+    transition: var(--transition-divine);
+  }
+  
+  .transition-glass {
+    transition: var(--transition-glass);
+  }
+  
+  .transition-bounce {
+    transition: var(--transition-bounce);
+  }
+
+  /* Hover Effects */
+  .hover-lift {
+    transition: var(--transition-smooth);
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-luxury);
+  }
+  
+  .hover-glow {
+    transition: var(--transition-smooth);
+  }
+  
+  .hover-glow:hover {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .hover-scale {
+    transition: var(--transition-smooth);
+  }
+  
+  .hover-scale:hover {
+    transform: scale(1.05);
+  }
+
+  /* Interactive States */
+  .interactive-card {
+    transition: var(--transition-divine);
+  }
+  
+  .interactive-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: var(--shadow-divine);
+  }
+  
+  .interactive-card:active {
+    transform: translateY(-2px) scale(1.01);
+  }
+}
