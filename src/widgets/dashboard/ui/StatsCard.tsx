@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
+import { GlassCard } from '@/shared/ui/glass-card';
 import { LucideIcon } from 'lucide-react';
 
 interface StatsCardProps {
@@ -17,25 +17,29 @@ export function StatsCard({ title, value, change, icon: Icon, trend = 'neutral' 
   };
 
   return (
-    <Card className="stats-card hover-lift group animate-scale-in">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 md:pb-3 p-3 md:p-6">
-        <CardTitle className="text-xs md:text-sm font-semibold text-muted-foreground uppercase tracking-wide leading-tight">
-          {title}
-        </CardTitle>
-        <div className="w-8 h-8 md:w-12 md:h-12 bg-gradient-primary rounded-lg md:rounded-xl flex items-center justify-center shadow-elegant flex-shrink-0 group-hover:animate-glow">
-          <Icon className="h-4 w-4 md:h-6 md:w-6 text-white" />
+    <GlassCard 
+      variant="divine" 
+      glow={true}
+      className="group hover:scale-105 transition-all duration-700 animate-scale-in"
+    >
+      <div className="flex flex-row items-center justify-between p-4 md:p-6">
+        <div className="flex-1">
+          <div className="text-xs md:text-sm font-bold text-muted-foreground/80 uppercase tracking-wider mb-2 md:mb-3">
+            {title}
+          </div>
+          <div className="text-2xl md:text-4xl font-bold font-display text-foreground mb-1 md:mb-2 bg-gradient-divine bg-clip-text text-transparent">
+            {value}
+          </div>
+          {change && (
+            <p className={`text-xs md:text-sm font-semibold ${trendColor[trend]} leading-tight opacity-90`}>
+              {change}
+            </p>
+          )}
         </div>
-      </CardHeader>
-      <CardContent className="pt-0 p-3 md:p-6 relative z-10">
-        <div className="text-xl md:text-3xl font-bold font-display text-foreground mb-1 md:mb-2">
-          {value}
+        <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-divine rounded-2xl flex items-center justify-center shadow-divine flex-shrink-0 group-hover:animate-divine-glow transition-all duration-700">
+          <Icon className="h-6 w-6 md:h-8 md:w-8 text-white" />
         </div>
-        {change && (
-          <p className={`text-xs md:text-sm font-medium ${trendColor[trend]} leading-tight`}>
-            {change}
-          </p>
-        )}
-      </CardContent>
-    </Card>
+      </div>
+    </GlassCard>
   );
 }

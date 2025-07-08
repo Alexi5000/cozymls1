@@ -1,18 +1,40 @@
 /* CozyMLS Component Styles - Cards, Navigation, Buttons, Layout */
 
 @layer components {
-  /* Premium Card Styles */
+  /* Divine Glass Morphism Cards */
   .luxury-card {
     background: var(--gradient-card);
-    border: 1px solid hsl(var(--border));
-    border-radius: calc(var(--radius) + 4px);
-    box-shadow: var(--shadow-elegant);
-    transition: var(--transition-smooth);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: calc(var(--radius) + 8px);
+    box-shadow: var(--shadow-glass);
+    transition: var(--transition-divine);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .luxury-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-mesh);
+    opacity: 0.05;
+    pointer-events: none;
+    transition: var(--transition-divine);
   }
 
   .luxury-card:hover {
-    box-shadow: var(--shadow-luxury);
-    transform: translateY(-2px);
+    box-shadow: var(--shadow-divine);
+    transform: translateY(-6px) scale(1.02);
+    backdrop-filter: blur(24px);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .luxury-card:hover::before {
+    opacity: 0.1;
   }
 
   .property-card {
