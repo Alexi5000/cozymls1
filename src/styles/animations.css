@@ -76,7 +76,15 @@
   }
 
   .animate-glow {
-    animation: glow 2s ease-in-out infinite;
+    animation: divine-glow 2s ease-in-out infinite;
+  }
+
+  .animate-divine-glow {
+    animation: var(--animation-divine-glow);
+  }
+
+  .animate-breathe {
+    animation: var(--animation-breathe);
   }
 
   .animate-shimmer {
