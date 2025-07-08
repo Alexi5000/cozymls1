@@ -184,7 +184,7 @@ export const mockProperties: Property[] = Array.from({ length: 100 }, (_, index)
     daysOnMarket,
     description: getRandomElement(dublinDescriptions),
     features: getRandomElements(dublinFeatures, 3 + Math.floor(Math.random() * 5)),
-    images: [`https://images.unsplash.com/${photoIds[index]}`],
+    images: [`https://images.unsplash.com/${photoIds[index % photoIds.length]}?w=800&h=600&fit=crop&auto=format&q=80`],
     agent,
     createdAt,
     updatedAt
