@@ -1,12 +1,15 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* CozyMLS design system with warm orange theme */
+/* CozyMLS Enhanced Design System */
 
 @layer base {
   :root {
+    /* Enhanced Color Palette */
     --background: 210 40% 98%;
     --foreground: 220 47% 11%;
 
@@ -18,6 +21,8 @@
 
     --primary: 20 90% 48%;
     --primary-foreground: 210 40% 98%;
+    --primary-glow: 20 95% 58%;
+    --primary-dark: 20 85% 38%;
 
     --secondary: 210 40% 96%;
     --secondary-foreground: 215 25% 27%;
@@ -36,6 +41,27 @@
     --ring: 20 90% 48%;
 
     --radius: 0.75rem;
+
+    /* Enhanced Design Tokens */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-warm: linear-gradient(135deg, hsl(20 90% 48%) 0%, hsl(25 95% 58%) 50%, hsl(30 90% 65%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted)));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(210 20% 99%) 100%);
+    
+    /* Elegant Shadows */
+    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.3);
+    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.4);
+    --shadow-soft: 0 4px 20px -4px hsl(220 47% 11% / 0.1);
+    --shadow-luxury: 0 25px 50px -12px hsl(var(--primary) / 0.25);
+    
+    /* Typography Scale */
+    --font-display: 'Playfair Display', serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+    
+    /* Spacing & Animation */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --animation-float: float 3s ease-in-out infinite;
 
     --sidebar-background: 20 89% 40%;
     --sidebar-foreground: 48 96% 89%;
@@ -93,43 +119,233 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Typography Classes */
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
+
+  /* Animation Keyframes */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes glow {
+    0%, 100% { box-shadow: var(--shadow-elegant); }
+    50% { box-shadow: var(--shadow-glow); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  @keyframes slide-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
 }
 
-/* CozyMLS component styles */
+/* CozyMLS Enhanced Components */
 @layer components {
-  .cozy-card {
-    @apply bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200;
-  }
-  
-  .cozy-sidebar {
-    @apply bg-gradient-to-b from-orange-900 to-orange-800;
-  }
-  
-  .cozy-nav-item {
-    @apply flex items-center gap-3 px-4 py-3 text-orange-100 hover:text-white hover:bg-orange-700/50 rounded-lg transition-all duration-200;
-  }
-  
-  .cozy-nav-item.active {
-    @apply bg-orange-600 text-white shadow-lg;
+  /* Premium Card Styles */
+  .luxury-card {
+    background: var(--gradient-card);
+    border: 1px solid hsl(var(--border));
+    border-radius: calc(var(--radius) + 4px);
+    box-shadow: var(--shadow-elegant);
+    transition: var(--transition-smooth);
   }
 
-  .boardco-card {
-    @apply bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200;
+  .luxury-card:hover {
+    box-shadow: var(--shadow-luxury);
+    transform: translateY(-2px);
   }
-  
-  .boardco-sidebar {
-    @apply bg-gradient-to-b from-orange-900 to-orange-800;
+
+  .property-card {
+    @apply luxury-card overflow-hidden;
+    position: relative;
   }
-  
-  .boardco-nav-item {
-    @apply flex items-center gap-3 px-4 py-3 text-orange-100 hover:text-white hover:bg-orange-700/50 rounded-lg transition-all duration-200;
+
+  .property-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-warm);
+    opacity: 0;
+    transition: var(--transition-smooth);
   }
-  
-  .boardco-nav-item.active {
-    @apply bg-orange-600 text-white shadow-lg;
+
+  .property-card:hover::before {
+    opacity: 1;
+  }
+
+  /* Stats Card Enhancement */
+  .stats-card {
+    @apply luxury-card relative overflow-hidden;
+    background: var(--gradient-card);
+  }
+
+  .stats-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    background: var(--gradient-primary);
+    opacity: 0.05;
+    border-radius: 50%;
+    transform: translate(30px, -30px);
+  }
+
+  /* Enhanced Navigation */
+  .nav-item {
+    @apply flex items-center gap-3 px-4 py-3 rounded-lg;
+    @apply text-sidebar-foreground/80 hover:text-sidebar-foreground;
+    @apply hover:bg-sidebar-accent/10 transition-all duration-200;
+    position: relative;
+  }
+
+  .nav-item.active {
+    @apply bg-sidebar-accent text-sidebar-accent-foreground;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 20px;
+    background: var(--gradient-warm);
+    border-radius: 0 2px 2px 0;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    background: var(--gradient-warm);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+    opacity: 0.3;
+  }
+
+  /* Button Enhancements */
+  .btn-primary {
+    background: var(--gradient-primary);
+    border: none;
+    box-shadow: var(--shadow-elegant);
+    transition: var(--transition-bounce);
+  }
+
+  .btn-primary:hover {
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-1px);
+  }
+
+  /* Typography Enhancements */
+  .display-heading {
+    font-family: var(--font-display);
+    background: var(--gradient-warm);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    font-weight: 700;
+  }
+
+  .elegant-text {
+    font-family: var(--font-display);
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+  }
+
+  /* Animation Classes */
+  .animate-float {
+    animation: var(--animation-float);
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite;
+  }
+
+  .animate-shimmer {
+    background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.1), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  .animate-slide-up {
+    animation: slide-in-up 0.6s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.4s ease-out;
+  }
+
+  /* Hover Effects */
+  .hover-lift {
+    transition: var(--transition-smooth);
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-luxury);
+  }
+
+  .hover-glow {
+    transition: var(--transition-smooth);
+  }
+
+  .hover-glow:hover {
+    box-shadow: var(--shadow-glow);
+  }
+
+  /* Glass Effect */
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
   }
   
   /* Mobile-optimized components */

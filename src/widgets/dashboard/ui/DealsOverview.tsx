@@ -11,24 +11,29 @@ export function DealsOverview() {
   const totalDeals = mockDeals.length;
 
   return (
-    <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-lg transition-shadow duration-200">
+    <Card className="luxury-card hover-lift animate-scale-in">
       <CardHeader className="pb-4">
-        <CardTitle className="text-xl font-bold text-gray-900">Deals Pipeline</CardTitle>
+        <CardTitle className="text-xl font-display font-bold text-foreground">Deals Pipeline</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-6">
-          {Object.entries(dealsByStage).map(([stage, count]) => {
+          {Object.entries(dealsByStage).map(([stage, count], index) => {
             const percentage = (count / totalDeals) * 100;
             return (
-              <div key={stage} className="space-y-3">
+              <div key={stage} className="space-y-3 animate-slide-up" style={{ animationDelay: `${index * 100}ms` }}>
                 <div className="flex justify-between items-center">
-                  <span className="capitalize font-semibold text-gray-700">
+                  <span className="capitalize font-semibold text-foreground">
                     {stage.replace('-', ' ')}
                   </span>
-                  <span className="text-sm font-medium text-gray-500">{count} deals</span>
+                  <span className="text-sm font-medium text-muted-foreground">{count} deals</span>
                 </div>
-                <div className="relative">
-                  <Progress value={percentage} className="h-3" />
+                <div className="relative overflow-hidden rounded-full">
+                  <div className="h-3 bg-muted rounded-full">
+                    <div 
+                      className="h-full bg-gradient-primary rounded-full transition-all duration-1000 ease-out animate-shimmer"
+                      style={{ width: `${percentage}%` }}
+                    />
+                  </div>
                 </div>
               </div>
             );
