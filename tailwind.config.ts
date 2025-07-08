@@ -28,9 +28,7 @@ export default {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))',
 					glow: 'hsl(var(--primary-glow))',
-					dark: 'hsl(var(--primary-dark))',
-					ultra: 'hsl(var(--primary-ultra))',
-					deep: 'hsl(var(--primary-deep))'
+					dark: 'hsl(var(--primary-dark))'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
@@ -74,21 +72,14 @@ export default {
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
 				'gradient-warm': 'var(--gradient-warm)',
-				'gradient-divine': 'var(--gradient-divine)',
-				'gradient-sunset': 'var(--gradient-sunset)',
-				'gradient-glass': 'var(--gradient-glass)',
 				'gradient-subtle': 'var(--gradient-subtle)',
 				'gradient-card': 'var(--gradient-card)',
-				'gradient-mesh': 'var(--gradient-mesh)',
 			},
 			boxShadow: {
-				'divine': 'var(--shadow-divine)',
-				'glow': 'var(--shadow-glow)',
-				'glass': 'var(--shadow-glass)',
-				'luxury': 'var(--shadow-luxury)',
-				'floating': 'var(--shadow-floating)',
 				'elegant': 'var(--shadow-elegant)',
+				'glow': 'var(--shadow-glow)',
 				'soft': 'var(--shadow-soft)',
+				'luxury': 'var(--shadow-luxury)',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -116,25 +107,9 @@ export default {
 					'0%, 100%': { transform: 'translateY(0px)' },
 					'50%': { transform: 'translateY(-10px)' }
 				},
-				'divine-glow': {
-					'0%, 100%': { 
-						boxShadow: 'var(--shadow-divine)',
-						filter: 'brightness(1)'
-					},
-					'50%': { 
-						boxShadow: 'var(--shadow-glow)',
-						filter: 'brightness(1.1)'
-					}
-				},
-				'breathe': {
-					'0%, 100%': { 
-						transform: 'scale(1)',
-						opacity: '0.9'
-					},
-					'50%': { 
-						transform: 'scale(1.02)',
-						opacity: '1'
-					}
+				'glow': {
+					'0%, 100%': { boxShadow: 'var(--shadow-elegant)' },
+					'50%': { boxShadow: 'var(--shadow-glow)' }
 				},
 				'shimmer': {
 					'0%': { backgroundPosition: '-200% 0' },
@@ -164,9 +139,8 @@ export default {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'float': 'float 4s ease-in-out infinite',
-				'divine-glow': 'divine-glow 3s ease-in-out infinite',
-				'breathe': 'breathe 4s ease-in-out infinite',
+				'float': 'float 3s ease-in-out infinite',
+				'glow': 'glow 2s ease-in-out infinite',
 				'shimmer': 'shimmer 2s infinite',
 				'slide-up': 'slide-up 0.6s ease-out',
 				'scale-in': 'scale-in 0.4s ease-out'

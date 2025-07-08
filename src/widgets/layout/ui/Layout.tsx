@@ -10,11 +10,11 @@ interface LayoutProps {
 export function Layout({ children, title }: LayoutProps) {
   return (
     <SidebarProvider defaultOpen={true}>
-      <div className="min-h-screen bg-background flex w-full relative overflow-hidden">
+      <div className="min-h-screen bg-gray-50 flex w-full">
         <Sidebar />
         <SidebarInset>
           <Header title={title} />
-          <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-auto bg-gradient-to-br from-background via-background to-primary/5">
+          <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-auto">
             <div className="max-w-7xl mx-auto">
               {children}
             </div>
