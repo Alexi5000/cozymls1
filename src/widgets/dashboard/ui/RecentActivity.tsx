@@ -2,7 +2,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { mockActivities } from '@/entities/activity';
-import { Calendar, Phone, Mail, Users, Clock, ArrowRight } from 'lucide-react';
+import { mockProperties } from '@/entities/property';
+import { PropertyCard } from '@/widgets/properties/ui/PropertyCard';
+import { Calendar, Phone, Mail, Users, Clock, ArrowRight, Home } from 'lucide-react';
 
 const activityIcons = {
   call: Phone,
@@ -28,6 +30,7 @@ const typeColors = {
 
 export function RecentActivity() {
   const recentActivities = mockActivities.slice(0, 6);
+  const featuredProperties = mockProperties.slice(0, 2);
 
   return (
     <Card className="luxury-card hover-lift animate-scale-in">
@@ -76,6 +79,32 @@ export function RecentActivity() {
               </div>
             );
           })}
+        </div>
+        
+        {/* Featured Properties Section */}
+        <div className="mt-8 pt-6 border-t border-border/50">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-display font-bold text-foreground flex items-center gap-2">
+              <Home className="w-5 h-5 text-primary" />
+              Featured Properties
+            </h3>
+            <Button variant="ghost" size="sm" className="text-primary hover:text-primary-glow">
+              View All
+              <ArrowRight className="w-4 h-4 ml-1" />
+            </Button>
+          </div>
+          
+          <div className="grid gap-4 md:grid-cols-2">
+            {featuredProperties.map((property, index) => (
+              <div 
+                key={property.id}
+                className="animate-slide-up"
+                style={{ animationDelay: `${index * 200}ms` }}
+              >
+                <PropertyCard property={property} />
+              </div>
+            ))}
+          </div>
         </div>
         
         {/* Quick Action Bar */}
