@@ -1,9 +1,10 @@
-import React, { memo, useCallback, useMemo } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { TouchButton } from '@/shared/ui/touch-button';
 import { MobileCard } from '@/shared/ui/mobile-card';
 import { Badge } from '@/shared/ui/badge';
+import { Skeleton } from '@/shared/ui/skeleton';
 import { Property } from '@/entities/property';
-import { Bed, Bath, Square, Phone, Mail, MapPin } from 'lucide-react';
+import { Bed, Bath, Square, Phone, Mail, MapPin, ImageOff } from 'lucide-react';
 
 interface MobilePropertyCardProps {
   property: Property;
@@ -13,6 +14,9 @@ interface MobilePropertyCardProps {
 }
 
 export const MobilePropertyCard = memo(function MobilePropertyCard({ property, onCall, onEmail, onTap }: MobilePropertyCardProps) {
+  const [imageLoading, setImageLoading] = useState(true);
+  const [imageError, setImageError] = useState(false);
+
   // Memoized status colors using semantic tokens
   const statusColors = useMemo(() => ({
     active: 'bg-emerald-500/20 text-emerald-700 border-emerald-500/30',
@@ -41,6 +45,17 @@ export const MobilePropertyCard = memo(function MobilePropertyCard({ property, o
     [property.squareFeet]
   );
 
+  // Image handlers
+  const handleImageLoad = useCallback(() => {
+    setImageLoading(false);
+    setImageError(false);
+  }, []);
+
+  const handleImageError = useCallback(() => {
+    setImageLoading(false);
+    setImageError(true);
+  }, []);
+
   return (
     <MobileCard 
       className="overflow-hidden"
@@ -49,15 +64,27 @@ export const MobilePropertyCard = memo(function MobilePropertyCard({ property, o
     >
       {/* Image with Status Badge */}
       <div className="aspect-[4/3] bg-muted relative">
-        {property.images.length > 0 ? (
+        {/* Loading skeleton */}
+        {imageLoading && (
+          <Skeleton className="absolute inset-0 w-full h-full" />
+        )}
+        
+        {property.images.length > 0 && !imageError ? (
           <img
             src={property.images[0]}
             alt={property.address}
-            className="w-full h-full object-cover"
+            className={`w-full h-full object-cover transition-opacity duration-300 ${
+              imageLoading ? 'opacity-0' : 'opacity-100'
+            }`}
+            onLoad={handleImageLoad}
+            onError={handleImageError}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-            No Image Available
+          <div className="w-full h-full flex items-center justify-center text-muted-foreground bg-gradient-subtle">
+            <div className="text-center">
+              <ImageOff className="h-8 w-8 mb-2 text-muted-foreground" />
+              <p className="text-xs">{imageError ? 'Failed to load' : 'No Image'}</p>
+            </div>
           </div>
         )}
         <Badge className={`absolute top-2 right-2 text-xs ${statusColors[property.status]}`}>
