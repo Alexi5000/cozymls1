@@ -7,6 +7,7 @@ import { DashboardPage } from "@/pages/dashboard";
 import { PropertiesPage } from "@/pages/properties";
 import { ContactsPage } from "@/pages/contacts";
 import { DealsPage } from "@/pages/deals";
+import { AgentsPage } from "@/pages/agents";
 import { ActivitiesPage } from "@/pages/activities";
 import { ReportsPage } from "@/pages/reports";
 import { SettingsPage } from "@/pages/settings";
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/properties" element={<PropertiesPage />} />
           <Route path="/contacts" element={<ContactsPage />} />
           <Route path="/deals" element={<DealsPage />} />
+          <Route path="/agents" element={<AgentsPage />} />
           <Route path="/activities" element={<ActivitiesPage />} />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/settings" element={<SettingsPage />} />
