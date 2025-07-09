@@ -27,6 +27,7 @@ export * from './label';
 export * from './menubar';
 export * from './mobile-card';
 export * from './mobile-drawer';
+export * from './mobile-bottom-sheet';
 export * from './mobile-tab-bar';
 export * from './mobile-optimized-card';
 export * from './mobile-list-item';

@@ -1,4 +1,4 @@
-import { Layout } from '@/widgets/layout';
+import { ResponsiveLayout, Layout } from '@/widgets/layout';
 import { MobileLayout } from '@/widgets/mobile';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
