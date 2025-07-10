@@ -19,4 +19,53 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    // Optimize bundle splitting
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Vendor chunks
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-toast'],
+          query: ['@tanstack/react-query'],
+          utils: ['clsx', 'class-variance-authority', 'tailwind-merge'],
+          // Feature chunks
+          dashboard: ['src/pages/dashboard', 'src/widgets/dashboard'],
+          properties: ['src/pages/properties', 'src/widgets/properties'],
+          activities: ['src/pages/activities', 'src/widgets/activities'],
+        },
+      },
+    },
+    // Optimize chunk size
+    chunkSizeWarningLimit: 1000,
+    // Enable minification
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: mode === 'production',
+        drop_debugger: mode === 'production',
+      },
+    },
+    // Enable source maps for production debugging
+    sourcemap: mode === 'production' ? 'hidden' : true,
+  },
+  // Optimize dependencies
+  optimizeDeps: {
+    include: [
+      'react',
+      'react-dom',
+      'react-router-dom',
+      '@tanstack/react-query',
+      'lucide-react',
+    ],
+    exclude: ['@vite/client', '@vite/env'],
+  },
+  // Enable CSS code splitting
+  css: {
+    modules: {
+      localsConvention: 'camelCase',
+    },
+    devSourcemap: mode === 'development',
+  },
 }));
