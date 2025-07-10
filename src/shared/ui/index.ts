@@ -62,3 +62,5 @@ export * from './touch-button';
 export * from './use-toast';
 export * from './property-skeleton';
 export * from './error-boundary';
+export * from './icon';
+export * from './font-loader';
