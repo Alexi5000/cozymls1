@@ -5,6 +5,8 @@ import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
 import { TrendingUp, Home, Users, DollarSign, Sparkles, ArrowUpRight } from 'lucide-react';
 import { AddPropertyDialog } from '@/widgets/properties/ui/AddPropertyDialog';
+import { useResponsiveBreakpoint } from '@/shared/hooks/use-responsive-breakpoint';
+import { ResponsiveContainer, ResponsiveGridContainer } from '@/shared/ui';
 
 interface HeroSectionProps {
   userName?: string;
@@ -22,6 +24,7 @@ export function HeroSection({
 }: HeroSectionProps) {
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
+  const { isMobile, isTablet } = useResponsiveBreakpoint();
 
   useEffect(() => {
     setIsVisible(true);
@@ -33,34 +36,39 @@ export function HeroSection({
   ];
 
   return (
-    <div className="relative overflow-hidden">
-      {/* Hero Background */}
-      <div className="hero-section relative rounded-2xl p-8 md:p-12 mb-8">
-        {/* Floating Elements */}
-        <div className="absolute top-8 right-8 w-20 h-20 bg-white/10 rounded-full animate-float opacity-60" />
-        <div className="absolute bottom-8 left-8 w-16 h-16 bg-white/10 rounded-full animate-float opacity-40" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 right-1/4 w-12 h-12 bg-white/10 rounded-full animate-float opacity-50" style={{ animationDelay: '2s' }} />
+    <ResponsiveContainer maxWidth="full" padding="none">
+      <div className="relative overflow-hidden">
+        {/* Hero Background */}
+        <div className={`hero-section relative rounded-2xl mb-8 ${isMobile ? 'p-6' : isTablet ? 'p-8' : 'p-12'}`}>
+          {/* Floating Elements - Hide on mobile for better performance */}
+          {!isMobile && (
+            <>
+              <div className="absolute top-8 right-8 w-20 h-20 bg-white/10 rounded-full animate-float opacity-60" />
+              <div className="absolute bottom-8 left-8 w-16 h-16 bg-white/10 rounded-full animate-float opacity-40" style={{ animationDelay: '1s' }} />
+              <div className="absolute top-1/2 right-1/4 w-12 h-12 bg-white/10 rounded-full animate-float opacity-50" style={{ animationDelay: '2s' }} />
+            </>
+          )}
 
-        <div className={`relative z-10 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className={`relative z-10 transition-all duration-1000 mobile-will-change ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           {/* Welcome Message */}
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-4">
-              <h1 className="text-3xl md:text-5xl font-display font-bold text-white">
+          <div className={isMobile ? "mb-6" : "mb-8"}>
+            <div className="flex items-center gap-3 mb-4 flex-wrap">
+              <h1 className={`font-display font-bold text-white leading-tight ${isMobile ? 'text-2xl' : isTablet ? 'text-3xl' : 'text-5xl'}`}>
                 Welcome back, {userName}! 
               </h1>
-              <div className="text-2xl md:text-3xl animate-float">👋</div>
+              <div className={`animate-float ${isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-3xl'}`}>👋</div>
             </div>
             
-            <p className="text-lg md:text-xl text-white/90 mb-6 max-w-2xl">
+            <p className={`text-white/90 max-w-2xl leading-relaxed ${isMobile ? 'text-base mb-4' : isTablet ? 'text-lg mb-6' : 'text-xl mb-6'}`}>
               Your real estate empire is thriving. Here's your latest performance snapshot.
             </p>
 
             {/* Achievement Badges */}
-            <div className="flex flex-wrap gap-3 mb-8">
+            <div className={`flex flex-wrap gap-3 ${isMobile ? 'mb-6' : 'mb-8'}`}>
               {achievements.map((achievement, index) => (
                 <Badge 
                   key={achievement.label}
-                  className="glass-effect text-white border-white/30 hover:bg-white/20 px-4 py-2 text-sm font-medium animate-scale-in"
+                  className={`glass-effect text-white border-white/30 hover:bg-white/20 font-medium animate-scale-in mobile-tap-highlight-none ${isMobile ? 'px-3 py-1.5 text-xs' : 'px-4 py-2 text-sm'}`}
                   style={{ animationDelay: `${index * 200}ms` }}
                 >
                   <achievement.icon className="w-4 h-4 mr-2" />
@@ -71,7 +79,11 @@ export function HeroSection({
           </div>
 
           {/* Quick Stats Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+          <ResponsiveGridContainer 
+            cols={{ mobile: 2, tablet: 4, desktop: 4 }}
+            gap={isMobile ? "sm" : "md"}
+            className="mb-6"
+          >
             {[
               { 
                 label: "Active Properties", 
@@ -102,41 +114,45 @@ export function HeroSection({
                 color: "from-purple-400 to-purple-600"
               }
             ].map((stat, index) => (
-              <Card 
+                <Card 
                 key={stat.label}
-                className="glass-effect border-white/20 hover:bg-white/20 transition-all duration-300 hover-lift animate-slide-up"
+                className="glass-effect border-white/20 hover:bg-white/20 transition-all duration-300 hover-lift animate-slide-up mobile-card mobile-tap-highlight-none"
                 style={{ animationDelay: `${index * 150}ms` }}
               >
-                <CardContent className="p-4 text-center">
-                  <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${stat.color} mx-auto mb-3 flex items-center justify-center shadow-glow`}>
-                    <stat.icon className="w-6 h-6 text-white" />
+                <CardContent className={`text-center ${isMobile ? 'p-3' : 'p-4'}`}>
+                  <div className={`rounded-lg bg-gradient-to-br ${stat.color} mx-auto mb-3 flex items-center justify-center shadow-glow ${isMobile ? 'w-8 h-8' : 'w-12 h-12'}`}>
+                    <stat.icon className={`text-white ${isMobile ? 'w-4 h-4' : 'w-6 h-6'}`} />
                   </div>
-                  <div className="text-2xl md:text-3xl font-bold text-white mb-1 font-display">
+                  <div className={`font-bold text-white mb-1 font-display leading-tight ${isMobile ? 'text-lg' : isTablet ? 'text-2xl' : 'text-3xl'}`}>
                     {stat.value}
                   </div>
-                  <div className="text-xs text-white/80 mb-1">
+                  <div className={`text-white/80 mb-1 leading-tight ${isMobile ? 'text-xs' : 'text-xs'}`}>
                     {stat.label}
                   </div>
-                  <div className="text-xs text-white/70 font-medium">
+                  <div className={`text-white/70 font-medium leading-tight ${isMobile ? 'text-xs' : 'text-xs'}`}>
                     {stat.change}
                   </div>
                 </CardContent>
               </Card>
             ))}
-          </div>
+          </ResponsiveGridContainer>
 
           {/* Quick Actions */}
-          <div className="flex flex-col sm:flex-row gap-4 mt-8">
+          <div className={`flex gap-4 ${isMobile ? 'flex-col mt-6' : 'flex-col sm:flex-row mt-8'}`}>
             <AddPropertyDialog>
-              <Button className="glass-effect border-white/30 text-white hover:bg-white/20 px-6 py-3">
+              <Button 
+                className={`glass-effect border-white/30 text-white hover:bg-white/20 mobile-tap-highlight-none ${isMobile ? 'h-12 px-6 py-3' : 'px-6 py-3'}`}
+                size={isMobile ? "lg" : "default"}
+              >
                 Add New Property
                 <ArrowUpRight className="w-4 h-4 ml-2" />
               </Button>
             </AddPropertyDialog>
             <Button 
               variant="outline" 
-              className="glass-effect border-white/30 text-white hover:bg-white/20 px-6 py-3"
+              className={`glass-effect border-white/30 text-white hover:bg-white/20 mobile-tap-highlight-none ${isMobile ? 'h-12 px-6 py-3' : 'px-6 py-3'}`}
               onClick={() => navigate('/reports')}
+              size={isMobile ? "lg" : "default"}
             >
               View Analytics
             </Button>
@@ -144,5 +160,6 @@ export function HeroSection({
         </div>
       </div>
     </div>
+    </ResponsiveContainer>
   );
 }
