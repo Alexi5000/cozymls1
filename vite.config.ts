@@ -23,17 +23,36 @@ export default defineConfig(({ mode }) => ({
     // Optimize bundle splitting
     rollupOptions: {
       output: {
-        manualChunks: {
+        manualChunks: (id) => {
           // Vendor chunks
-          vendor: ['react', 'react-dom'],
-          router: ['react-router-dom'],
-          ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-toast'],
-          query: ['@tanstack/react-query'],
-          utils: ['clsx', 'class-variance-authority', 'tailwind-merge'],
-          // Feature chunks
-          dashboard: ['src/pages/dashboard', 'src/widgets/dashboard'],
-          properties: ['src/pages/properties', 'src/widgets/properties'],
-          activities: ['src/pages/activities', 'src/widgets/activities'],
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom')) {
+              return 'vendor';
+            }
+            if (id.includes('react-router-dom')) {
+              return 'router';
+            }
+            if (id.includes('@radix-ui') || id.includes('cmdk')) {
+              return 'ui';
+            }
+            if (id.includes('@tanstack/react-query')) {
+              return 'query';
+            }
+            if (id.includes('clsx') || id.includes('class-variance-authority') || id.includes('tailwind-merge')) {
+              return 'utils';
+            }
+          }
+          
+          // Feature chunks based on file paths
+          if (id.includes('/pages/dashboard/') || id.includes('/widgets/dashboard/')) {
+            return 'dashboard';
+          }
+          if (id.includes('/pages/properties/') || id.includes('/widgets/properties/')) {
+            return 'properties';
+          }
+          if (id.includes('/pages/activities/') || id.includes('/widgets/activities/')) {
+            return 'activities';
+          }
         },
       },
     },
