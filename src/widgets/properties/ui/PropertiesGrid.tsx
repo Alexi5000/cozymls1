@@ -5,12 +5,12 @@ import { Property } from '@/entities/property';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
 import { VirtualList } from '@/shared/ui/virtual-list';
 import { useMobilePerformance } from '@/shared/hooks/use-mobile-performance';
+import { usePropertiesContext } from '@/shared/providers/PropertiesProvider';
+import { ErrorBoundary } from '@/shared/ui/error-boundary';
+import { Alert, AlertDescription } from '@/shared/ui/alert';
 
-interface PropertiesGridProps {
-  properties: Property[];
-}
-
-export const PropertiesGrid = memo(function PropertiesGrid({ properties }: PropertiesGridProps) {
+export const PropertiesGrid = memo(function PropertiesGrid() {
+  const { properties, error } = usePropertiesContext();
   const isMobile = useIsMobile();
   const { shouldUseVirtualization } = useMobilePerformance();
   
@@ -58,30 +58,43 @@ export const PropertiesGrid = memo(function PropertiesGrid({ properties }: Prope
     )), [properties]
   );
   
-  if (isMobile) {
-    // Use virtual scrolling for large lists on mobile
-    if (shouldUseVirtualization && properties.length > 20) {
-      return (
-        <VirtualList
-          items={properties}
-          itemHeight={280} // Approximate height of MobilePropertyCard
-          height={window.innerHeight - 200} // Account for header/nav
-          renderItem={renderMobileItem}
-          className="space-y-4 animate-slide-up"
-        />
-      );
-    }
-
+  if (error) {
     return (
-      <div className="space-y-4 animate-slide-up">
-        {mobileCards}
+      <Alert variant="destructive">
+        <AlertDescription>{error}</AlertDescription>
+      </Alert>
+    );
+  }
+
+  if (properties.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-muted-foreground">No properties found matching your criteria.</p>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 animate-scale-in">
-      {desktopCards}
-    </div>
+    <ErrorBoundary>
+      {isMobile ? (
+        shouldUseVirtualization && properties.length > 20 ? (
+          <VirtualList
+            items={properties}
+            itemHeight={280}
+            height={window.innerHeight - 200}
+            renderItem={renderMobileItem}
+            className="space-y-4 animate-slide-up"
+          />
+        ) : (
+          <div className="space-y-4 animate-slide-up">
+            {mobileCards}
+          </div>
+        )
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 animate-scale-in">
+          {desktopCards}
+        </div>
+      )}
+    </ErrorBoundary>
   );
 });

@@ -1,48 +1,32 @@
-import React, { useState, useCallback, useMemo, Suspense } from 'react';
-import { ResponsiveLayout, Layout } from '@/widgets/layout';
+import React, { Suspense } from 'react';
+import { Layout } from '@/widgets/layout';
 import { MobileLayout } from '@/widgets/mobile';
-import { mockProperties } from '@/entities/property';
 import { PropertiesHeader, PropertiesFilters, PropertiesStats, PropertiesGrid } from '@/widgets/properties';
 import { PropertiesGridSkeleton } from '@/shared/ui/property-skeleton';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
+import { PropertiesProvider, usePropertiesContext } from '@/shared/providers/PropertiesProvider';
+import { ErrorBoundary } from '@/shared/ui/error-boundary';
 
-export function PropertiesPage() {
+function PropertiesContent() {
   const isMobile = useIsMobile();
-  const [isLoading, setIsLoading] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  
-  // Memoized properties for performance
-  const properties = useMemo(() => mockProperties, []);
-  
-  // Optimized refresh handler with loading states
-  const handleRefresh = useCallback(async () => {
-    setIsRefreshing(true);
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      // In real app, you would refetch data here
-    } finally {
-      setIsRefreshing(false);
-    }
-  }, []);
+  const { refreshProperties } = usePropertiesContext();
 
-  // Optimized content with suspense boundary
-  const content = useMemo(() => (
+  const content = (
     <div className="space-y-6 md:space-y-8 animate-slide-up">
       <PropertiesHeader />
       {!isMobile && <PropertiesFilters />}
-      <PropertiesStats properties={properties} />
-      <Suspense 
-        fallback={<PropertiesGridSkeleton count={6} mobile={isMobile} />}
-      >
-        <PropertiesGrid properties={properties} />
-      </Suspense>
+      <PropertiesStats />
+      <ErrorBoundary>
+        <Suspense fallback={<PropertiesGridSkeleton count={6} mobile={isMobile} />}>
+          <PropertiesGrid />
+        </Suspense>
+      </ErrorBoundary>
     </div>
-  ), [isMobile, properties]);
+  );
 
   if (isMobile) {
     return (
-      <MobileLayout title="Properties" onRefresh={handleRefresh}>
+      <MobileLayout title="Properties" onRefresh={refreshProperties}>
         {content}
       </MobileLayout>
     );
@@ -52,5 +36,13 @@ export function PropertiesPage() {
     <Layout title="Properties">
       {content}
     </Layout>
+  );
+}
+
+export function PropertiesPage() {
+  return (
+    <PropertiesProvider>
+      <PropertiesContent />
+    </PropertiesProvider>
   );
 }
