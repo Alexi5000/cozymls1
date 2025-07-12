@@ -64,3 +64,9 @@ export * from './property-skeleton';
 export * from './error-boundary';
 export * from './icon';
 export * from './font-loader';
+
+// Enhanced responsive components
+export { ResponsiveContainer as EnhancedResponsiveContainer, ResponsiveGrid as EnhancedResponsiveGrid, ResponsiveStack as EnhancedResponsiveStack } from './enhanced-responsive-layout';
+export * from './enhanced-mobile-components';
+export * from './enhanced-responsive-navigation';
+export * from './responsive-form';
