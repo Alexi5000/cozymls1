@@ -5,7 +5,7 @@ import { useIsMobile } from '@/shared/hooks/use-mobile';
 import { Settings, User, Bell, Shield } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 
-export function SettingsPage() {
+function SettingsPage() {
   const isMobile = useIsMobile();
   
   const handleRefresh = async () => {
@@ -100,3 +100,5 @@ export function SettingsPage() {
     </Layout>
   );
 }
+
+export default SettingsPage;
