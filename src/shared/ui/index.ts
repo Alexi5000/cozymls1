@@ -33,7 +33,7 @@ export * from './mobile-optimized-card';
 export * from './mobile-list-item';
 export * from './mobile-optimized-button';
 export * from './mobile-enhanced-input';
-export { ResponsiveContainer, ResponsiveStack, ResponsiveGridContainer } from './responsive-container';
+export { ResponsiveStack, ResponsiveGridContainer } from './responsive-container';
 export * from './navigation-menu';
 export * from './pagination';
 export * from './popover';

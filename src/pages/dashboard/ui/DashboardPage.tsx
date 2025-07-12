@@ -8,7 +8,8 @@ import { useIsMobile } from '@/shared/hooks/use-mobile';
 import { useScrollAnimation } from '@/shared/hooks/use-scroll-animation';
 import { useMobilePerformance } from '@/shared/hooks/use-mobile-performance';
 import { AdaptiveLayout, ResponsiveGrid } from '@/shared/ui/adaptive-layout';
-import { ResponsiveContainer, ResponsiveStack, ResponsiveGridContainer } from '@/shared/ui';
+import { ResponsiveContainer, ResponsiveStack } from '@/shared/ui/enhanced-responsive-layout';
+import { ResponsiveGridContainer } from '@/shared/ui';
 import { Home, Users, DollarSign, TrendingUp } from 'lucide-react';
 
 export function DashboardPage() {
@@ -37,7 +38,7 @@ export function DashboardPage() {
 
   const content = (
     <ResponsiveContainer maxWidth="full" padding={isMobile ? "sm" : "md"}>
-      <ResponsiveStack spacing={isMobile ? "lg" : "xl"}>
+      <ResponsiveStack gap={isMobile ? "lg" : "responsive"}>
         {/* Hero Section */}
         <HeroSection userName="Dawn" stats={heroStats} />
 
@@ -48,7 +49,7 @@ export function DashboardPage() {
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <ResponsiveStack spacing={isMobile ? "md" : "lg"}>
+          <ResponsiveStack gap={isMobile ? "md" : "lg"}>
             {/* Enhanced Stats Grid */}
             <ResponsiveGridContainer 
               cols={{ mobile: 2, tablet: 4, desktop: 4 }}
@@ -87,7 +88,7 @@ export function DashboardPage() {
             {/* Main Content Grid - Enhanced */}
             <AdaptiveLayout
               mobileChildren={
-                <ResponsiveStack spacing="lg">
+                <ResponsiveStack gap="lg">
                   <RecentActivity />
                   <MarketInsights />
                   <DealsOverview />
@@ -98,7 +99,7 @@ export function DashboardPage() {
                 <div className="lg:col-span-2">
                   <RecentActivity />
                 </div>
-                <ResponsiveStack spacing="lg">
+                <ResponsiveStack gap="lg">
                   <MarketInsights />
                   <DealsOverview />
                 </ResponsiveStack>
