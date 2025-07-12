@@ -7,17 +7,18 @@ import { Suspense, lazy } from "react";
 import { ErrorBoundary } from "@/shared/ui/error-boundary";
 import { LoadingSpinner } from "@/shared/ui/loading-spinner";
 import { PerformanceMonitor } from "@/shared/ui/performance-monitor";
+import { createRouteComponent } from "@/shared/lib/lazy-loading";
 
-// Lazy load pages for code splitting
-const DashboardPage = lazy(() => import("@/pages/dashboard").then(m => ({ default: m.DashboardPage })));
-const PropertiesPage = lazy(() => import("@/pages/properties").then(m => ({ default: m.PropertiesPage })));
-const ContactsPage = lazy(() => import("@/pages/contacts").then(m => ({ default: m.ContactsPage })));
-const DealsPage = lazy(() => import("@/pages/deals").then(m => ({ default: m.DealsPage })));
-const AgentsPage = lazy(() => import("@/pages/agents").then(m => ({ default: m.AgentsPage })));
-const ActivitiesPage = lazy(() => import("@/pages/activities").then(m => ({ default: m.ActivitiesPage })));
-const ReportsPage = lazy(() => import("@/pages/reports").then(m => ({ default: m.ReportsPage })));
-const SettingsPage = lazy(() => import("@/pages/settings").then(m => ({ default: m.SettingsPage })));
-const NotFoundPage = lazy(() => import("@/pages/not-found").then(m => ({ default: m.NotFoundPage })));
+// Optimized lazy loading with retry mechanism and route tracking
+const DashboardPage = createRouteComponent('dashboard', () => import("@/pages/dashboard").then(m => ({ default: m.DashboardPage })));
+const PropertiesPage = createRouteComponent('properties', () => import("@/pages/properties").then(m => ({ default: m.PropertiesPage })));
+const ContactsPage = createRouteComponent('contacts', () => import("@/pages/contacts").then(m => ({ default: m.ContactsPage })));
+const DealsPage = createRouteComponent('deals', () => import("@/pages/deals").then(m => ({ default: m.DealsPage })));
+const AgentsPage = createRouteComponent('agents', () => import("@/pages/agents").then(m => ({ default: m.AgentsPage })));
+const ActivitiesPage = createRouteComponent('activities', () => import("@/pages/activities").then(m => ({ default: m.ActivitiesPage })));
+const ReportsPage = createRouteComponent('reports', () => import("@/pages/reports").then(m => ({ default: m.ReportsPage })));
+const SettingsPage = createRouteComponent('settings', () => import("@/pages/settings").then(m => ({ default: m.SettingsPage })));
+const NotFoundPage = createRouteComponent('not-found', () => import("@/pages/not-found").then(m => ({ default: m.NotFoundPage })));
 
 const queryClient = new QueryClient({
   defaultOptions: {

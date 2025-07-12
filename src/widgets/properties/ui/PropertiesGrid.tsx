@@ -1,11 +1,14 @@
 import React, { memo, useCallback, useMemo } from 'react';
 import { PropertyCard } from './PropertyCard';
 import { MobilePropertyCard } from './MobilePropertyCard';
+import { OptimizedPropertyCard } from './OptimizedPropertyCard';
 import { Property } from '@/entities/property';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
 import { VirtualList } from '@/shared/ui/virtual-list';
+import { OptimizedList, SimpleOptimizedList } from '@/shared/ui/optimized-list';
 import { useMobilePerformance } from '@/shared/hooks/use-mobile-performance';
 import { usePropertiesContext } from '@/shared/providers/PropertiesProvider';
+import { useRenderOptimization } from '@/shared/hooks/use-render-optimization';
 import { ErrorBoundary } from '@/shared/ui/error-boundary';
 import { Alert, AlertDescription } from '@/shared/ui/alert';
 
@@ -13,6 +16,7 @@ export const PropertiesGrid = memo(function PropertiesGrid() {
   const { properties, error } = usePropertiesContext();
   const isMobile = useIsMobile();
   const { shouldUseVirtualization } = useMobilePerformance();
+  const { measureFunction } = useRenderOptimization('PropertiesGrid');
   
   // Memoized event handlers to prevent unnecessary re-renders
   const handleCall = useCallback((agentName: string) => {
@@ -51,12 +55,17 @@ export const PropertiesGrid = memo(function PropertiesGrid() {
     )), [properties, handleCall, handleEmail, handleTap]
   );
 
-  // Memoized desktop cards to prevent unnecessary re-renders
-  const desktopCards = useMemo(() => 
-    properties.map((property) => (
-      <PropertyCard key={property.id} property={property} />
-    )), [properties]
-  );
+  // Optimized desktop cards with new OptimizedPropertyCard
+  const renderDesktopCard = useCallback((property: Property, index: number) => (
+    <OptimizedPropertyCard 
+      property={property}
+      onView={handleTap}
+      onContact={(agentId) => console.log('Contact agent:', agentId)}
+    />
+  ), [handleTap]);
+
+  // Use optimized list for better performance with large datasets
+  const shouldUseOptimizedList = properties.length > 50;
   
   if (error) {
     return (
@@ -78,21 +87,36 @@ export const PropertiesGrid = memo(function PropertiesGrid() {
     <ErrorBoundary>
       {isMobile ? (
         shouldUseVirtualization && properties.length > 20 ? (
-          <VirtualList
+          <OptimizedList
             items={properties}
+            renderItem={renderMobileItem}
             itemHeight={280}
             height={window.innerHeight - 200}
-            renderItem={renderMobileItem}
             className="space-y-4 animate-slide-up"
+            getItemKey={(property) => property.id}
           />
         ) : (
           <div className="space-y-4 animate-slide-up">
             {mobileCards}
           </div>
         )
+      ) : shouldUseOptimizedList ? (
+        <SimpleOptimizedList
+          items={properties}
+          renderItem={renderDesktopCard}
+          className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 animate-scale-in"
+          getItemKey={(property) => property.id}
+        />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 animate-scale-in">
-          {desktopCards}
+          {properties.map((property) => (
+            <OptimizedPropertyCard 
+              key={property.id}
+              property={property}
+              onView={handleTap}
+              onContact={(agentId) => console.log('Contact agent:', agentId)}
+            />
+          ))}
         </div>
       )}
     </ErrorBoundary>

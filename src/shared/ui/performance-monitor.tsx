@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import { usePerformanceMonitor } from '@/shared/hooks/use-performance';
 import { useMobilePerformance } from '@/shared/hooks/use-mobile-performance';
+import { useMemoryOptimization } from '@/shared/hooks/use-memory-optimization';
 import { cn } from '@/shared/lib/utils';
 
 interface PerformanceMonitorProps {
@@ -9,14 +10,16 @@ interface PerformanceMonitorProps {
   className?: string;
 }
 
-export function PerformanceMonitor({ 
+export const PerformanceMonitor = memo(function PerformanceMonitor({ 
   enabled = process.env.NODE_ENV === 'development',
   position = 'bottom-right',
   className 
 }: PerformanceMonitorProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const [memoryUsage, setMemoryUsage] = useState<number>(0);
   const { renderCount } = usePerformanceMonitor('PerformanceMonitor');
   const { metrics, isMobileOptimized } = useMobilePerformance();
+  const { setOptimizedInterval } = useMemoryOptimization();
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -28,6 +31,23 @@ export function PerformanceMonitor({
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [isVisible]);
+
+  // Monitor memory usage
+  useEffect(() => {
+    if (!enabled || !isVisible) return;
+
+    const updateMemoryUsage = () => {
+      if ('memory' in performance) {
+        const memory = (performance as any).memory;
+        setMemoryUsage(memory.usedJSHeapSize / 1024 / 1024); // MB
+      }
+    };
+
+    updateMemoryUsage();
+    const intervalId = setOptimizedInterval(updateMemoryUsage, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [enabled, isVisible, setOptimizedInterval]);
 
   if (!enabled || !isVisible) {
     return null;
@@ -53,6 +73,7 @@ export function PerformanceMonitor({
       <div className="font-bold text-green-400 mb-2">Performance Monitor</div>
       <div>Render Count: {renderCount}</div>
       <div>Mobile Optimized: {isMobileOptimized ? '✅' : '❌'}</div>
+      <div>Memory Usage: {memoryUsage.toFixed(1)} MB</div>
       
       {isMobileOptimized && (
         <>
@@ -71,4 +92,4 @@ export function PerformanceMonitor({
       </div>
     </div>
   );
-}
+});
