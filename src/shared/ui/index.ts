@@ -33,7 +33,7 @@ export * from './mobile-optimized-card';
 export * from './mobile-list-item';
 export * from './mobile-optimized-button';
 export * from './mobile-enhanced-input';
-export { ResponsiveStack, ResponsiveGridContainer } from './responsive-container';
+// ResponsiveGridContainer moved to enhanced-responsive-layout
 export * from './navigation-menu';
 export * from './pagination';
 export * from './popover';
@@ -66,7 +66,7 @@ export * from './icon';
 export * from './font-loader';
 
 // Enhanced responsive components
-export { ResponsiveContainer as EnhancedResponsiveContainer, ResponsiveGrid as EnhancedResponsiveGrid, ResponsiveStack as EnhancedResponsiveStack } from './enhanced-responsive-layout';
+export { ResponsiveContainer, ResponsiveGrid, ResponsiveStack, ResponsiveGridContainer } from './enhanced-responsive-layout';
 export * from './enhanced-mobile-components';
 export * from './enhanced-responsive-navigation';
 export * from './responsive-form';

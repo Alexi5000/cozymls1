@@ -6,8 +6,7 @@ import { Badge } from '@/shared/ui/badge';
 import { TrendingUp, Home, Users, DollarSign, Sparkles, ArrowUpRight } from 'lucide-react';
 import { AddPropertyDialog } from '@/widgets/properties/ui/AddPropertyDialog';
 import { useResponsiveBreakpoint } from '@/shared/hooks/use-responsive-breakpoint';
-import { ResponsiveContainer } from '@/shared/ui/enhanced-responsive-layout';
-import { ResponsiveGridContainer } from '@/shared/ui';
+import { ResponsiveContainer, ResponsiveGridContainer } from '@/shared/ui';
 
 interface HeroSectionProps {
   userName?: string;

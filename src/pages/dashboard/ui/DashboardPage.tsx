@@ -8,8 +8,7 @@ import { useIsMobile } from '@/shared/hooks/use-mobile';
 import { useScrollAnimation } from '@/shared/hooks/use-scroll-animation';
 import { useMobilePerformance } from '@/shared/hooks/use-mobile-performance';
 import { AdaptiveLayout, ResponsiveGrid } from '@/shared/ui/adaptive-layout';
-import { ResponsiveContainer, ResponsiveStack } from '@/shared/ui/enhanced-responsive-layout';
-import { ResponsiveGridContainer } from '@/shared/ui';
+import { ResponsiveContainer, ResponsiveStack, ResponsiveGridContainer } from '@/shared/ui';
 import { Home, Users, DollarSign, TrendingUp } from 'lucide-react';
 
 export function DashboardPage() {

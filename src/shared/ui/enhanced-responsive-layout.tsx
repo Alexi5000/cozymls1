@@ -61,14 +61,28 @@ interface ResponsiveGridProps {
     tablet?: number;
     desktop?: number;
   };
-  gap?: 'sm' | 'md' | 'lg' | 'responsive';
+  gap?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'responsive';
   className?: string;
 }
 
+interface ResponsiveGridContainerProps {
+  children: React.ReactNode;
+  cols?: {
+    mobile?: number;
+    tablet?: number;
+    desktop?: number;
+  };
+  gap?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  className?: string;
+  minItemWidth?: string;
+}
+
 const gapClasses = {
+  xs: 'gap-1 sm:gap-2',
   sm: 'gap-2 sm:gap-3',
   md: 'gap-3 sm:gap-4 md:gap-6',
   lg: 'gap-4 sm:gap-6 md:gap-8',
+  xl: 'gap-6 sm:gap-8 md:gap-10',
   responsive: 'responsive-gap'
 };
 
@@ -93,11 +107,53 @@ export function ResponsiveGrid({
   );
 }
 
+export function ResponsiveGridContainer({
+  children,
+  cols = { mobile: 1, tablet: 2, desktop: 3 },
+  gap = 'md',
+  className,
+  minItemWidth = '280px'
+}: ResponsiveGridContainerProps) {
+  const { isMobile, isTablet } = useResponsiveBreakpoint();
+
+  const gapClasses = {
+    xs: isMobile ? 'gap-1' : 'gap-2',
+    sm: isMobile ? 'gap-2' : 'gap-3',
+    md: isMobile ? 'gap-3' : 'gap-4',
+    lg: isMobile ? 'gap-4' : 'gap-6',
+    xl: isMobile ? 'gap-6' : 'gap-8'
+  };
+
+  // Use auto-fit for flexible layouts
+  const gridStyle = minItemWidth 
+    ? { gridTemplateColumns: `repeat(auto-fit, minmax(${minItemWidth}, 1fr))` }
+    : {};
+
+  const gridCols = !minItemWidth 
+    ? `grid-cols-${cols.mobile} md:grid-cols-${cols.tablet} lg:grid-cols-${cols.desktop}`
+    : '';
+
+  return (
+    <div
+      className={cn(
+        'grid',
+        !minItemWidth && gridCols,
+        gapClasses[gap],
+        className
+      )}
+      style={gridStyle}
+    >
+      {children}
+    </div>
+  );
+}
+
 interface ResponsiveStackProps {
   children: React.ReactNode;
   direction?: 'column' | 'row-on-desktop';
   align?: 'start' | 'center' | 'end' | 'stretch';
-  gap?: 'sm' | 'md' | 'lg' | 'responsive';
+  gap?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'responsive';
+  spacing?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'; // backward compatibility
   className?: string;
 }
 
@@ -113,13 +169,28 @@ export function ResponsiveStack({
   direction = 'column',
   align = 'stretch',
   gap = 'md',
+  spacing, // backward compatibility
   className 
 }: ResponsiveStackProps) {
+  const { isMobile } = useResponsiveBreakpoint();
+  
+  // Use spacing prop if provided for backward compatibility
+  const finalGap = spacing || gap;
+  
+  const gapClasses = {
+    xs: 'gap-1 sm:gap-2',
+    sm: 'gap-2 sm:gap-3',
+    md: 'gap-3 sm:gap-4 md:gap-6',
+    lg: 'gap-4 sm:gap-6 md:gap-8',
+    xl: 'gap-6 sm:gap-8 md:gap-10',
+    responsive: 'responsive-gap'
+  };
+
   const stackClasses = cn(
     'flex',
     direction === 'column' ? 'flex-col' : 'flex-col lg:flex-row',
     alignClasses[align],
-    gapClasses[gap],
+    gapClasses[finalGap] || gapClasses.md,
     className
   );
   

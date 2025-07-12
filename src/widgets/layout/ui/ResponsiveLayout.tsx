@@ -2,7 +2,7 @@ import React from 'react';
 import { useResponsiveBreakpoint } from '@/shared/hooks/use-responsive-breakpoint';
 import { Layout } from './Layout';
 import { MobileLayout } from '@/widgets/mobile';
-import { ResponsiveContainer } from '@/shared/ui/enhanced-responsive-layout';
+import { ResponsiveContainer } from '@/shared/ui';
 
 interface ResponsiveLayoutProps {
   children: React.ReactNode;
