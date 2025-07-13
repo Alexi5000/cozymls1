@@ -5,7 +5,7 @@ import { HeroSection } from '@/widgets/dashboard/ui/HeroSection';
 import { MarketInsights } from '@/widgets/dashboard/ui/MarketInsights';
 import { mockDashboardStats } from '@/entities/dashboard';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
-import { useScrollAnimation } from '@/shared/hooks/use-scroll-animation';
+
 import { useMobilePerformance } from '@/shared/hooks/use-mobile-performance';
 import { AdaptiveLayout, ResponsiveGrid } from '@/shared/ui/adaptive-layout';
 import { ResponsiveContainer, ResponsiveStack, ResponsiveGridContainer } from '@/shared/ui';
@@ -14,12 +14,12 @@ import { Home, Users, DollarSign, TrendingUp } from 'lucide-react';
 export function DashboardPage() {
   const stats = mockDashboardStats;
   const isMobile = useIsMobile();
-  const { elementRef: contentRef, isVisible } = useScrollAnimation();
-  const { isMobileOptimized, shouldOptimizeAnimations } = useMobilePerformance({
-    enableVirtualization: true,
-    enableImageLazyLoading: true,
-    debounceScrollEvents: true,
-    optimizeAnimations: true,
+  // Simplified performance optimization for immediate loading
+  const { isMobileOptimized } = useMobilePerformance({
+    enableVirtualization: false, // Disable for dashboard
+    enableImageLazyLoading: false, // Show images immediately
+    debounceScrollEvents: false, // Don't debounce on main page
+    optimizeAnimations: false, // Keep animations smooth
   });
 
   const handleRefresh = async () => {
@@ -41,13 +41,8 @@ export function DashboardPage() {
         {/* Hero Section */}
         <HeroSection userName="Dawn" stats={heroStats} />
 
-        {/* Main Content with Scroll Animation */}
-        <div 
-          ref={contentRef}
-          className={`mobile-will-change transition-all ${shouldOptimizeAnimations ? 'duration-300' : 'duration-1000'} ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
+        {/* Main Content - Show immediately for faster loading */}
+        <div className="mobile-will-change">
           <ResponsiveStack gap={isMobile ? "md" : "lg"}>
             {/* Enhanced Stats Grid */}
             <ResponsiveGridContainer 

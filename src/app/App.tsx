@@ -9,8 +9,8 @@ import { LoadingSpinner } from "@/shared/ui/loading-spinner";
 import { PerformanceMonitor } from "@/shared/ui/performance-monitor";
 import { createRouteComponent } from "@/shared/lib/lazy-loading";
 
-// Optimized lazy loading with retry mechanism and route tracking
-const DashboardPage = createRouteComponent('dashboard', () => import("@/pages/dashboard").then(m => ({ default: m.DashboardPage })));
+// Eager load dashboard for immediate loading, lazy load others
+import { DashboardPage } from "@/pages/dashboard";
 const PropertiesPage = createRouteComponent('properties', () => import("@/pages/properties").then(m => ({ default: m.PropertiesPage })));
 const ContactsPage = createRouteComponent('contacts', () => import("@/pages/contacts").then(m => ({ default: m.ContactsPage })));
 const DealsPage = createRouteComponent('deals', () => import("@/pages/deals").then(m => ({ default: m.DealsPage })));
@@ -56,7 +56,10 @@ const App = () => (
             </Routes>
           </Suspense>
         </BrowserRouter>
-        <PerformanceMonitor />
+        {/* Defer performance monitoring to avoid blocking initial render */}
+        <Suspense fallback={null}>
+          <PerformanceMonitor />
+        </Suspense>
       </TooltipProvider>
     </QueryClientProvider>
   </ErrorBoundary>
