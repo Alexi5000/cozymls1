@@ -1,8 +1,6 @@
-import { ResponsiveLayout, Layout } from '@/widgets/layout';
+import { Layout } from '@/widgets/layout';
 import { MobileLayout } from '@/widgets/mobile';
-import { StatsCard, RecentActivity, DealsOverview } from '@/widgets/dashboard';
-import { HeroSection } from '@/widgets/dashboard/ui/HeroSection';
-import { MarketInsights } from '@/widgets/dashboard/ui/MarketInsights';
+import { StatsCard, RecentActivity, DealsOverview, HeroSection, MarketInsights } from '@/widgets/dashboard';
 import { mockDashboardStats } from '@/entities/dashboard';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
 
