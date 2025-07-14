@@ -1,9 +1,9 @@
 import * as React from "react";
 import { cn } from "@/shared/lib/utils";
 import { useResponsiveBreakpoint } from "@/shared/hooks/use-responsive-breakpoint";
-import { Input } from "./input";
-import { Button } from "./button";
-import { Label } from "./label";
+import { Input } from "@/shared/ui/input";
+import { Button } from "@/shared/ui/button";
+import { Label } from "@/shared/ui/label";
 
 interface ResponsiveFormProps {
   children: React.ReactNode;

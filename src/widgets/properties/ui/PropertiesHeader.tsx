@@ -1,6 +1,6 @@
 import { Button } from '@/shared/ui/button';
 import { Plus } from 'lucide-react';
-import { AddPropertyDialog } from './AddPropertyDialog';
+import { AddPropertyDialog } from "@/widgets/properties/ui/AddPropertyDialog";
 
 export function PropertiesHeader() {
   return (

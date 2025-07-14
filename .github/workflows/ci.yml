@@ -1,0 +1,156 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  type-check:
+    name: Type Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run TypeScript type checking
+      run: npx tsc --noEmit
+
+  eslint:
+    name: ESLint
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run ESLint
+      run: npm run lint
+
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run unit tests
+      run: npm run test:run
+      
+    - name: Run tests with coverage
+      run: npm run test:coverage
+      
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v4
+      if: always()
+      with:
+        file: ./coverage/lcov.info
+        flags: unittests
+        name: codecov-umbrella
+
+  boundary-check:
+    name: FSD Boundary Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Check FSD layer boundaries
+      run: npm run check-boundaries
+      
+    - name: Analyze import dependencies
+      run: npm run analyze-imports
+      
+    - name: Generate boundary report
+      if: always()
+      run: |
+        echo "## FSD Boundary Check Results" > boundary-report.md
+        echo "### Layer Architecture Status" >> boundary-report.md
+        npm run check-boundaries >> boundary-report.md 2>&1 || true
+        echo "### Import Analysis" >> boundary-report.md
+        npm run analyze-imports >> boundary-report.md 2>&1 || true
+        
+    - name: Upload boundary report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: boundary-report
+        path: boundary-report.md
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: [type-check, eslint, tests, boundary-check]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build application
+      run: npm run build
+      
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts
+        path: dist/
+        retention-days: 30
+      
+    - name: Build for development
+      run: npm run build:dev
+      
+    - name: Upload dev build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: dev-build-artifacts
+        path: dist/
+        retention-days: 7

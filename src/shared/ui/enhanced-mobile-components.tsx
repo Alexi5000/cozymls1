@@ -1,8 +1,8 @@
 import * as React from "react";
 import { cn } from "@/shared/lib/utils";
 import { useResponsiveBreakpoint } from "@/shared/hooks/use-responsive-breakpoint";
-import { Card } from "./card";
-import { Button } from "./button";
+import { Card } from "@/shared/ui/card";
+import { Button } from "@/shared/ui/button";
 
 interface MobilePageLayoutProps {
   children: React.ReactNode;

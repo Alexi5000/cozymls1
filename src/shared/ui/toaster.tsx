@@ -6,7 +6,7 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from "./toast"
+} from "@/shared/ui/toast"
 
 export function Toaster() {
   const { toasts } = useToast()

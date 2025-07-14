@@ -1,6 +1,6 @@
 import { Card } from '@/shared/ui/card';
 import { usePropertiesContext } from '@/shared/providers/PropertiesProvider';
-import { formatPrice, calculateAveragePrice, calculateAverageDaysOnMarket, getActiveListingsCount } from '@/shared/lib/property-utils';
+import { formatPrice, calculateAveragePrice, calculateAverageDaysOnMarket, getActiveListingsCount } from '@/entities/property';
 
 export function PropertiesStats() {
   const { allProperties: properties } = usePropertiesContext();

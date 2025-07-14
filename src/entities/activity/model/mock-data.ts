@@ -1,4 +1,4 @@
-import { Activity } from './types';
+import { Activity } from "@/entities/activity/model/types";
 
 export const mockActivities: Activity[] = [
   {

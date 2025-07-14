@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
-import { ActivityCard } from './ActivityCard';
-import { MobileActivityCard } from './MobileActivityCard';
+import { ActivityCard } from "@/widgets/activities/ui/ActivityCard";
+import { MobileActivityCard } from "@/widgets/activities/ui/MobileActivityCard";
 import { Activity } from '@/entities/activity';
+import { useActivitiesFilter, useActivitiesSort } from '@/features/activities';
 import { toast } from 'sonner';
 
 interface ActivitiesGridProps {
@@ -18,53 +18,9 @@ interface ActivitiesGridProps {
 export function ActivitiesGrid({ activities, searchQuery, filters }: ActivitiesGridProps) {
   const isMobile = useIsMobile();
   
-  // Filter activities based on search and filters
-  const filteredActivities = activities.filter(activity => {
-    const matchesSearch = activity.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         activity.description?.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesType = filters.type === 'all' || activity.type === filters.type;
-    const matchesPriority = filters.priority === 'all' || activity.priority === filters.priority;
-    
-    let matchesStatus = true;
-    if (filters.status === 'completed') {
-      matchesStatus = !!activity.completedAt;
-    } else if (filters.status === 'pending') {
-      matchesStatus = !activity.completedAt;
-    } else if (filters.status === 'overdue') {
-      matchesStatus = !activity.completedAt && 
-                     activity.dueDate && 
-                     new Date(activity.dueDate) < new Date();
-    } else if (filters.status === 'due-today') {
-      matchesStatus = !activity.completedAt && 
-                     activity.dueDate && 
-                     new Date(activity.dueDate).toDateString() === new Date().toDateString();
-    }
-    
-    return matchesSearch && matchesType && matchesPriority && matchesStatus;
-  });
-
-  // Sort activities by priority and due date
-  const sortedActivities = [...filteredActivities].sort((a, b) => {
-    // Completed activities go to bottom
-    if (a.completedAt && !b.completedAt) return 1;
-    if (!a.completedAt && b.completedAt) return -1;
-    
-    // Sort by priority
-    const priorityOrder = { high: 3, medium: 2, low: 1 };
-    const priorityDiff = priorityOrder[b.priority] - priorityOrder[a.priority];
-    if (priorityDiff !== 0) return priorityDiff;
-    
-    // Sort by due date
-    if (a.dueDate && b.dueDate) {
-      return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
-    }
-    if (a.dueDate && !b.dueDate) return -1;
-    if (!a.dueDate && b.dueDate) return 1;
-    
-    // Sort by created date
-    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-  });
+  // Use extracted business logic hooks
+  const filteredActivities = useActivitiesFilter(activities, searchQuery, filters);
+  const sortedActivities = useActivitiesSort(filteredActivities);
 
   const handleEditActivity = (activity: Activity) => {
     toast.info(`Edit activity: ${activity.title}`);

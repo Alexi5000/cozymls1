@@ -1,5 +1,5 @@
 import { useEffect, useCallback, useRef } from 'react';
-import { useResponsiveBreakpoint } from './use-responsive-breakpoint';
+import { useResponsiveBreakpoint } from "@/shared/hooks/use-responsive-breakpoint";
 
 interface PerformanceMetrics {
   loadTime: number;

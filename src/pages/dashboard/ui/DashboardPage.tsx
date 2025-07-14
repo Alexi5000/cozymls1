@@ -1,7 +1,7 @@
 import { Layout } from '@/widgets/layout';
 import { MobileLayout } from '@/widgets/mobile';
 import { StatsCard, RecentActivity, DealsOverview, HeroSection, MarketInsights } from '@/widgets/dashboard';
-import { mockDashboardStats } from '@/entities/dashboard';
+import { mockDashboardStats, dashboardService } from '@/entities/dashboard';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
 
 import { useMobilePerformance } from '@/shared/hooks/use-mobile-performance';

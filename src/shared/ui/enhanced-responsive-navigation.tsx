@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cn } from "@/shared/lib/utils";
 import { useResponsiveBreakpoint } from "@/shared/hooks/use-responsive-breakpoint";
-import { Button } from "./button";
+import { Button } from "@/shared/ui/button";
 
 interface ResponsiveNavigationProps {
   children: React.ReactNode;

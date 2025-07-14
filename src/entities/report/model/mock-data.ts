@@ -1,4 +1,4 @@
-import { ReportTemplate, Report, ReportData } from './types';
+import { ReportTemplate, Report, ReportData } from "@/entities/report/model/types";
 
 export const mockReportTemplates: ReportTemplate[] = [
   {

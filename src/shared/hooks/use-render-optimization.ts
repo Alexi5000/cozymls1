@@ -1,5 +1,5 @@
 import { useCallback, useRef, useMemo, useEffect } from 'react';
-import { usePerformanceMonitor } from './use-performance';
+import { usePerformanceMonitor } from "@/shared/hooks/use-performance";
 
 /**
  * Hook for optimizing component renders

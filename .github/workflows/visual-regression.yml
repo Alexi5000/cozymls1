@@ -1,0 +1,121 @@
+name: Visual Regression Testing
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  visual-regression:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Build application
+      run: npm run build
+    
+    - name: Start dev server
+      run: |
+        npm run dev &
+        sleep 10
+        curl -f http://localhost:8080 || exit 1
+      timeout-minutes: 2
+    
+    - name: Run unit tests with coverage
+      run: npm run test:coverage
+    
+    - name: Run E2E tests
+      run: npm run cypress:run
+      env:
+        CYPRESS_baseUrl: http://localhost:8080
+    
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results
+        path: |
+          coverage/
+          cypress/screenshots/
+          cypress/videos/
+    
+    # Chromatic Visual Regression
+    - name: Run Chromatic
+      if: env.CHROMATIC_PROJECT_TOKEN
+      run: npm run chromatic
+      env:
+        CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+    
+    # Percy Visual Regression (alternative)
+    - name: Run Percy
+      if: env.PERCY_TOKEN
+      run: npm run percy-test
+      env:
+        PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+    
+    # Create diff report
+    - name: Generate diff report
+      run: |
+        echo "## Visual Regression Results" >> diff-report.md
+        echo "### Test Summary" >> diff-report.md
+        echo "- Baseline tests: $(npm run test:run | grep -o '[0-9]* passed' | head -1)" >> diff-report.md
+        echo "- Coverage: $(npm run test:coverage | grep -o '[0-9]*\.[0-9]*%' | head -1)" >> diff-report.md
+        echo "- Visual changes: Check Chromatic/Percy results" >> diff-report.md
+    
+    - name: Comment PR with results
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          if (fs.existsSync('diff-report.md')) {
+            const report = fs.readFileSync('diff-report.md', 'utf8');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: report
+            });
+          }
+
+  lighthouse:
+    runs-on: ubuntu-latest
+    needs: visual-regression
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Build and start server
+      run: |
+        npm run build
+        npm run preview &
+        sleep 10
+    
+    - name: Run Lighthouse CI
+      run: |
+        npm install -g @lhci/cli@0.12.x
+        lhci autorun
+      env:
+        LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}

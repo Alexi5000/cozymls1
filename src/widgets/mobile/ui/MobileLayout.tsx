@@ -1,5 +1,5 @@
-import { MobileHeader } from './MobileHeader';
-import { MobileNavigation } from './MobileNavigation';
+import { MobileHeader } from "@/widgets/mobile/ui/MobileHeader";
+import { MobileNavigation } from "@/widgets/mobile/ui/MobileNavigation";
 import { useResponsiveBreakpoint } from '@/shared/hooks/use-responsive-breakpoint';
 import { PullToRefresh } from '@/shared/ui/pull-to-refresh';
 import { cn } from '@/shared/lib/utils';

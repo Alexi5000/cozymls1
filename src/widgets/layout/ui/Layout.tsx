@@ -1,5 +1,5 @@
-import { Sidebar } from './Sidebar';
-import { Header } from './Header';
+import { Sidebar } from "@/widgets/layout/ui/Sidebar";
+import { Header } from "@/widgets/layout/ui/Header";
 import { SidebarProvider, SidebarInset } from '@/shared/ui/sidebar';
 
 interface LayoutProps {

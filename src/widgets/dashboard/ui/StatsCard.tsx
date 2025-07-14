@@ -8,9 +8,10 @@ interface StatsCardProps {
   change?: string;
   icon: LucideIcon;
   trend?: 'up' | 'down' | 'neutral';
+  style?: React.CSSProperties;
 }
 
-export function StatsCard({ title, value, change, icon: Icon, trend = 'neutral' }: StatsCardProps) {
+export function StatsCard({ title, value, change, icon: Icon, trend = 'neutral', style }: StatsCardProps) {
   const { isMobile } = useResponsiveBreakpoint();
   
   const trendColor = {
@@ -20,7 +21,7 @@ export function StatsCard({ title, value, change, icon: Icon, trend = 'neutral' 
   };
 
   return (
-    <Card className="stats-card hover-lift group animate-scale-in mobile-card">
+    <Card className="stats-card hover-lift group animate-scale-in mobile-card" style={style}>
       <CardHeader className={`flex flex-row items-center justify-between space-y-0 ${isMobile ? 'pb-2 p-3' : 'pb-3 p-6'}`}>
         <CardTitle className={`font-semibold text-muted-foreground uppercase tracking-wide leading-tight ${isMobile ? 'text-xs' : 'text-sm'}`}>
           {title}

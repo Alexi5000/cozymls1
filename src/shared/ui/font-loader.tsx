@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import { useAppFonts } from '../hooks/use-font-loading';
-import { cn } from '../lib/utils';
+import { useAppFonts } from "@/shared/hooks/use-font-loading";
+import { cn } from "@/shared/lib/utils";
 
 interface FontLoaderProps {
   children: ReactNode;

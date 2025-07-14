@@ -1,6 +1,6 @@
 import { mockUsers } from '@/entities/user';
-import { AgentCard } from './AgentCard';
-import { MobileAgentCard } from './MobileAgentCard';
+import { AgentCard } from "@/widgets/agents/ui/AgentCard";
+import { MobileAgentCard } from "@/widgets/agents/ui/MobileAgentCard";
 import { useIsMobile } from '@/shared/hooks/use-mobile';
 
 export function AgentsGrid() {

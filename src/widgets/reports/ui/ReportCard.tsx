@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
 import { Report, ReportTemplate } from '@/entities/report';
-import { reportStore } from '@/shared/lib/report-store';
+import { useReports, useReportFormatting } from '@/features/reports';
 import { 
   BarChart3, 
   LineChart, 
@@ -37,7 +37,10 @@ const chartIcons = {
 };
 
 export function ReportCard({ report, onView, onDelete }: ReportCardProps) {
-  const template = reportStore.getTemplate(report.templateId);
+  const { getTemplate } = useReports();
+  const { getCategoryColor } = useReportFormatting();
+  
+  const template = getTemplate(report.templateId);
   const chartType = report.config.chartType || template?.chartType || 'table';
   const ChartIcon = chartIcons[chartType];
 
@@ -53,17 +56,6 @@ export function ReportCard({ report, onView, onDelete }: ReportCardProps) {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-  };
-
-  const getCategoryColor = (category?: string) => {
-    switch (category) {
-      case 'sales': return 'bg-blue-100 text-blue-800';
-      case 'properties': return 'bg-green-100 text-green-800';
-      case 'agents': return 'bg-purple-100 text-purple-800';
-      case 'market': return 'bg-orange-100 text-orange-800';
-      case 'financial': return 'bg-indigo-100 text-indigo-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
   };
 
   return (

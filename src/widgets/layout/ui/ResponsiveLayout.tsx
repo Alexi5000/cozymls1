@@ -1,6 +1,6 @@
 import React from 'react';
 import { useResponsiveBreakpoint } from '@/shared/hooks/use-responsive-breakpoint';
-import { Layout } from './Layout';
+import { Layout } from "@/widgets/layout/ui/Layout";
 import { MobileLayout } from '@/widgets/mobile';
 import { ResponsiveContainer } from '@/shared/ui';
 

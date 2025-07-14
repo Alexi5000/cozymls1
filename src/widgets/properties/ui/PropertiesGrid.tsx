@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useMemo } from 'react';
-import { PropertyCard } from './PropertyCard';
-import { MobilePropertyCard } from './MobilePropertyCard';
-import { OptimizedPropertyCard } from './OptimizedPropertyCard';
+import { PropertyCard } from "@/widgets/properties/ui/PropertyCard";
+import { MobilePropertyCard } from "@/widgets/properties/ui/MobilePropertyCard";
+import { OptimizedPropertyCard } from "@/widgets/properties/ui/OptimizedPropertyCard";
 import { Property } from '@/entities/property';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
 import { VirtualList } from '@/shared/ui/virtual-list';

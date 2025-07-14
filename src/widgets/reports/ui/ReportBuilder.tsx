@@ -31,7 +31,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Badge } from '@/shared/ui/badge';
 import { Separator } from '@/shared/ui/separator';
 import { useToast } from '@/shared/hooks/use-toast';
-import { reportStore } from '@/shared/lib/report-store';
+import { useReports } from '@/features/reports';
 import { ReportTemplate, ReportConfig } from '@/entities/report';
 import { Calendar, Filter, BarChart3, Plus, Settings } from 'lucide-react';
 
@@ -58,8 +58,7 @@ export function ReportBuilder({ children, onReportGenerated }: ReportBuilderProp
   const [open, setOpen] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState<ReportTemplate | null>(null);
   const { toast } = useToast();
-
-  const templates = reportStore.getTemplates();
+  const { templates, getTemplate, generateReport } = useReports();
 
   const form = useForm<ReportConfigForm>({
     resolver: zodResolver(reportConfigSchema),
@@ -76,7 +75,7 @@ export function ReportBuilder({ children, onReportGenerated }: ReportBuilderProp
   });
 
   const handleTemplateSelect = (templateId: string) => {
-    const template = reportStore.getTemplate(templateId);
+    const template = getTemplate(templateId);
     setSelectedTemplate(template || null);
     if (template) {
       form.setValue('chartType', template.chartType || 'bar');
@@ -101,7 +100,7 @@ export function ReportBuilder({ children, onReportGenerated }: ReportBuilderProp
         showTotals: data.showTotals,
       };
 
-      const report = reportStore.generateReport(
+      const report = generateReport(
         data.templateId,
         config,
         data.name,
