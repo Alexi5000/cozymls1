@@ -36,6 +36,20 @@ const EXCLUDE_FILES = [
   '.d.ts'
 ];
 
+// Directories to exclude from barrel exports
+const EXCLUDE_DIRECTORIES = [
+  '__tests__',
+  'test',
+  'tests',
+  'spec',
+  'specs',
+  'stories',
+  'node_modules',
+  '.git',
+  'dist',
+  'build'
+];
+
 /**
  * Check if a file should be included in barrel exports
  */
@@ -65,6 +79,10 @@ function getExportableFiles(dirPath) {
     if (stat.isFile() && shouldIncludeFile(item)) {
       files.push(item);
     } else if (stat.isDirectory()) {
+      // Check if directory should be excluded
+      const isExcludedDir = EXCLUDE_DIRECTORIES.includes(item);
+      if (isExcludedDir) continue;
+      
       // Check if directory has an index file
       const indexFiles = ['index.ts', 'index.tsx', 'index.js', 'index.jsx'];
       const hasIndex = indexFiles.some(indexFile => existsSync(join(itemPath, indexFile)));
@@ -157,7 +175,7 @@ function generateBarrelsRecursively(dirPath, maxDepth = 3, currentDepth = 0) {
     const itemPath = join(dirPath, item);
     const stat = statSync(itemPath);
     
-    if (stat.isDirectory() && !item.startsWith('.')) {
+    if (stat.isDirectory() && !item.startsWith('.') && !EXCLUDE_DIRECTORIES.includes(item)) {
       generateBarrelsRecursively(itemPath, maxDepth, currentDepth + 1);
     }
   }

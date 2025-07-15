@@ -4,7 +4,9 @@
 
 export * from './activities';
 export * from './agents';
+export * from './contacts';
 export * from './dashboard';
+export * from './deals';
 export * from './layout';
 export * from './mobile';
 export * from './properties';

@@ -1,0 +1,113 @@
+version: '3.8'
+
+services:
+  # CozyMLS App on port 3007
+  cozymls-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: cozymls-app-staging
+    ports:
+      - "3007:80"
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_VERSION=v1.0-fsd
+      - REACT_APP_BUILD_TIME=${BUILD_TIME:-$(date -u +"%Y-%m-%dT%H:%M:%SZ")}
+    networks:
+      - cozymls-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - "com.docker.compose.project=cozymls"
+      - "com.docker.compose.service=app"
+      - "version=v1.0-fsd"
+      - "environment=staging"
+    volumes:
+      - ./logs:/var/log/nginx
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+
+  # CozyMLS App on port 8007 (Mirror for load balancing/testing)
+  cozymls-app-mirror:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: cozymls-app-mirror-staging
+    ports:
+      - "8007:80"
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_VERSION=v1.0-fsd
+      - REACT_APP_BUILD_TIME=${BUILD_TIME:-$(date -u +"%Y-%m-%dT%H:%M:%SZ")}
+      - REACT_APP_INSTANCE=mirror
+    networks:
+      - cozymls-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - "com.docker.compose.project=cozymls"
+      - "com.docker.compose.service=app-mirror"
+      - "version=v1.0-fsd"
+      - "environment=staging"
+    volumes:
+      - ./logs-mirror:/var/log/nginx
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+
+  # Monitoring - Lightweight log aggregator
+  log-monitor:
+    image: busybox:latest
+    container_name: cozymls-log-monitor
+    volumes:
+      - ./logs:/logs/app:ro
+      - ./logs-mirror:/logs/mirror:ro
+    networks:
+      - cozymls-network
+    command: |
+      sh -c "
+        echo 'Starting log monitor for CozyMLS v1.0-fsd...'
+        while true; do
+          echo '=== App Logs ===' >> /logs/combined.log
+          tail -n 50 /logs/app/access.log >> /logs/combined.log 2>/dev/null || true
+          echo '=== Mirror Logs ===' >> /logs/combined.log
+          tail -n 50 /logs/mirror/access.log >> /logs/combined.log 2>/dev/null || true
+          echo '=== End $(date) ===' >> /logs/combined.log
+          sleep 300
+        done
+      "
+    restart: unless-stopped
+
+networks:
+  cozymls-network:
+    driver: bridge
+    name: cozymls-staging-network
+
+volumes:
+  logs:
+    driver: local
+  logs-mirror:
+    driver: local

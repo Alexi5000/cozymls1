@@ -6,4 +6,3 @@ export * from './App';
 export * from './providers';
 export * from './router';
 export * from './theme-provider';
-export * from './__tests__';
