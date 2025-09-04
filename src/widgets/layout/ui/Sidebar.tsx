@@ -51,10 +51,13 @@ export function Sidebar() {
         <div className="flex items-center justify-between">
           {!isCollapsed && (
             <div className="flex items-center gap-3 animate-slide-up">
-              <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-soft">
-                <div className="w-4 h-4 bg-white rounded animate-glow"></div>
+              <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-soft">
+                <div className="w-5 h-5 bg-white rounded-lg animate-glow"></div>
               </div>
-              <h2 className="text-xl font-display font-bold">CozyMLS</h2>
+              <div className="flex flex-col">
+                <h2 className="text-xl font-display font-bold text-white">CozyMLS</h2>
+                <p className="text-xs text-white/70 font-body">Real Estate Platform</p>
+              </div>
             </div>
           )}
           <SidebarTrigger className={cn(
@@ -110,8 +113,8 @@ export function Sidebar() {
               <User className="h-5 w-5 text-white" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">Dawn Fintch</p>
-              <p className="text-xs text-white/70">Real Estate Agent</p>
+              <p className="text-sm font-medium text-white truncate font-body">Dawn Fintch</p>
+              <p className="text-xs text-white/70 font-body">Real Estate Agent</p>
             </div>
             <ChevronDown className="h-4 w-4 text-white/70" />
           </div>
