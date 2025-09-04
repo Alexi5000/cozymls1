@@ -9,7 +9,14 @@ import { ErrorBoundary } from '@/shared/ui/error-boundary';
 
 function PropertiesContent() {
   const isMobile = useIsMobile();
-  const { refreshProperties } = usePropertiesContext();
+  const propertiesContext = usePropertiesContext();
+  
+  if (!propertiesContext) {
+    console.error('PropertiesContext is undefined');
+    return <div>Loading...</div>;
+  }
+  
+  const { refreshProperties } = propertiesContext;
 
   const content = (
     <div className="space-y-6 md:space-y-8 animate-slide-up">
