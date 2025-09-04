@@ -23,19 +23,19 @@ export function StatsCard({ title, value, change, icon: Icon, trend = 'neutral',
   return (
     <Card className="stats-card hover-lift group animate-scale-in mobile-card" style={style}>
       <CardHeader className={`flex flex-row items-center justify-between space-y-0 ${isMobile ? 'pb-2 p-3' : 'pb-3 p-6'}`}>
-        <CardTitle className={`font-semibold text-muted-foreground uppercase tracking-wide leading-tight ${isMobile ? 'text-xs' : 'text-sm'}`}>
+        <CardTitle className={`font-semibold text-white/90 uppercase tracking-wide leading-tight ${isMobile ? 'text-xs' : 'text-sm'}`}>
           {title}
         </CardTitle>
-        <div className={`bg-gradient-primary rounded-lg flex items-center justify-center shadow-elegant flex-shrink-0 group-hover:animate-glow ${isMobile ? 'w-8 h-8' : 'w-12 h-12 rounded-xl'}`}>
+        <div className={`bg-white/20 rounded-lg flex items-center justify-center shadow-elegant flex-shrink-0 group-hover:animate-glow ${isMobile ? 'w-8 h-8' : 'w-12 h-12 rounded-xl'}`}>
           <Icon className={`text-white ${isMobile ? 'h-4 w-4' : 'h-6 w-6'}`} />
         </div>
       </CardHeader>
       <CardContent className={`pt-0 relative z-10 ${isMobile ? 'p-3' : 'p-6'}`}>
-        <div className={`font-bold font-display text-foreground ${isMobile ? 'text-xl mb-1' : 'text-3xl mb-2'}`}>
+        <div className={`font-bold font-display text-white ${isMobile ? 'text-xl mb-1' : 'text-3xl mb-2'}`}>
           {value}
         </div>
         {change && (
-          <p className={`font-medium ${trendColor[trend]} leading-tight ${isMobile ? 'text-xs' : 'text-sm'}`}>
+          <p className={`font-medium text-white/80 leading-tight ${isMobile ? 'text-xs' : 'text-sm'}`}>
             {change}
           </p>
         )}

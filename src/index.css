@@ -13,8 +13,8 @@
     --background: 210 40% 98%;
     --foreground: 220 47% 11%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 47% 11%;
+    --card: 20 90% 48%;
+    --card-foreground: 0 0% 100%;
 
     --popover: 0 0% 100%;
     --popover-foreground: 220 47% 11%;
@@ -46,7 +46,7 @@
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
     --gradient-warm: linear-gradient(135deg, hsl(20 90% 48%) 0%, hsl(25 95% 58%) 50%, hsl(30 90% 65%) 100%);
     --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted)));
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(210 20% 99%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(20 90% 48%) 0%, hsl(25 95% 58%) 50%, hsl(30 90% 65%) 100%);
     
     /* Elegant Shadows */
     --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.3);
@@ -174,13 +174,14 @@
 
 /* CozyMLS Enhanced Components */
 @layer components {
-  /* Premium Card Styles */
-  .luxury-card {
+  /* Premium Card Styles - Default Enhanced */
+  .luxury-card, .card-enhanced {
     background: var(--gradient-card);
-    border: 1px solid hsl(var(--border));
+    border: 1px solid hsl(var(--primary) / 0.2);
     border-radius: calc(var(--radius) + 4px);
     box-shadow: var(--shadow-elegant);
     transition: var(--transition-smooth);
+    color: white;
   }
 
   .luxury-card:hover {

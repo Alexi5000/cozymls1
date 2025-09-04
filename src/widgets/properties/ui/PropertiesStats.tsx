@@ -7,25 +7,25 @@ export function PropertiesStats() {
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-      <Card className="p-3 md:p-4">
-        <div className="text-xs md:text-sm font-medium text-muted-foreground">Total Properties</div>
-        <div className="text-lg md:text-2xl font-bold text-foreground">{properties.length}</div>
+      <Card className="p-3 md:p-4 stats-card">
+        <div className="text-xs md:text-sm font-medium text-white/90">Total Properties</div>
+        <div className="text-lg md:text-2xl font-bold text-white">{properties.length}</div>
       </Card>
-      <Card className="p-3 md:p-4">
-        <div className="text-xs md:text-sm font-medium text-muted-foreground">Active Listings</div>
-        <div className="text-lg md:text-2xl font-bold text-primary">
+      <Card className="p-3 md:p-4 stats-card">
+        <div className="text-xs md:text-sm font-medium text-white/90">Active Listings</div>
+        <div className="text-lg md:text-2xl font-bold text-white">
           {getActiveListingsCount(properties)}
         </div>
       </Card>
-      <Card className="p-3 md:p-4">
-        <div className="text-xs md:text-sm font-medium text-muted-foreground">Avg. Days on Market</div>
-        <div className="text-lg md:text-2xl font-bold text-foreground">
+      <Card className="p-3 md:p-4 stats-card">
+        <div className="text-xs md:text-sm font-medium text-white/90">Avg. Days on Market</div>
+        <div className="text-lg md:text-2xl font-bold text-white">
           {calculateAverageDaysOnMarket(properties)}
         </div>
       </Card>
-      <Card className="p-3 md:p-4">
-        <div className="text-xs md:text-sm font-medium text-muted-foreground">Avg. Price</div>
-        <div className="text-lg md:text-2xl font-bold text-foreground">
+      <Card className="p-3 md:p-4 stats-card">
+        <div className="text-xs md:text-sm font-medium text-white/90">Avg. Price</div>
+        <div className="text-lg md:text-2xl font-bold text-white">
           {formatPrice(calculateAveragePrice(properties))}
         </div>
       </Card>
