@@ -3,7 +3,7 @@
 // Do not edit manually - your changes will be overwritten
 
 export * from './accordion';
-export * from './adaptive-layout';
+export { ResponsiveGrid as UIResponsiveGrid, AdaptiveLayout } from './adaptive-layout';
 export * from './alert-dialog';
 export * from './alert';
 export * from './aspect-ratio';
@@ -63,12 +63,12 @@ export * from './sheet';
 export * from './sidebar';
 export * from './skeleton';
 export * from './slider';
-export * from './sonner';
+export { Toaster as SonnerToaster } from './sonner';
 export * from './switch';
 export * from './table';
 export * from './tabs';
 export * from './textarea';
-export * from './toast';
+export { Toast, ToastAction, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from './toast';
 export * from './toaster';
 export * from './toggle-group';
 export * from './toggle';

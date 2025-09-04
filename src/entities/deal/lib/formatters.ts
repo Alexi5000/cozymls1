@@ -35,7 +35,7 @@ export function formatDealProbability(probability: number): string {
   return `${probability}%`;
 }
 
-export function formatDealDate(date: Date): string {
+export function formatDate(date: Date): string {
   return new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
     month: 'short',

@@ -86,7 +86,7 @@ export function formatRelativeTime(date: Date): string {
   return `${Math.floor(diffInSeconds / 31536000)}y ago`;
 }
 
-export function formatDate(date: Date): string {
+export function formatDashboardDate(date: Date): string {
   return new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
     month: 'short',

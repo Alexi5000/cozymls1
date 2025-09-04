@@ -4,7 +4,7 @@
 
 export * from './use-debounced-callback';
 export * from './use-font-loading';
-export * from './use-intersection-observer';
+export { useIntersectionObserver as useIntersectionObserverHook, useLazyImage, useLazyComponent } from './use-intersection-observer';
 export * from './use-memory-optimization';
 export * from './use-mobile-gestures';
 export * from './use-mobile-performance';
@@ -14,7 +14,7 @@ export * from './use-orientation';
 export * from './use-performance';
 export * from './use-properties';
 export * from './use-property-actions';
-export * from './use-render-optimization';
+export { useRenderOptimization, useImageOptimization as useImageOptimizationHook } from './use-render-optimization';
 export * from './use-responsive-breakpoint';
 export * from './use-safe-area';
 export * from './use-scroll-animation';

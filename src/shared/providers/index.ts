@@ -3,4 +3,3 @@
 // Do not edit manually - your changes will be overwritten
 
 export * from './PropertiesProvider';
-export * from './PropertiesProviderV2';

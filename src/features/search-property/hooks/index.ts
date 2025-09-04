@@ -1,1 +1,1 @@
-// No exports available in this directory
+export * from './use-property-search';

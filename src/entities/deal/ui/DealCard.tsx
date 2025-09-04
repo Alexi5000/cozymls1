@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { Deal } from "@/entities/deal/model/types";
-import { formatDealValue, formatDealStage, formatDealDate } from "@/entities/deal/lib/formatters";
+import { formatDealValue, formatDealStage, formatDate } from "@/entities/deal/lib/formatters";
 import { getDealStageColor, getDealProbabilityColor } from "@/entities/deal/lib/helpers";
 import { DollarSign, Calendar, TrendingUp, Eye, Edit, Trash2 } from 'lucide-react';
 
@@ -26,7 +26,7 @@ export function DealCard({
   const probabilityColor = getDealProbabilityColor(deal.probability);
   const formattedValue = formatDealValue(deal.value);
   const formattedStage = formatDealStage(deal.stage);
-  const formattedDate = formatDealDate(deal.expectedCloseDate);
+  const formattedDate = formatDate(deal.expectedCloseDate);
 
   if (compact) {
     return (
@@ -125,8 +125,8 @@ export function DealCard({
           {/* Deal Timeline */}
           <div className="pt-3 border-t border-border">
             <div className="flex justify-between text-xs text-muted-foreground mb-2">
-              <span>Created: {formatDealDate(deal.createdAt)}</span>
-              <span>Updated: {formatDealDate(deal.updatedAt)}</span>
+              <span>Created: {formatDate(deal.createdAt)}</span>
+              <span>Updated: {formatDate(deal.updatedAt)}</span>
             </div>
             
             {/* Progress Bar */}
