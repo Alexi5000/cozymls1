@@ -1,178 +1,187 @@
-import { DashboardStats } from "@/entities/dashboard/model/types";
+import { mockProperties } from '@/entities/property';
+import { mockDeals } from '@/entities/deal';
+import { mockUsers } from '@/entities/user';
+import { mockActivities } from '@/entities/activity';
+import { DashboardStats } from './types';
+import { formatCurrency, formatPercentage, formatGrowth } from '../lib/formatters';
 
-export interface DashboardTimeRange {
-  start: Date;
-  end: Date;
+export interface EnhancedDashboardStats extends DashboardStats {
+  newListings: number;
+  pendingSales: number;
+  averageDaysOnMarket: number;
+  averagePropertyValue: number;
+  totalListings: number;
+  soldThisMonth: number;
+  conversionRate: number;
+  topPerformingAgents: Array<{
+    id: string;
+    name: string;
+    properties: number;
+    revenue: number;
+  }>;
+  recentGrowth: {
+    properties: { value: number; trend: 'up' | 'down' | 'neutral'; };
+    revenue: { value: number; trend: 'up' | 'down' | 'neutral'; };
+    deals: { value: number; trend: 'up' | 'down' | 'neutral'; };
+  };
 }
 
-export interface DashboardService {
-  getStats(timeRange?: DashboardTimeRange): Promise<DashboardStats>;
-  getHistoricalStats(periods: number): Promise<DashboardStats[]>;
-  refreshStats(): Promise<DashboardStats>;
-}
+export class DashboardService {
+  static calculateDashboardStats(): EnhancedDashboardStats {
+    const properties = mockProperties;
+    const deals = mockDeals;
+    const users = mockUsers;
+    const activities = mockActivities;
 
-export class MockDashboardService implements DashboardService {
-  private static instance: MockDashboardService;
-  private currentStats: DashboardStats;
+    // Basic counts
+    const activeProperties = properties.filter(p => p.status === 'active').length;
+    const pendingSales = properties.filter(p => p.status === 'pending').length;
+    const soldProperties = properties.filter(p => p.status === 'sold');
+    
+    // Calculate revenue from sold properties (last 30 days)
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    
+    const recentSales = soldProperties.filter(p => 
+      p.updatedAt >= thirtyDaysAgo
+    );
+    
+    const monthlyRevenue = recentSales.reduce((sum, p) => sum + (p.price * 0.03), 0); // 3% commission
+    const totalRevenue = soldProperties.reduce((sum, p) => sum + (p.price * 0.03), 0);
+    
+    // Calculate average days on market
+    const averageDaysOnMarket = properties.length > 0 
+      ? Math.round(properties.reduce((sum, p) => sum + p.daysOnMarket, 0) / properties.length)
+      : 0;
+    
+    // Calculate average property value
+    const averagePropertyValue = properties.length > 0
+      ? properties.reduce((sum, p) => sum + p.price, 0) / properties.length
+      : 0;
 
-  private constructor() {
-    this.currentStats = {
-      totalContacts: 847,
-      activeDeals: 23,
-      totalRevenue: 2400000,
-      monthlyGrowth: 12.5,
+    // New listings (last 7 days)
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    const newListings = properties.filter(p => p.listingDate >= sevenDaysAgo).length;
+
+    // Calculate conversion rate
+    const totalListings = properties.length;
+    const conversionRate = totalListings > 0 ? (soldProperties.length / totalListings) * 100 : 0;
+
+    // Top performing agents
+    const agentPerformance = users
+      .filter(u => u.role === 'agent')
+      .map(agent => {
+        const agentProperties = properties.filter(p => p.agent.id === agent.id);
+        const agentSales = agentProperties.filter(p => p.status === 'sold');
+        const agentRevenue = agentSales.reduce((sum, p) => sum + (p.price * 0.03), 0);
+        
+        return {
+          id: agent.id,
+          name: agent.name,
+          properties: agentProperties.length,
+          revenue: agentRevenue
+        };
+      })
+      .sort((a, b) => b.revenue - a.revenue)
+      .slice(0, 5);
+
+    // Mock growth calculations (in real app, compare with previous period)
+    const recentGrowth = {
+      properties: { value: 12.5, trend: 'up' as const },
+      revenue: { value: 8.3, trend: 'up' as const },
+      deals: { value: -2.1, trend: 'down' as const }
+    };
+
+    return {
+      totalContacts: users.filter(u => u.role !== 'admin').length + 150, // Include external contacts
+      activeDeals: deals.length,
+      totalRevenue: totalRevenue,
+      monthlyGrowth: recentGrowth.revenue.value,
+      newListings,
+      pendingSales,
+      averageDaysOnMarket,
+      averagePropertyValue,
+      totalListings,
+      soldThisMonth: recentSales.length,
+      conversionRate,
+      topPerformingAgents: agentPerformance,
+      recentGrowth
     };
   }
 
-  static getInstance(): MockDashboardService {
-    if (!MockDashboardService.instance) {
-      MockDashboardService.instance = new MockDashboardService();
-    }
-    return MockDashboardService.instance;
-  }
-
-  async getStats(timeRange?: DashboardTimeRange): Promise<DashboardStats> {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 100));
+  static getMarketInsights() {
+    const properties = mockProperties;
     
-    if (timeRange) {
-      // Simulate filtered stats based on time range
-      const daysDiff = Math.floor((timeRange.end.getTime() - timeRange.start.getTime()) / (1000 * 60 * 60 * 24));
-      const multiplier = Math.min(1, daysDiff / 30); // Scale based on days
-      
-      return {
-        totalContacts: Math.floor(this.currentStats.totalContacts * multiplier),
-        activeDeals: Math.floor(this.currentStats.activeDeals * multiplier),
-        totalRevenue: Math.floor(this.currentStats.totalRevenue * multiplier),
-        monthlyGrowth: this.currentStats.monthlyGrowth,
-      };
-    }
-    
-    return { ...this.currentStats };
-  }
+    // Calculate market statistics
+    const pricesByArea = properties.reduce((acc, p) => {
+      const area = p.city;
+      if (!acc[area]) acc[area] = [];
+      acc[area].push(p.price);
+      return acc;
+    }, {} as Record<string, number[]>);
 
-  async getHistoricalStats(periods: number = 12): Promise<DashboardStats[]> {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 150));
-    
-    const historical: DashboardStats[] = [];
-    const now = new Date();
-    
-    for (let i = periods - 1; i >= 0; i--) {
-      const baseVariation = 0.7 + Math.random() * 0.6; // 70% to 130% variation
-      const growthVariation = -5 + Math.random() * 20; // -5% to 15% growth
-      
-      historical.push({
-        totalContacts: Math.floor(this.currentStats.totalContacts * baseVariation),
-        activeDeals: Math.floor(this.currentStats.activeDeals * baseVariation),
-        totalRevenue: Math.floor(this.currentStats.totalRevenue * baseVariation),
-        monthlyGrowth: Math.round(growthVariation * 10) / 10,
-      });
-    }
-    
-    return historical;
-  }
+    // Find hottest market (highest average price increase)
+    const marketTrends = Object.entries(pricesByArea).map(([area, prices]) => {
+      const avgPrice = prices.reduce((sum, p) => sum + p, 0) / prices.length;
+      return { area, avgPrice, count: prices.length };
+    }).sort((a, b) => b.avgPrice - a.avgPrice);
 
-  async refreshStats(): Promise<DashboardStats> {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 200));
-    
-    // Simulate slight changes in stats
-    const contactsChange = Math.floor(Math.random() * 10) - 5; // -5 to +5
-    const dealsChange = Math.floor(Math.random() * 6) - 3; // -3 to +3
-    const revenueChange = Math.floor(Math.random() * 100000) - 50000; // -50k to +50k
-    const growthChange = (Math.random() * 2) - 1; // -1% to +1%
-    
-    this.currentStats = {
-      totalContacts: Math.max(0, this.currentStats.totalContacts + contactsChange),
-      activeDeals: Math.max(0, this.currentStats.activeDeals + dealsChange),
-      totalRevenue: Math.max(0, this.currentStats.totalRevenue + revenueChange),
-      monthlyGrowth: Math.round((this.currentStats.monthlyGrowth + growthChange) * 10) / 10,
-    };
-    
-    return { ...this.currentStats };
-  }
-
-  // Additional methods for testing and development
-  updateStats(newStats: Partial<DashboardStats>): void {
-    this.currentStats = {
-      ...this.currentStats,
-      ...newStats,
-    };
-  }
-
-  resetStats(): void {
-    this.currentStats = {
-      totalContacts: 847,
-      activeDeals: 23,
-      totalRevenue: 2400000,
-      monthlyGrowth: 12.5,
-    };
-  }
-
-  // Real-time stats simulation
-  startRealTimeUpdates(callback: (stats: DashboardStats) => void, interval: number = 30000): () => void {
-    const intervalId = setInterval(async () => {
-      const updatedStats = await this.refreshStats();
-      callback(updatedStats);
-    }, interval);
-
-    return () => clearInterval(intervalId);
-  }
-}
-
-// Export singleton instance
-export const dashboardService = MockDashboardService.getInstance();
-
-// Real implementation would look like this:
-/*
-export class ApiDashboardService implements DashboardService {
-  private baseUrl: string;
-  private apiKey: string;
-
-  constructor(baseUrl: string, apiKey: string) {
-    this.baseUrl = baseUrl;
-    this.apiKey = apiKey;
-  }
-
-  async getStats(timeRange?: DashboardTimeRange): Promise<DashboardStats> {
-    const params = new URLSearchParams();
-    if (timeRange) {
-      params.append('start', timeRange.start.toISOString());
-      params.append('end', timeRange.end.toISOString());
-    }
-
-    const response = await fetch(`${this.baseUrl}/dashboard/stats?${params}`, {
-      headers: {
-        'Authorization': `Bearer ${this.apiKey}`,
-        'Content-Type': 'application/json',
+    const insights = [
+      {
+        title: "Market Hotspot",
+        description: `${marketTrends[0]?.area} showing highest values`,
+        trend: "up" as const,
+        value: `€${Math.round(marketTrends[0]?.avgPrice / 1000)}K avg`,
+        color: "from-emerald-500 to-emerald-600"
       },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch dashboard stats: ${response.statusText}`);
-    }
-
-    return response.json();
-  }
-
-  async getHistoricalStats(periods: number): Promise<DashboardStats[]> {
-    const response = await fetch(`${this.baseUrl}/dashboard/historical?periods=${periods}`, {
-      headers: {
-        'Authorization': `Bearer ${this.apiKey}`,
-        'Content-Type': 'application/json',
+      {
+        title: "Inventory Alert",
+        description: `${properties.filter(p => p.price < 500000).length} properties under €500K`,
+        trend: "down" as const,
+        value: `${properties.filter(p => p.price < 500000).length} left`,
+        color: "from-amber-500 to-amber-600"
       },
-    });
+      {
+        title: "Best Performance",
+        description: `Average ${Math.round(100 - (properties.reduce((sum, p) => sum + p.daysOnMarket, 0) / properties.length))} days to sell`,
+        trend: "up" as const,
+        value: `${Math.round(100 - (properties.reduce((sum, p) => sum + p.daysOnMarket, 0) / properties.length))}% faster`,
+        color: "from-blue-500 to-blue-600"
+      }
+    ];
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch historical stats: ${response.statusText}`);
-    }
-
-    return response.json();
+    return insights;
   }
 
-  async refreshStats(): Promise<DashboardStats> {
-    return this.getStats();
+  static getRecentActivities() {
+    // Combine real property and deal activities
+    const recentPropertyListings = mockProperties
+      .sort((a, b) => b.listingDate.getTime() - a.listingDate.getTime())
+      .slice(0, 3)
+      .map(p => ({
+        id: `property-${p.id}`,
+        title: `New listing: ${p.address}`,
+        type: 'listing' as const,
+        date: p.listingDate,
+        priority: 'medium' as const,
+        icon: 'Home' as const
+      }));
+
+    const recentDeals = mockDeals
+      .sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime())
+      .slice(0, 2)
+      .map(d => ({
+        id: `deal-${d.id}`,
+        title: `Deal update: ${d.title}`,
+        type: 'deal' as const,
+        date: d.updatedAt,
+        priority: d.probability > 70 ? 'high' as const : 'medium' as const,
+        icon: 'TrendingUp' as const
+      }));
+
+    return [...recentPropertyListings, ...recentDeals]
+      .sort((a, b) => b.date.getTime() - a.date.getTime())
+      .slice(0, 6);
   }
 }
-*/

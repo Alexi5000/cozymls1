@@ -1,7 +1,5 @@
 import React, { memo, useCallback, useMemo } from 'react';
-import { PropertyCard } from "@/widgets/properties/ui/PropertyCard";
-import { MobilePropertyCard } from "@/widgets/properties/ui/MobilePropertyCard";
-import { OptimizedPropertyCard } from "@/widgets/properties/ui/OptimizedPropertyCard";
+import { UnifiedPropertyCard } from "@/widgets/properties/ui/UnifiedPropertyCard";
 import { Property } from '@/entities/property';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
 import { VirtualList } from '@/shared/ui/virtual-list';
@@ -31,38 +29,24 @@ export const PropertiesGrid = memo(function PropertiesGrid() {
     console.log('View property:', propertyId);
   }, []);
 
-  // Render item function for virtual list
-  const renderMobileItem = useCallback((property: Property, index: number) => (
-    <MobilePropertyCard 
-      key={property.id} 
+  // Unified render function for all viewports
+  const renderPropertyCard = useCallback((property: Property, index: number) => (
+    <UnifiedPropertyCard 
+      key={property.id}
       property={property}
       onCall={() => handleCall(property.agent.name)}
       onEmail={() => handleEmail(property.agent.name)}
       onTap={() => handleTap(property.id)}
-    />
-  ), [handleCall, handleEmail, handleTap]);
-
-  // Memoized mobile cards for non-virtual rendering
-  const mobileCards = useMemo(() => 
-    properties.map((property) => (
-      <MobilePropertyCard 
-        key={property.id} 
-        property={property}
-        onCall={() => handleCall(property.agent.name)}
-        onEmail={() => handleEmail(property.agent.name)}
-        onTap={() => handleTap(property.id)}
-      />
-    )), [properties, handleCall, handleEmail, handleTap]
-  );
-
-  // Optimized desktop cards with new OptimizedPropertyCard
-  const renderDesktopCard = useCallback((property: Property, index: number) => (
-    <OptimizedPropertyCard 
-      property={property}
       onView={handleTap}
       onContact={(agentId) => console.log('Contact agent:', agentId)}
     />
-  ), [handleTap]);
+  ), [handleCall, handleEmail, handleTap]);
+
+  // Memoized property cards for standard rendering
+  const propertyCards = useMemo(() => 
+    properties.map((property) => renderPropertyCard(property, 0)), 
+    [properties, renderPropertyCard]
+  );
 
   // Use optimized list for better performance with large datasets
   const shouldUseOptimizedList = properties.length > 50;
@@ -85,38 +69,25 @@ export const PropertiesGrid = memo(function PropertiesGrid() {
 
   return (
     <ErrorBoundary>
-      {isMobile ? (
-        shouldUseVirtualization && properties.length > 20 ? (
-          <OptimizedList
-            items={properties}
-            renderItem={renderMobileItem}
-            itemHeight={280}
-            height={window.innerHeight - 200}
-            className="space-y-4 animate-slide-up"
-            getItemKey={(property) => property.id}
-          />
-        ) : (
-          <div className="space-y-4 animate-slide-up">
-            {mobileCards}
-          </div>
-        )
+      {shouldUseVirtualization && properties.length > 20 ? (
+        <OptimizedList
+          items={properties}
+          renderItem={renderPropertyCard}
+          itemHeight={isMobile ? 320 : 380}
+          height={window.innerHeight - 200}
+          className={isMobile ? "space-y-4 animate-slide-up" : "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 animate-scale-in"}
+          getItemKey={(property) => property.id}
+        />
       ) : shouldUseOptimizedList ? (
         <SimpleOptimizedList
           items={properties}
-          renderItem={renderDesktopCard}
-          className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 animate-scale-in"
+          renderItem={renderPropertyCard}
+          className={isMobile ? "space-y-4 animate-slide-up" : "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 animate-scale-in"}
           getItemKey={(property) => property.id}
         />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 animate-scale-in">
-          {properties.map((property) => (
-            <OptimizedPropertyCard 
-              key={property.id}
-              property={property}
-              onView={handleTap}
-              onContact={(agentId) => console.log('Contact agent:', agentId)}
-            />
-          ))}
+        <div className={isMobile ? "space-y-4 animate-slide-up" : "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 animate-scale-in"}>
+          {propertyCards}
         </div>
       )}
     </ErrorBoundary>

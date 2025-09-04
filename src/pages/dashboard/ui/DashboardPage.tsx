@@ -1,6 +1,6 @@
-import { SimpleDashboardPage } from './SimpleDashboardPage';
+import { EnhancedDashboardPage } from './EnhancedDashboardPage';
 
 export function DashboardPage() {
-  console.log('DashboardPage rendering - using simple version');
-  return <SimpleDashboardPage />;
+  console.log('DashboardPage rendering - using enhanced version');
+  return <EnhancedDashboardPage />;
 }
