@@ -6,6 +6,7 @@ export * from './brand';
 export * from './bundle-analyzer';
 export * from './image-optimization';
 export * from './lazy-loading';
+export * from './performance-fonts';
 export * from './performance-store';
 export * from './property-utils';
 export * from './report-store';

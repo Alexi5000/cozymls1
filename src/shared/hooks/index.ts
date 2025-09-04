@@ -3,7 +3,6 @@
 // Do not edit manually - your changes will be overwritten
 
 export * from './use-debounced-callback';
-export * from './use-font-loading';
 export { useIntersectionObserver as useIntersectionObserverHook, useLazyImage, useLazyComponent } from './use-intersection-observer';
 export * from './use-memory-optimization';
 export * from './use-mobile-gestures';
