@@ -5,17 +5,15 @@ import { Toaster } from '@/shared/ui/toaster';
 import { Toaster as Sonner } from '@/shared/ui/sonner';
 import { ErrorBoundary } from '@/shared/ui/error-boundary';
 import { ThemeProvider } from "@/app/theme-provider";
+import { AppDataProvider } from '@/app/data-provider';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      gcTime: 10 * 60 * 1000, // 10 minutes
+      staleTime: Infinity, // Data never becomes stale since we use mock data
+      gcTime: Infinity, // Keep in cache forever for instant access
       refetchOnWindowFocus: false,
-      retry: (failureCount, error) => {
-        if (failureCount < 2) return true;
-        return false;
-      },
+      retry: false, // No retries needed for mock data
     },
   },
 });
@@ -28,13 +26,15 @@ export function Providers({ children }: ProvidersProps) {
   return (
     <ErrorBoundary>
       <ThemeProvider>
-        <QueryClientProvider client={queryClient}>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            {children}
-          </TooltipProvider>
-        </QueryClientProvider>
+        <AppDataProvider>
+          <QueryClientProvider client={queryClient}>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              {children}
+            </TooltipProvider>
+          </QueryClientProvider>
+        </AppDataProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );

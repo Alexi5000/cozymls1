@@ -1,41 +1,50 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { LoadingSpinner } from '@/shared/ui/loading-spinner';
-import { PerformanceMonitor } from '@/shared/ui/performance-monitor';
-import { createRouteComponent } from '@/shared/lib/lazy-loading';
 
-// Eager load dashboard for immediate loading, lazy load others
+// Eager load all critical pages for instant navigation
 import { DashboardPage } from '@/pages/dashboard';
-const PropertiesPage = createRouteComponent('properties', () => import('@/pages/properties').then(m => ({ default: m.PropertiesPage })));
-const ContactsPage = createRouteComponent('contacts', () => import('@/pages/contacts').then(m => ({ default: m.ContactsPage })));
-const DealsPage = createRouteComponent('deals', () => import('@/pages/deals').then(m => ({ default: m.DealsPage })));
-const AgentsPage = createRouteComponent('agents', () => import('@/pages/agents').then(m => ({ default: m.AgentsPage })));
-const ActivitiesPage = createRouteComponent('activities', () => import('@/pages/activities').then(m => ({ default: m.ActivitiesPage })));
-const ReportsPage = createRouteComponent('reports', () => import('@/pages/reports').then(m => ({ default: m.ReportsPage })));
-const SettingsPage = createRouteComponent('settings', () => import('@/pages/settings').then(m => ({ default: m.SettingsPage })));
-const NotFoundPage = createRouteComponent('not-found', () => import('@/pages/not-found').then(m => ({ default: m.NotFoundPage })));
+import { PropertiesPage } from '@/pages/properties';
+import { ContactsPage } from '@/pages/contacts';
+import { DealsPage } from '@/pages/deals';
+import { AgentsPage } from '@/pages/agents';
+import { ActivitiesPage } from '@/pages/activities';
+
+// Only lazy load non-essential pages
+import { Suspense, lazy } from 'react';
+import { LoadingSpinner } from '@/shared/ui/loading-spinner';
+const ReportsPage = lazy(() => import('@/pages/reports').then(m => ({ default: m.ReportsPage })));
+const SettingsPage = lazy(() => import('@/pages/settings').then(m => ({ default: m.SettingsPage })));
+const NotFoundPage = lazy(() => import('@/pages/not-found').then(m => ({ default: m.NotFoundPage })));
 
 export function Router() {
   return (
     <BrowserRouter>
-      <Suspense fallback={<LoadingSpinner />}>
-        <Routes>
-          <Route path="/" element={<DashboardPage />} />
-          <Route path="/properties" element={<PropertiesPage />} />
-          <Route path="/contacts" element={<ContactsPage />} />
-          <Route path="/deals" element={<DealsPage />} />
-          <Route path="/agents" element={<AgentsPage />} />
-          <Route path="/activities" element={<ActivitiesPage />} />
-          <Route path="/reports" element={<ReportsPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </Suspense>
-      {/* Defer performance monitoring to avoid blocking initial render */}
-      <Suspense fallback={null}>
-        <PerformanceMonitor />
-      </Suspense>
+      <Routes>
+        {/* Critical routes load instantly */}
+        <Route path="/" element={<DashboardPage />} />
+        <Route path="/properties" element={<PropertiesPage />} />
+        <Route path="/contacts" element={<ContactsPage />} />
+        <Route path="/deals" element={<DealsPage />} />
+        <Route path="/agents" element={<AgentsPage />} />
+        <Route path="/activities" element={<ActivitiesPage />} />
+        
+        {/* Non-critical routes with minimal suspense */}
+        <Route path="/reports" element={
+          <Suspense fallback={<div className="animate-pulse">Loading...</div>}>
+            <ReportsPage />
+          </Suspense>
+        } />
+        <Route path="/settings" element={
+          <Suspense fallback={<div className="animate-pulse">Loading...</div>}>
+            <SettingsPage />
+          </Suspense>
+        } />
+        <Route path="*" element={
+          <Suspense fallback={<div className="animate-pulse">Loading...</div>}>
+            <NotFoundPage />
+          </Suspense>
+        } />
+      </Routes>
     </BrowserRouter>
   );
 }

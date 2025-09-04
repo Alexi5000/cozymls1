@@ -57,13 +57,11 @@ export function useProperties() {
     });
   }, [state.properties, state.filters]);
 
-  const refreshProperties = useCallback(async () => {
+  const refreshProperties = useCallback(() => {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      // In real app, fetch from API
+      // Instant data refresh - no artificial delays
       setState(prev => ({ 
         ...prev, 
         properties: mockProperties,

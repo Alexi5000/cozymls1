@@ -1,5 +1,5 @@
 import React, { createContext, useContext, ReactNode } from 'react';
-import { useProperties, PropertiesFilters } from '@/shared/hooks/use-properties';
+import { useOptimizedProperties, PropertiesFilters } from '@/shared/hooks/use-optimized-properties';
 import { Property } from '@/entities/property';
 
 interface PropertiesContextType {
@@ -19,7 +19,7 @@ interface PropertiesProviderProps {
 }
 
 export function PropertiesProvider({ children }: PropertiesProviderProps) {
-  const propertiesState = useProperties();
+  const propertiesState = useOptimizedProperties();
 
   return (
     <PropertiesContext.Provider value={propertiesState}>

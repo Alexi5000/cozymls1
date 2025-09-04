@@ -1,6 +1,6 @@
-import { EnhancedDashboardPage } from './EnhancedDashboardPage';
+import { FastDashboardPage } from './FastDashboardPage';
 
 export function DashboardPage() {
-  console.log('DashboardPage rendering - using enhanced version');
-  return <EnhancedDashboardPage />;
+  console.log('DashboardPage rendering - using fast version');
+  return <FastDashboardPage />;
 }
