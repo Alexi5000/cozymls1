@@ -1,11 +1,12 @@
 import { Layout } from '@/widgets/layout';
-import { HeroSection } from '@/widgets/dashboard/ui/HeroSection';
 import { MarketInsights } from '@/widgets/dashboard/ui/MarketInsights';
 import { RecentActivity } from '@/widgets/dashboard/ui/RecentActivity';
 import { DealsOverview } from '@/widgets/dashboard/ui/DealsOverview';
 import { StatsCardGrid } from '@/widgets/dashboard/ui/StatsCardGrid';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
 import { DashboardService } from '@/entities/dashboard/model/services';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
+import { Button } from '@/shared/ui/button';
 import { 
   Home, 
   TrendingUp, 
@@ -65,11 +66,49 @@ export function EnhancedDashboardPage() {
   return (
     <Layout title="Dashboard">
       <div className="space-y-6 md:space-y-8 animate-slide-up">
-        {/* Hero Section with Key Stats */}
-        <HeroSection 
-          userName="Dawn" 
-          stats={heroStats}
-        />
+        {/* Simple Hero Welcome */}
+        <Card className="hero-section p-8 text-white">
+          <div className="relative z-10">
+            <h1 className="text-4xl font-bold font-display mb-4">
+              Welcome back, Dawn! 👋
+            </h1>
+            <p className="text-white/90 text-xl mb-6">
+              Your real estate empire is thriving. Here's your latest performance snapshot.
+            </p>
+            
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              <Card className="glass-effect">
+                <CardContent className="p-4 text-center">
+                  <div className="text-2xl font-bold text-white">{heroStats.activeProperties}</div>
+                  <div className="text-white/80 text-sm">Active Properties</div>
+                </CardContent>
+              </Card>
+              <Card className="glass-effect">
+                <CardContent className="p-4 text-center">
+                  <div className="text-2xl font-bold text-white">{heroStats.pendingSales}</div>
+                  <div className="text-white/80 text-sm">Pending Sales</div>
+                </CardContent>
+              </Card>
+              <Card className="glass-effect">
+                <CardContent className="p-4 text-center">
+                  <div className="text-2xl font-bold text-white">${(heroStats.monthlyRevenue / 1000000).toFixed(1)}M</div>
+                  <div className="text-white/80 text-sm">Monthly Revenue</div>
+                </CardContent>
+              </Card>
+              <Card className="glass-effect">
+                <CardContent className="p-4 text-center">
+                  <div className="text-2xl font-bold text-white">{heroStats.newListings}</div>
+                  <div className="text-white/80 text-sm">New Listings</div>
+                </CardContent>
+              </Card>
+            </div>
+            
+            <Button className="glass-effect border-white/30 text-white hover:bg-white/20">
+              Add New Property
+            </Button>
+          </div>
+        </Card>
         
         {/* Additional Stats Grid */}
         {!isMobile && (

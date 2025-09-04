@@ -1,6 +1,5 @@
 import { StatsCard } from "@/widgets/dashboard/ui/StatsCard";
 import { useResponsiveBreakpoint } from '@/shared/hooks/use-responsive-breakpoint';
-import { ResponsiveGridContainer } from '@/shared/ui';
 import { LucideIcon } from 'lucide-react';
 
 export interface StatsCardData {
@@ -20,11 +19,7 @@ export function StatsCardGrid({ stats, className = '' }: StatsCardGridProps) {
   const { isMobile } = useResponsiveBreakpoint();
   
   return (
-    <ResponsiveGridContainer 
-      cols={{ mobile: 1, tablet: 2, desktop: 4 }}
-      gap={isMobile ? "sm" : "md"}
-      className={`animate-scale-in ${className}`}
-    >
+    <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-scale-in ${className}`}>
       {stats.map((stat, index) => (
         <StatsCard 
           key={stat.title}
@@ -32,6 +27,6 @@ export function StatsCardGrid({ stats, className = '' }: StatsCardGridProps) {
           style={{ animationDelay: `${index * 100}ms` }}
         />
       ))}
-    </ResponsiveGridContainer>
+    </div>
   );
 }
