@@ -31,7 +31,7 @@ export function AgentCard({ agent }: AgentCardProps) {
   };
 
   return (
-    <Card className="hover:shadow-md transition-shadow">
+    <Card className="luxury-card hover:shadow-lg transition-shadow stats-card">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-3">
@@ -40,8 +40,8 @@ export function AgentCard({ agent }: AgentCardProps) {
               <AvatarFallback>{getInitials(agent.name)}</AvatarFallback>
             </Avatar>
             <div>
-              <h3 className="font-semibold text-foreground">{agent.name}</h3>
-              <Badge variant={getRoleBadgeVariant(agent.role)} className="capitalize">
+              <h3 className="font-semibold text-white font-display">{agent.name}</h3>
+              <Badge className="bg-white/20 text-white border-white/30 capitalize">
                 {agent.role}
               </Badge>
             </div>
@@ -65,39 +65,39 @@ export function AgentCard({ agent }: AgentCardProps) {
       
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <div className="flex items-center text-sm text-muted-foreground">
+          <div className="flex items-center text-sm text-white/80 font-body">
             <Mail className="h-4 w-4 mr-2" />
             {agent.email}
           </div>
           {agent.phone && (
-            <div className="flex items-center text-sm text-muted-foreground">
+            <div className="flex items-center text-sm text-white/80 font-body">
               <Phone className="h-4 w-4 mr-2" />
               {agent.phone}
             </div>
           )}
         </div>
 
-        <div className="grid grid-cols-3 gap-2 pt-2 border-t">
+        <div className="grid grid-cols-3 gap-2 pt-2 border-t border-white/20">
           <div className="text-center">
-            <div className="flex items-center justify-center text-primary mb-1">
+            <div className="flex items-center justify-center text-white mb-1">
               <TrendingUp className="h-3 w-3 mr-1" />
             </div>
-            <div className="text-sm font-medium">{performanceData.deals}</div>
-            <div className="text-xs text-muted-foreground">Deals</div>
+            <div className="text-sm font-medium text-white font-display">{performanceData.deals}</div>
+            <div className="text-xs text-white/60 font-body">Deals</div>
           </div>
           <div className="text-center">
-            <div className="flex items-center justify-center text-primary mb-1">
+            <div className="flex items-center justify-center text-white mb-1">
               <DollarSign className="h-3 w-3 mr-1" />
             </div>
-            <div className="text-sm font-medium">${(performanceData.revenue / 1000).toFixed(0)}K</div>
-            <div className="text-xs text-muted-foreground">Revenue</div>
+            <div className="text-sm font-medium text-white font-display">${(performanceData.revenue / 1000).toFixed(0)}K</div>
+            <div className="text-xs text-white/60 font-body">Revenue</div>
           </div>
           <div className="text-center">
-            <div className="flex items-center justify-center text-primary mb-1">
+            <div className="flex items-center justify-center text-white mb-1">
               <Users className="h-3 w-3 mr-1" />
             </div>
-            <div className="text-sm font-medium">{performanceData.clients}</div>
-            <div className="text-xs text-muted-foreground">Clients</div>
+            <div className="text-sm font-medium text-white font-display">{performanceData.clients}</div>
+            <div className="text-xs text-white/60 font-body">Clients</div>
           </div>
         </div>
       </CardContent>
