@@ -26,8 +26,8 @@ export function ReportsHeader({
       <CardHeader>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <CardTitle>Reports Dashboard</CardTitle>
-            <p className="text-muted-foreground text-sm">
+            <CardTitle className="font-display text-slate-800">Reports Dashboard</CardTitle>
+            <p className="text-slate-600 text-sm font-body">
               Create, manage, and analyze your business reports
             </p>
           </div>

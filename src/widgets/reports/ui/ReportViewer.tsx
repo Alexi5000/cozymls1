@@ -214,9 +214,9 @@ export function ReportViewer({ reportId, onClose }: ReportViewerProps) {
         <DialogHeader>
           <div className="flex items-center justify-between">
             <div>
-              <DialogTitle className="text-xl">{report.name}</DialogTitle>
+              <DialogTitle className="text-xl font-display text-slate-800">{report.name}</DialogTitle>
               {report.description && (
-                <p className="text-muted-foreground mt-1">{report.description}</p>
+                <p className="text-slate-600 mt-1 font-body">{report.description}</p>
               )}
             </div>
             <div className="flex gap-2">
@@ -297,7 +297,7 @@ export function ReportViewer({ reportId, onClose }: ReportViewerProps) {
           {/* Chart/Table Content */}
           <Card>
             <CardHeader>
-              <CardTitle>{activeTab === 'chart' ? 'Chart View' : 'Table View'}</CardTitle>
+              <CardTitle className="font-display text-slate-800">{activeTab === 'chart' ? 'Chart View' : 'Table View'}</CardTitle>
             </CardHeader>
             <CardContent>
               {activeTab === 'chart' ? renderChart() : renderTable()}

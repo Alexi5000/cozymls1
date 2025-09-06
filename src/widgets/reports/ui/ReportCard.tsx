@@ -59,17 +59,17 @@ export function ReportCard({ report, onView, onDelete }: ReportCardProps) {
   };
 
   return (
-    <Card className="hover:shadow-md transition-shadow">
+    <Card className="luxury-card hover:shadow-md transition-shadow">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex items-start gap-3">
-            <div className="p-2 bg-primary/10 rounded-lg">
-              <ChartIcon className="h-5 w-5 text-primary" />
+            <div className="p-2 bg-white/10 rounded-lg">
+              <ChartIcon className="h-5 w-5 text-white/90" />
             </div>
             <div className="min-w-0 flex-1">
-              <CardTitle className="text-lg truncate">{report.name}</CardTitle>
+              <CardTitle className="text-lg truncate font-display text-white">{report.name}</CardTitle>
               {report.description && (
-                <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                <p className="text-sm text-white/80 mt-1 line-clamp-2 font-body">
                   {report.description}
                 </p>
               )}
@@ -77,7 +77,7 @@ export function ReportCard({ report, onView, onDelete }: ReportCardProps) {
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-white hover:bg-white/10">
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -102,11 +102,11 @@ export function ReportCard({ report, onView, onDelete }: ReportCardProps) {
         
         <div className="flex items-center gap-2 mt-3">
           {template && (
-            <Badge className={getCategoryColor(template.category)}>
+            <Badge variant="outline" className="border-white/30 text-white/90 bg-white/10">
               {template.category}
             </Badge>
           )}
-          <Badge variant="outline" className="text-xs">
+          <Badge variant="outline" className="text-xs border-white/30 text-white/90 bg-white/10">
             {chartType}
           </Badge>
         </div>
@@ -114,35 +114,36 @@ export function ReportCard({ report, onView, onDelete }: ReportCardProps) {
       
       <CardContent className="pt-0">
         <div className="space-y-3">
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          <div className="flex items-center gap-4 text-sm text-white/70">
             <div className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />
-              <span>
+              <span className="font-body">
                 {report.config.dateRange.start.toLocaleDateString()} - {' '}
                 {report.config.dateRange.end.toLocaleDateString()}
               </span>
             </div>
           </div>
           
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          <div className="flex items-center gap-4 text-sm text-white/70">
             <div className="flex items-center gap-1">
               <User className="h-4 w-4" />
-              <span>{report.generatedBy}</span>
+              <span className="font-body">{report.generatedBy}</span>
             </div>
-            <div>
+            <div className="font-body">
               Created: {report.createdAt.toLocaleDateString()}
             </div>
           </div>
           
-          <div className="text-sm">
-            <span className="font-medium">{report.data.length}</span> data points
+          <div className="text-sm text-white/80">
+            <span className="font-medium font-body">{report.data.length}</span> <span className="font-body">data points</span>
           </div>
           
           <div className="flex gap-2 pt-2">
             <Button 
               size="sm" 
               onClick={() => onView?.(report.id)}
-              className="flex-1"
+              className="flex-1 border-white/30 text-white hover:bg-white/10 hover:text-white"
+              variant="outline"
             >
               <Eye className="h-4 w-4 mr-2" />
               View Report
@@ -151,6 +152,7 @@ export function ReportCard({ report, onView, onDelete }: ReportCardProps) {
               size="sm" 
               variant="outline" 
               onClick={handleDownload}
+              className="border-white/30 text-white hover:bg-white/10 hover:text-white"
             >
               <Download className="h-4 w-4" />
             </Button>

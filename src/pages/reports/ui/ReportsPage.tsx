@@ -30,7 +30,7 @@ export function ReportsPage() {
   };
 
   const handleRefresh = async () => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Instant refresh for better UX
   };
 
   const content = (

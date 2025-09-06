@@ -137,7 +137,7 @@ export function ReportBuilder({ children, onReportGenerated }: ReportBuilderProp
       </DialogTrigger>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+          <DialogTitle className="flex items-center gap-2 font-display text-slate-800">
             <BarChart3 className="h-5 w-5" />
             Report Builder
           </DialogTitle>
@@ -148,7 +148,7 @@ export function ReportBuilder({ children, onReportGenerated }: ReportBuilderProp
           <div className="lg:col-span-1">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Select Template</CardTitle>
+                <CardTitle className="text-lg font-display text-slate-800">Select Template</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 {templates.map((template) => (
@@ -190,12 +190,12 @@ export function ReportBuilder({ children, onReportGenerated }: ReportBuilderProp
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <Settings className="h-4 w-4" />
-                      Report Configuration
-                    </CardTitle>
-                  </CardHeader>
+                    <CardHeader>
+                      <CardTitle className="text-lg flex items-center gap-2 font-display text-slate-800">
+                        <Settings className="h-4 w-4" />
+                        Report Configuration
+                      </CardTitle>
+                    </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <FormField
