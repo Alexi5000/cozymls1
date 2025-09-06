@@ -5,8 +5,7 @@ import { AgentsStats } from '@/widgets/agents/ui/AgentsStats';
 
 export function AgentsPage() {
   const handleRefresh = async () => {
-    // Implement refresh logic for mobile
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Instant refresh - no artificial delays
   };
 
   return (

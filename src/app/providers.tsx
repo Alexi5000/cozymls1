@@ -10,10 +10,15 @@ import { AppDataProvider } from '@/app/data-provider';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: Infinity, // Data never becomes stale since we use mock data
-      gcTime: Infinity, // Keep in cache forever for instant access
+      staleTime: Infinity,
+      gcTime: Infinity,
       refetchOnWindowFocus: false,
-      retry: false, // No retries needed for mock data
+      retry: false,
+      networkMode: 'always', // Always execute queries instantly
+    },
+    mutations: {
+      retry: false,
+      networkMode: 'always',
     },
   },
 });

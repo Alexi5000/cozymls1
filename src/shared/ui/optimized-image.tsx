@@ -23,7 +23,7 @@ export function OptimizedImage({
   height,
   className,
   quality = 80,
-  loading = 'lazy',
+  loading = 'eager', // Default to eager for instant loading
   priority = false,
   placeholder = 'blur',
   onLoad,

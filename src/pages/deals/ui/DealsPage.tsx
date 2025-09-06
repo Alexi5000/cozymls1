@@ -7,7 +7,7 @@ export function DealsPage() {
   const isMobile = useIsMobile();
 
   const handleRefresh = async () => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Instant refresh - no artificial delays
   };
 
   const content = (

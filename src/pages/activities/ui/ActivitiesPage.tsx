@@ -20,8 +20,7 @@ export function ActivitiesPage(): JSX.Element {
   });
 
   const handleRefresh = async (): Promise<void> => {
-    // Simulate refresh action
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Instant refresh - no artificial delays
   };
 
   return (
