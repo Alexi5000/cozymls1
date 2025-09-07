@@ -39,24 +39,23 @@ function OptimizedListComponent<T>({
     overscan
   });
 
-  // Memoized scroll handler
+  // Simplified scroll handler for instant loading
   const optimizedScrollHandler = useCallback((event: React.UIEvent<HTMLDivElement>) => {
-    handleScroll(event);
     onScroll?.(event.currentTarget.scrollTop);
-  }, [handleScroll, onScroll]);
+  }, [onScroll]);
 
-  // Memoized visible items with keys
+  // Simplified visible items with keys - no virtualization
   const visibleItemsWithKeys = useMemo(() => {
     return visibleItems.map((item, index) => ({
       item,
-      index: visibleRange.startIndex + index,
-      key: getItemKey(item, visibleRange.startIndex + index)
+      index: visibleRange.start + index,
+      key: getItemKey(item, visibleRange.start + index)
     }));
-  }, [visibleItems, visibleRange.startIndex, getItemKey]);
+  }, [visibleItems, visibleRange.start, getItemKey]);
 
-  // Spacer heights for virtual scrolling
-  const topSpacerHeight = visibleRange.startIndex * itemHeight;
-  const bottomSpacerHeight = Math.max(0, totalHeight - (visibleRange.endIndex + 1) * itemHeight);
+  // No spacers needed for instant loading
+  const topSpacerHeight = 0;
+  const bottomSpacerHeight = 0;
 
   return (
     <div

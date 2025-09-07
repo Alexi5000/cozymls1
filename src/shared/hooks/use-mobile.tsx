@@ -2,21 +2,24 @@ import * as React from "react"
 
 const MOBILE_BREAKPOINT = 768
 
+// Simplified mobile detection for instant loading
 export function useIsMobile() {
-  const [isMobile, setIsMobile] = React.useState<boolean>(false)
+  const [isMobile, setIsMobile] = React.useState<boolean>(() => {
+    // Initialize immediately without delay
+    return typeof window !== 'undefined' ? window.innerWidth < MOBILE_BREAKPOINT : false;
+  });
 
   React.useEffect(() => {
-    // Initialize with current state
-    const checkIsMobile = () => window.innerWidth < MOBILE_BREAKPOINT
-    setIsMobile(checkIsMobile())
+    const checkIsMobile = () => window.innerWidth < MOBILE_BREAKPOINT;
+    
+    const handleResize = () => {
+      setIsMobile(checkIsMobile());
+    };
 
-    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
-    const onChange = () => {
-      setIsMobile(checkIsMobile())
-    }
-    mql.addEventListener("change", onChange)
-    return () => mql.removeEventListener("change", onChange)
-  }, [])
+    // Use basic resize listener for instant performance
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-  return isMobile
+  return isMobile;
 }

@@ -1,4 +1,4 @@
-// Simplified render optimization for instant loading
+// No-op performance hooks for instant loading
 
 export function useRenderOptimization(componentName: string) {
   return {
@@ -27,5 +27,19 @@ export function useListOptimization<T>({ items, itemHeight, containerHeight, ove
 export function useImageOptimization() {
   return {
     observeImage: () => {}, // No-op - no lazy loading for instant performance
+  };
+}
+
+export function useObjectPool<T>(factory: () => T, reset: (obj: T) => void) {
+  return {
+    acquire: factory, // Always create new for simplicity
+    release: () => {}, // No-op
+  };
+}
+
+export function useDOMCleanup() {
+  return {
+    trackElement: () => {}, // No-op
+    untrackElement: () => {}, // No-op
   };
 }

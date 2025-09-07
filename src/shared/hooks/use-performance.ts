@@ -1,105 +1,30 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useCallback } from 'react';
 
-interface PerformanceMetrics {
-  renderTime: number;
-  componentName: string;
-  timestamp: number;
-}
-
+// No-op performance monitor for instant loading
 export function usePerformanceMonitor(componentName: string) {
-  const renderStartTime = useRef<number>();
-  const renderCount = useRef(0);
-
-  useEffect(() => {
-    renderStartTime.current = performance.now();
-    renderCount.current += 1;
-  });
-
-  useEffect(() => {
-    if (renderStartTime.current) {
-      const renderTime = performance.now() - renderStartTime.current;
-      
-      // Log slow renders in development
-      if (process.env.NODE_ENV === 'development' && renderTime > 16) {
-        console.warn(`Slow render detected in ${componentName}: ${renderTime.toFixed(2)}ms`);
-      }
-
-      // Send metrics to analytics service in production
-      const metrics: PerformanceMetrics = {
-        renderTime,
-        componentName,
-        timestamp: Date.now(),
-      };
-
-      // You can send this to your analytics service
-      if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('event', 'component_render', {
-          custom_component_name: componentName,
-          custom_render_time: renderTime,
-          custom_render_count: renderCount.current,
-        });
-      }
-    }
-  });
-
   const measureFunction = useCallback(<T extends any[], R>(
     fn: (...args: T) => R,
     functionName: string
   ) => {
-    return (...args: T): R => {
-      const start = performance.now();
-      const result = fn(...args);
-      const duration = performance.now() - start;
-      
-      if (process.env.NODE_ENV === 'development' && duration > 5) {
-        console.warn(`Slow function in ${componentName}.${functionName}: ${duration.toFixed(2)}ms`);
-      }
-      
-      return result;
-    };
-  }, [componentName]);
+    return fn; // No-op wrapper for instant performance
+  }, []);
 
-  return { measureFunction, renderCount: renderCount.current };
+  return { 
+    measureFunction, 
+    renderCount: 0 // No tracking for instant performance
+  };
 }
 
+// No-op intersection observer for instant loading
 export function useIntersectionObserver(
   options: IntersectionObserverInit = {}
 ) {
-  const elementRef = useRef<HTMLElement>(null);
-  const observerRef = useRef<IntersectionObserver>();
-
-  useEffect(() => {
-    const element = elementRef.current;
-    if (!element) return;
-
-    observerRef.current = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          // Trigger lazy loading or animations
-          element.classList.add('in-viewport');
-        }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '50px',
-      ...options,
-    });
-
-    observerRef.current.observe(element);
-
-    return () => {
-      if (observerRef.current && element) {
-        observerRef.current.unobserve(element);
-      }
-    };
-  }, [options]);
-
-  return elementRef;
+  return { current: null }; // No-op ref for instant loading
 }
 
-// Performance utilities
+// Simplified performance utilities for instant loading
 export const performanceUtils = {
-  // Debounce function calls for performance
+  // Simple debounce without tracking
   debounce: <T extends (...args: any[]) => any>(
     func: T,
     wait: number
@@ -111,7 +36,7 @@ export const performanceUtils = {
     };
   },
 
-  // Throttle function calls for performance
+  // Simple throttle without tracking
   throttle: <T extends (...args: any[]) => any>(
     func: T,
     limit: number
@@ -126,29 +51,20 @@ export const performanceUtils = {
     };
   },
 
-  // Measure component render time
+  // No-op measure render for instant loading
   measureRender: (componentName: string, renderFn: () => void) => {
-    const start = performance.now();
-    renderFn();
-    const end = performance.now();
-    
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`${componentName} render time: ${(end - start).toFixed(2)}ms`);
-    }
+    renderFn(); // Just execute without measurement
   },
 
   // Check if user prefers reduced motion
   prefersReducedMotion: (): boolean => {
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    return typeof window !== 'undefined' ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
   },
 
-  // Get device performance capabilities
-  getDeviceCapabilities: () => {
-    const navigator = window.navigator as any;
-    return {
-      hardwareConcurrency: navigator.hardwareConcurrency || 4,
-      deviceMemory: navigator.deviceMemory || 4,
-      connection: navigator.connection || null,
-    };
-  },
+  // Simple device capabilities
+  getDeviceCapabilities: () => ({
+    hardwareConcurrency: 4,
+    deviceMemory: 4,
+    connection: null,
+  }),
 };
