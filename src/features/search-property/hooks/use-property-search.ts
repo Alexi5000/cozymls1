@@ -10,10 +10,10 @@ export function usePropertySearch() {
   const [error, setError] = useState<string | null>(null);
 
   const loadAllProperties = useCallback(async () => {
-    setIsLoading(true);
+    setIsLoading(false); // Instant loading - no delays
     setError(null);
     try {
-      // Mock property loading
+      // Instant property loading
       const mockProperties: Property[] = [];
       setAllProperties(mockProperties);
       setProperties(mockProperties);

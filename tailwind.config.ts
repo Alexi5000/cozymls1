@@ -147,13 +147,13 @@ export default {
 				}
 			},
 			animation: {
-				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out',
-				'float': 'float 3s ease-in-out infinite',
-				'glow': 'glow 2s ease-in-out infinite',
-				'shimmer': 'shimmer 2s infinite',
-				'slide-up': 'slide-up 0.6s ease-out',
-				'scale-in': 'scale-in 0.4s ease-out'
+				'accordion-down': 'accordion-down 0.01ms linear',
+				'accordion-up': 'accordion-up 0.01ms linear',
+				'float': 'none',
+				'glow': 'none',
+				'shimmer': 'none',
+				'slide-up': 'slide-up 0.01ms linear',
+				'scale-in': 'scale-in 0.01ms linear'
 			}
 		}
 	},

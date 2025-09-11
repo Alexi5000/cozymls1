@@ -16,7 +16,7 @@ interface MobilePropertyCardProps {
 }
 
 export const MobilePropertyCard = memo(function MobilePropertyCard({ property, onCall, onEmail, onTap }: MobilePropertyCardProps) {
-  const [imageLoading, setImageLoading] = useState(true);
+  const [imageLoading, setImageLoading] = useState(false); // Instant loading
   const [imageError, setImageError] = useState(false);
   const propertyActions = usePropertyActions();
 

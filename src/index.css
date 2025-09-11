@@ -58,10 +58,10 @@
     --font-display: 'Playfair Display', serif;
     --font-body: 'Inter', system-ui, sans-serif;
     
-    /* Spacing & Animation */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    --animation-float: float 3s ease-in-out infinite;
+    /* Instant Animation - disabled for preview performance */
+    --transition-smooth: all 0.01ms linear;
+    --transition-bounce: all 0.01ms linear;
+    --animation-float: none;
 
     --sidebar-background: 20 89% 40%;
     --sidebar-foreground: 48 96% 89%;

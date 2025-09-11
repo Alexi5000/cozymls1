@@ -24,7 +24,7 @@ export const PropertyCard = memo(function PropertyCard({
   onCall, 
   onEmail 
 }: PropertyCardProps) {
-  const [imageLoading, setImageLoading] = useState(true);
+  const [imageLoading, setImageLoading] = useState(false); // Instant loading
   const [imageError, setImageError] = useState(false);
 
   // Memoized formatted values
