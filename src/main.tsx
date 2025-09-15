@@ -1,11 +1,14 @@
 import { createRoot } from 'react-dom/client'
 import { App } from "@/app"
 import "@/index.css"
-import { instantRender } from './shared/lib/instant-render'
 
-// Initialize instant rendering for preview performance
-instantRender.disableAnimations();
+console.log('Starting app...');
 
-// Instant loading - no performance monitoring overhead
-
-createRoot(document.getElementById("root")!).render(<App />);
+const rootElement = document.getElementById("root");
+if (!rootElement) {
+  console.error('Root element not found!');
+} else {
+  console.log('Root element found, creating app...');
+  createRoot(rootElement).render(<App />);
+  console.log('App rendered!');
+}

@@ -1,9 +1,9 @@
 // Instant rendering utilities for zero-delay preview loading
 
 export const instantRender = {
-  // Disable all CSS animations in development for instant loading
+  // Disable all CSS animations for instant loading
   disableAnimations: () => {
-    if (typeof document !== 'undefined' && process.env.NODE_ENV === 'development') {
+    if (typeof document !== 'undefined') {
       const style = document.createElement('style');
       style.textContent = `
         *, *::before, *::after {
