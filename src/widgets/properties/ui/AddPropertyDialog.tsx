@@ -75,9 +75,6 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
 
   const onSubmit = async (data: PropertyForm) => {
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
       console.log('Property data:', data);
       
       toast({

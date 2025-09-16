@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap');
+/* Optimized system fonts for instant loading */
 
 @tailwind base;
 @tailwind components;
@@ -54,14 +54,14 @@
     --shadow-soft: 0 4px 20px -4px hsl(220 47% 11% / 0.1);
     --shadow-luxury: 0 25px 50px -12px hsl(var(--primary) / 0.25);
     
-    /* Typography Scale */
-    --font-display: 'Playfair Display', serif;
-    --font-body: 'Inter', system-ui, sans-serif;
+    /* Optimized Typography Scale - System Fonts */
+    --font-display: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-body: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     
-    /* Spacing & Animation */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    --animation-float: float 3s ease-in-out infinite;
+    /* Optimized Spacing & Animation */
+    --transition-smooth: all 0.15s ease-out;
+    --transition-bounce: all 0.2s ease-out;
+    --animation-float: none; /* Disabled for performance */
 
     --sidebar-background: 20 89% 40%;
     --sidebar-foreground: 48 96% 89%;

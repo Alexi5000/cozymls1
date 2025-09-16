@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
 import { MobileOptimizedCard } from '@/shared/ui/mobile-optimized-card';
-import { mockContacts } from '@/entities/contact';
+import { mockContactsLite } from '@/entities/contact';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
 import { Plus, Phone, Mail, Building } from 'lucide-react';
 
@@ -18,7 +18,7 @@ export function ContactsPage() {
   };
 
   const handleRefresh = async () => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Here you would typically refetch data
   };
 
   const content = (
@@ -32,7 +32,7 @@ export function ContactsPage() {
       </div>
 
       <div className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
-        {mockContacts.map((contact) => {
+        {mockContactsLite.map((contact) => {
           const ContactCard = isMobile ? MobileOptimizedCard : Card;
           return (
           <ContactCard key={contact.id} 

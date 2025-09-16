@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo, Suspense } from 'react';
 import { Layout } from '@/widgets/layout';
 import { MobileLayout } from '@/widgets/mobile';
-import { mockProperties } from '@/entities/property';
+import { mockPropertiesLite } from '@/entities/property';
 import { PropertiesHeader, PropertiesFilters, PropertiesStats, PropertiesGrid } from '@/widgets/properties';
 import { PropertiesGridSkeleton } from '@/shared/ui/property-skeleton';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
@@ -11,15 +11,13 @@ export function PropertiesPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   
-  // Memoized properties for performance
-  const properties = useMemo(() => mockProperties, []);
+  // Lightweight properties for instant loading
+  const properties = useMemo(() => mockPropertiesLite, []);
   
   // Optimized refresh handler with loading states
   const handleRefresh = useCallback(async () => {
     setIsRefreshing(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
       // In real app, you would refetch data here
     } finally {
       setIsRefreshing(false);

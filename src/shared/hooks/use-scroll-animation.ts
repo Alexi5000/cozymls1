@@ -14,7 +14,8 @@ export function useScrollAnimation(options: UseScrollAnimationOptions = {}) {
   } = options;
 
   const elementRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  // For performance optimization, start visible to avoid layout shift
+  const [isVisible, setIsVisible] = useState(true);
   const [hasTriggered, setHasTriggered] = useState(false);
 
   useEffect(() => {
@@ -51,24 +52,17 @@ export function useScrollAnimation(options: UseScrollAnimationOptions = {}) {
   };
 }
 
-// Hook for staggered animations
-export function useStaggeredAnimation(items: any[], delay: number = 100) {
-  const [visibleItems, setVisibleItems] = useState<Set<number>>(new Set());
+// Hook for staggered animations - optimized for performance
+export function useStaggeredAnimation(items: any[], delay: number = 50) {
+  // Performance optimization: show all items immediately to avoid stagger delays
+  const [visibleItems, setVisibleItems] = useState<Set<number>>(
+    new Set(items.map((_, index) => index))
+  );
   const { elementRef, isVisible } = useScrollAnimation();
-
-  useEffect(() => {
-    if (isVisible && visibleItems.size === 0) {
-      items.forEach((_, index) => {
-        setTimeout(() => {
-          setVisibleItems(prev => new Set([...prev, index]));
-        }, index * delay);
-      });
-    }
-  }, [isVisible, items.length, delay, visibleItems.size]);
 
   return {
     elementRef,
-    isItemVisible: (index: number) => visibleItems.has(index),
+    isItemVisible: () => true, // Always visible for performance
   };
 }
 

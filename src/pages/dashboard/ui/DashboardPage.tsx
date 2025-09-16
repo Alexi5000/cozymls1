@@ -15,8 +15,6 @@ export function DashboardPage() {
   const { elementRef: contentRef, isVisible } = useScrollAnimation();
 
   const handleRefresh = async () => {
-    // Simulate refresh delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
     // Here you would typically refetch data
   };
 
@@ -35,8 +33,8 @@ export function DashboardPage() {
       {/* Main Content with Scroll Animation */}
       <div 
         ref={contentRef}
-        className={`space-y-8 transition-all duration-1000 ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        className={`space-y-8 transition-all duration-200 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
         }`}
       >
         {/* Enhanced Stats Grid */}
