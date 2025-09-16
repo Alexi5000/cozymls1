@@ -1,4 +1,4 @@
-import { ResponsiveLayout, Layout } from '@/widgets/layout';
+import { Layout } from '@/widgets/layout';
 import { MobileLayout } from '@/widgets/mobile';
 import { StatsCard, RecentActivity, DealsOverview } from '@/widgets/dashboard';
 import { HeroSection } from '@/widgets/dashboard/ui/HeroSection';
@@ -40,36 +40,39 @@ export function DashboardPage() {
         }`}
       >
         {/* Enhanced Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
-          <StatsCard 
+        <ResponsiveGrid 
+          cols={{ mobile: 2, tablet: 2, desktop: 4 }}
+          gap={{ mobile: 3, tablet: 4, desktop: 6 }}
+        >
+          <StatsCard
             title="Active Properties"
             value={stats.totalContacts.toLocaleString()}
             change="+8 new listings this week"
             icon={Home}
             trend="up"
           />
-          <StatsCard 
+          <StatsCard
             title="In Escrow"
-            value={stats.activeDeals.toString()}
+            value={stats.activeDeals}
             change="+3 pending sales"
             icon={TrendingUp}
             trend="up"
           />
-          <StatsCard 
+          <StatsCard
             title="Monthly Revenue"
             value={`$${(stats.totalRevenue / 1000000).toFixed(1)}M`}
             change={`+${stats.monthlyGrowth}% from last month`}
             icon={DollarSign}
             trend="up"
           />
-          <StatsCard 
+          <StatsCard
             title="Active Agents"
             value="12"
             change="2 new agents onboarded"
             icon={Users}
             trend="up"
           />
-        </div>
+        </ResponsiveGrid>
 
         {/* Main Content Grid - Enhanced */}
         <AdaptiveLayout

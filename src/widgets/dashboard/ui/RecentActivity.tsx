@@ -1,11 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
-import { useIsMobile } from '@/shared/hooks/use-mobile';
 import { mockActivities } from '@/entities/activity';
 import { mockProperties } from '@/entities/property';
 import { PropertyCard } from '@/widgets/properties/ui/PropertyCard';
-import { MobileRecentActivity } from './MobileRecentActivity';
 import { Calendar, Phone, Mail, Users, Clock, ArrowRight, Home } from 'lucide-react';
 
 const activityIcons = {
@@ -31,14 +29,8 @@ const typeColors = {
 };
 
 export function RecentActivity() {
-  const isMobile = useIsMobile();
   const recentActivities = mockActivities.slice(0, 6);
   const featuredProperties = mockProperties.slice(0, 2);
-
-  // Return mobile-optimized version
-  if (isMobile) {
-    return <MobileRecentActivity />;
-  }
 
   return (
     <Card className="luxury-card hover-lift animate-scale-in">

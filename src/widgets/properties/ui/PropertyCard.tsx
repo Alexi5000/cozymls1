@@ -1,19 +1,15 @@
-import React, { memo, useCallback, useMemo, useState } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
-import { Skeleton } from '@/shared/ui/skeleton';
 import { Property } from '@/entities/property';
-import { Bed, Bath, Square, Calendar, Phone, Mail, MapPin, Eye, Heart, Share2, ImageOff } from 'lucide-react';
+import { Bed, Bath, Square, Calendar, Phone, Mail, MapPin, Eye, Heart, Share2 } from 'lucide-react';
 
 interface PropertyCardProps {
   property: Property;
 }
 
 export const PropertyCard = memo(function PropertyCard({ property }: PropertyCardProps) {
-  const [imageLoading, setImageLoading] = useState(true);
-  const [imageError, setImageError] = useState(false);
-
   // Memoized status colors for performance
   const statusColors = useMemo(() => ({
     active: 'bg-emerald-500/20 text-emerald-700 border-emerald-500/30',
@@ -63,42 +59,22 @@ export const PropertyCard = memo(function PropertyCard({ property }: PropertyCar
     console.log('Email:', property.agent.name);
   }, [property.agent.name]);
 
-  // Image handlers
-  const handleImageLoad = useCallback(() => {
-    setImageLoading(false);
-    setImageError(false);
-  }, []);
-
-  const handleImageError = useCallback(() => {
-    setImageLoading(false);
-    setImageError(true);
-  }, []);
-
   return (
     <Card className="property-card hover-lift group animate-scale-in overflow-hidden">
       <div className="aspect-video bg-muted relative overflow-hidden">
-        {/* Loading skeleton */}
-        {imageLoading && (
-          <Skeleton className="absolute inset-0 w-full h-full" />
-        )}
-        
-        {property.images.length > 0 && !imageError ? (
+        {property.images.length > 0 ? (
           <img
             src={property.images[0]}
             alt={property.address}
-            className={`w-full h-full object-cover transition-all duration-700 group-hover:scale-110 ${
-              imageLoading ? 'opacity-0' : 'opacity-100'
-            }`}
-            onLoad={handleImageLoad}
-            onError={handleImageError}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-muted-foreground bg-gradient-subtle">
             <div className="text-center">
               <div className="w-16 h-16 mx-auto mb-2 bg-muted rounded-full flex items-center justify-center">
-                <ImageOff className="h-8 w-8 text-muted-foreground" />
+                <Calendar className="h-8 w-8 text-muted-foreground" />
               </div>
-              <p className="text-sm">{imageError ? 'Failed to load image' : 'No Image Available'}</p>
+              <p className="text-sm">No Image Available</p>
             </div>
           </div>
         )}

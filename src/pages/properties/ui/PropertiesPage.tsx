@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo, Suspense } from 'react';
-import { ResponsiveLayout, Layout } from '@/widgets/layout';
+import { Layout } from '@/widgets/layout';
 import { MobileLayout } from '@/widgets/mobile';
 import { mockProperties } from '@/entities/property';
 import { PropertiesHeader, PropertiesFilters, PropertiesStats, PropertiesGrid } from '@/widgets/properties';
