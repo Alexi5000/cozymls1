@@ -1,4 +1,4 @@
-import { User } from "@/entities/user/model/types";
+import { User } from './types';
 
 export const mockUsers: User[] = [
   {

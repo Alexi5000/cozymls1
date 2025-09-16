@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Card } from "@/shared/ui/card";
+import { Card } from "./card";
 import { cn } from "@/shared/lib/utils";
 import { useTouch } from "@/shared/hooks/use-touch";
 

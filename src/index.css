@@ -1,5 +1,5 @@
 
-/* Fonts are now loaded via HTML preload for better performance */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -13,8 +13,8 @@
     --background: 210 40% 98%;
     --foreground: 220 47% 11%;
 
-    --card: 20 90% 48%;
-    --card-foreground: 0 0% 100%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 47% 11%;
 
     --popover: 0 0% 100%;
     --popover-foreground: 220 47% 11%;
@@ -46,7 +46,7 @@
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
     --gradient-warm: linear-gradient(135deg, hsl(20 90% 48%) 0%, hsl(25 95% 58%) 50%, hsl(30 90% 65%) 100%);
     --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted)));
-    --gradient-card: linear-gradient(145deg, hsl(20 90% 48%) 0%, hsl(25 95% 58%) 50%, hsl(30 90% 65%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(210 20% 99%) 100%);
     
     /* Elegant Shadows */
     --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.3);
@@ -58,10 +58,10 @@
     --font-display: 'Playfair Display', serif;
     --font-body: 'Inter', system-ui, sans-serif;
     
-    /* Instant Animation - disabled for preview performance */
-    --transition-smooth: all 0.01ms linear;
-    --transition-bounce: all 0.01ms linear;
-    --animation-float: none;
+    /* Spacing & Animation */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --animation-float: float 3s ease-in-out infinite;
 
     --sidebar-background: 20 89% 40%;
     --sidebar-foreground: 48 96% 89%;
@@ -174,14 +174,13 @@
 
 /* CozyMLS Enhanced Components */
 @layer components {
-  /* Premium Card Styles - Default Enhanced */
-  .luxury-card, .card-enhanced {
+  /* Premium Card Styles */
+  .luxury-card {
     background: var(--gradient-card);
-    border: 1px solid hsl(var(--primary) / 0.2);
+    border: 1px solid hsl(var(--border));
     border-radius: calc(var(--radius) + 4px);
     box-shadow: var(--shadow-elegant);
     transition: var(--transition-smooth);
-    color: white;
   }
 
   .luxury-card:hover {
@@ -442,32 +441,7 @@
     }
   }
 
-  /* Enhanced responsive typography system */
-  .responsive-title {
-    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight;
-  }
-  
-  .responsive-subtitle {
-    @apply text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold leading-snug;
-  }
-  
-  .responsive-heading {
-    @apply text-base sm:text-lg md:text-xl lg:text-2xl font-semibold leading-tight;
-  }
-  
-  .responsive-subheading {
-    @apply text-sm sm:text-base md:text-lg font-medium leading-relaxed;
-  }
-  
-  .responsive-body {
-    @apply text-sm sm:text-base leading-relaxed;
-  }
-  
-  .responsive-caption {
-    @apply text-xs sm:text-sm text-muted-foreground leading-relaxed;
-  }
-
-  /* Mobile-specific typography */
+  /* Enhanced mobile typography */
   .mobile-title {
     @apply text-lg font-semibold leading-tight;
   }
@@ -484,41 +458,6 @@
     @apply text-xs text-muted-foreground;
   }
   
-  /* Responsive grid system */
-  .responsive-grid {
-    @apply grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
-  }
-  
-  .responsive-grid-2 {
-    @apply grid gap-4 grid-cols-1 md:grid-cols-2;
-  }
-  
-  .responsive-grid-3 {
-    @apply grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3;
-  }
-  
-  .responsive-grid-4 {
-    @apply grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4;
-  }
-  
-  .responsive-grid-auto {
-    @apply grid gap-4;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  }
-  
-  /* Responsive spacing */
-  .responsive-padding {
-    @apply p-3 sm:p-4 md:p-6 lg:p-8;
-  }
-  
-  .responsive-margin {
-    @apply m-3 sm:m-4 md:m-6 lg:m-8;
-  }
-  
-  .responsive-gap {
-    @apply gap-3 sm:gap-4 md:gap-6 lg:gap-8;
-  }
-
   /* Mobile-first responsive utilities */
   .mobile-stack {
     @apply flex flex-col space-y-2;
@@ -557,112 +496,6 @@
   /* Better mobile focus states */
   .mobile-focus {
     @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
-  }
-
-  /* Advanced mobile typography scale */
-  .mobile-display {
-    @apply text-2xl font-bold leading-tight;
-  }
-  
-  .mobile-heading {
-    @apply text-xl font-semibold leading-tight;
-  }
-  
-  .mobile-subheading {
-    @apply text-lg font-medium leading-tight;
-  }
-  
-  .mobile-body-large {
-    @apply text-base leading-relaxed;
-  }
-  
-  /* Responsive font scaling */
-  @screen sm {
-    .mobile-display {
-      @apply text-3xl;
-    }
-    
-    .mobile-heading {
-      @apply text-2xl;
-    }
-    
-    .mobile-subheading {
-      @apply text-xl;
-    }
-  }
-  
-  /* Enhanced mobile layouts */
-  .mobile-container {
-    @apply px-4 max-w-full;
-  }
-  
-  .mobile-section {
-    @apply py-6 space-y-4;
-  }
-  
-  .mobile-card-grid {
-    @apply grid gap-4;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  }
-  
-  @screen sm {
-    .mobile-container {
-      @apply px-6;
-    }
-    
-    .mobile-section {
-      @apply py-8 space-y-6;
-    }
-  }
-  
-  /* Performance optimizations */
-  .mobile-will-change {
-    will-change: transform, opacity;
-  }
-  
-  .mobile-contain-layout {
-    contain: layout;
-  }
-  
-  .mobile-contain-paint {
-    contain: paint;
-  }
-  
-  /* Gesture-friendly elements */
-  .mobile-swipe-area {
-    @apply mobile-touch-target min-w-[320px];
-    overscroll-behavior-x: contain;
-  }
-  
-  .mobile-drag-handle {
-    @apply w-12 h-1 bg-muted-foreground/30 rounded-full;
-    @apply mx-auto my-3 flex-shrink-0;
-  }
-  
-  /* Enhanced accessibility */
-  .mobile-screen-reader {
-    @apply sr-only;
-  }
-  
-  .mobile-high-contrast {
-    @apply contrast-more:border-2 contrast-more:border-foreground;
-  }
-  
-  /* Reduced motion support */
-  @media (prefers-reduced-motion: reduce) {
-    .mobile-press {
-      @apply active:scale-100;
-    }
-    
-    .mobile-bounce {
-      @apply active:animate-none;
-    }
-    
-    * {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
   }
   
   /* Mobile layout utilities */

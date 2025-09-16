@@ -75,7 +75,8 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
 
   const onSubmit = async (data: PropertyForm) => {
     try {
-      // Instant form submission - no artificial delays
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
       console.log('Property data:', data);
       

@@ -1,4 +1,4 @@
-import { Property } from "@/entities/property/model/types";
+import { Property } from './types';
 
 const agents = [
   { id: 'user1', name: 'Siobhan O\'Sullivan', phone: '+353 1 456 7890', email: 'siobhan@dublinestate.ie' },

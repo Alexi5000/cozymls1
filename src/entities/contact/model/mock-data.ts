@@ -1,4 +1,4 @@
-import { Contact } from "@/entities/contact/model/types";
+import { Contact } from './types';
 
 const firstNames = [
   'John', 'Dawn', 'Michael', 'Emily', 'David', 'Jessica', 'Robert', 'Ashley', 'James', 'Amanda',

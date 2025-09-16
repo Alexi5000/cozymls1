@@ -1,6 +1,6 @@
-import { MobileHeader } from "@/widgets/mobile/ui/MobileHeader";
-import { MobileNavigation } from "@/widgets/mobile/ui/MobileNavigation";
-import { useResponsiveBreakpoint } from '@/shared/hooks/use-responsive-breakpoint';
+import { MobileHeader } from './MobileHeader';
+import { MobileNavigation } from './MobileNavigation';
+import { useIsMobile } from '@/shared/hooks/use-mobile';
 import { PullToRefresh } from '@/shared/ui/pull-to-refresh';
 import { cn } from '@/shared/lib/utils';
 
@@ -19,7 +19,7 @@ export function MobileLayout({
   onRefresh,
   className 
 }: MobileLayoutProps) {
-  const { isMobile } = useResponsiveBreakpoint();
+  const isMobile = useIsMobile();
 
   if (!isMobile) {
     return null; // Return null if not mobile, let desktop layout handle it
@@ -32,13 +32,13 @@ export function MobileLayout({
   ) : children;
 
   return (
-    <div className="min-h-screen bg-background mobile-safe-area-top mobile-safe-area-bottom">
+    <div className="min-h-screen bg-background">
       <MobileHeader title={title} showSearch={showSearch} />
       
       <main 
         className={cn(
           "pt-14 pb-20 min-h-screen", // Account for header and nav heights
-          "mobile-scroll-momentum mobile-optimized",
+          "mobile-scroll-momentum",
           className
         )}
       >

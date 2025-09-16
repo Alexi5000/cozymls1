@@ -1,8 +1,7 @@
 import React from 'react';
-import { useResponsiveBreakpoint } from '@/shared/hooks/use-responsive-breakpoint';
-import { Layout } from "@/widgets/layout/ui/Layout";
+import { useIsMobile } from '@/shared/hooks/use-mobile';
+import { Layout } from './Layout';
 import { MobileLayout } from '@/widgets/mobile';
-import { ResponsiveContainer } from '@/shared/ui';
 
 interface ResponsiveLayoutProps {
   children: React.ReactNode;
@@ -19,7 +18,7 @@ export function ResponsiveLayout({
   onRefresh,
   className 
 }: ResponsiveLayoutProps) {
-  const { isMobile } = useResponsiveBreakpoint();
+  const isMobile = useIsMobile();
 
   if (isMobile) {
     return (

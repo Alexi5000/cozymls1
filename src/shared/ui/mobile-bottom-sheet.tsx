@@ -3,7 +3,7 @@ import { cn } from "@/shared/lib/utils";
 import { useTouch } from "@/shared/hooks/use-touch";
 import { useSafeArea } from "@/shared/hooks/use-safe-area";
 import { X } from "lucide-react";
-import { Button } from "@/shared/ui/button";
+import { Button } from "./button";
 
 interface MobileBottomSheetProps {
   children: React.ReactNode;

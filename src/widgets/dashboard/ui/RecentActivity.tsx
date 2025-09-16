@@ -4,8 +4,8 @@ import { Button } from '@/shared/ui/button';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
 import { mockActivities } from '@/entities/activity';
 import { mockProperties } from '@/entities/property';
-import { PropertyCard } from '@/entities/property';
-import { MobileRecentActivity } from "@/widgets/dashboard/ui/MobileRecentActivity";
+import { PropertyCard } from '@/widgets/properties/ui/PropertyCard';
+import { MobileRecentActivity } from './MobileRecentActivity';
 import { Calendar, Phone, Mail, Users, Clock, ArrowRight, Home } from 'lucide-react';
 
 const activityIcons = {

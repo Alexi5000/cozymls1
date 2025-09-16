@@ -11,7 +11,7 @@ interface PropertyCardProps {
 }
 
 export const PropertyCard = memo(function PropertyCard({ property }: PropertyCardProps) {
-  const [imageLoading, setImageLoading] = useState(false); // Instant loading
+  const [imageLoading, setImageLoading] = useState(true);
   const [imageError, setImageError] = useState(false);
 
   // Memoized status colors for performance

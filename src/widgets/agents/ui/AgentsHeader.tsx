@@ -1,6 +1,6 @@
 import { Plus, Filter, Download } from 'lucide-react';
 import { Button } from '@/shared/ui/button';
-import { AddAgentDialog } from "@/widgets/agents/ui/AddAgentDialog";
+import { AddAgentDialog } from './AddAgentDialog';
 import { useState } from 'react';
 
 export function AgentsHeader() {

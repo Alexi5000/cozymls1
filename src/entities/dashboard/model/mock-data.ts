@@ -1,4 +1,4 @@
-import { DashboardStats } from "@/entities/dashboard/model/types";
+import { DashboardStats } from './types';
 
 export const mockDashboardStats: DashboardStats = {
   totalContacts: 847,

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, ButtonProps } from "@/shared/ui/button";
+import { Button, ButtonProps } from "./button";
 import { useTouch } from "@/shared/hooks/use-touch";
 import { cn } from "@/shared/lib/utils";
 

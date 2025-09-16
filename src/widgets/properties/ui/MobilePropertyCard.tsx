@@ -5,8 +5,6 @@ import { Badge } from '@/shared/ui/badge';
 import { Skeleton } from '@/shared/ui/skeleton';
 import { Property } from '@/entities/property';
 import { Bed, Bath, Square, Phone, Mail, MapPin, ImageOff } from 'lucide-react';
-import { formatPrice, getFullAddress, getStatusColors } from '@/shared/lib/property-utils';
-import { usePropertyActions } from '@/shared/hooks/use-property-actions';
 
 interface MobilePropertyCardProps {
   property: Property;
@@ -16,18 +14,36 @@ interface MobilePropertyCardProps {
 }
 
 export const MobilePropertyCard = memo(function MobilePropertyCard({ property, onCall, onEmail, onTap }: MobilePropertyCardProps) {
-  const [imageLoading, setImageLoading] = useState(false); // Instant loading
+  const [imageLoading, setImageLoading] = useState(true);
   const [imageError, setImageError] = useState(false);
-  const propertyActions = usePropertyActions();
+
+  // Memoized status colors using semantic tokens
+  const statusColors = useMemo(() => ({
+    active: 'bg-emerald-500/20 text-emerald-700 border-emerald-500/30',
+    pending: 'bg-amber-500/20 text-amber-700 border-amber-500/30',
+    sold: 'bg-blue-500/20 text-blue-700 border-blue-500/30',
+    'off-market': 'bg-muted text-muted-foreground border-border',
+  }), []);
+
+  // Memoized price formatter
+  const formatPrice = useCallback((price: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+    }).format(price);
+  }, []);
 
   // Memoized values for performance
-  const formattedPrice = useMemo(() => formatPrice(property.price), [property.price]);
-  const fullAddress = useMemo(() => getFullAddress(property), [property]);
+  const formattedPrice = useMemo(() => formatPrice(property.price), [formatPrice, property.price]);
+  const fullAddress = useMemo(() => 
+    `${property.city}, ${property.state} ${property.zipCode}`,
+    [property.city, property.state, property.zipCode]
+  );
   const formattedSquareFeet = useMemo(() => 
     property.squareFeet.toLocaleString(),
     [property.squareFeet]
   );
-  const statusColor = useMemo(() => getStatusColors(property.status), [property.status]);
 
   // Image handlers
   const handleImageLoad = useCallback(() => {
@@ -71,7 +87,7 @@ export const MobilePropertyCard = memo(function MobilePropertyCard({ property, o
             </div>
           </div>
         )}
-        <Badge className={`absolute top-2 right-2 text-xs ${statusColor}`}>
+        <Badge className={`absolute top-2 right-2 text-xs ${statusColors[property.status]}`}>
           {property.status}
         </Badge>
       </div>
@@ -121,7 +137,7 @@ export const MobilePropertyCard = memo(function MobilePropertyCard({ property, o
             <TouchButton
               size="sm"
               variant="outline"
-              onClick={() => onCall ? onCall() : propertyActions.handleCall(property.agent.name, property.agent.phone)}
+              onClick={onCall}
               enableHaptic
             >
               <Phone className="h-3 w-3" />
@@ -129,7 +145,7 @@ export const MobilePropertyCard = memo(function MobilePropertyCard({ property, o
             <TouchButton
               size="sm"
               variant="outline"
-              onClick={() => onEmail ? onEmail() : propertyActions.handleEmail(property.agent.name, property.agent.email)}
+              onClick={onEmail}
               enableHaptic
             >
               <Mail className="h-3 w-3" />

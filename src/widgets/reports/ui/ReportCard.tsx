@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
 import { Report, ReportTemplate } from '@/entities/report';
-import { useReports, useReportFormatting } from '@/features/reports';
+import { reportStore } from '@/shared/lib/report-store';
 import { 
   BarChart3, 
   LineChart, 
@@ -37,10 +37,7 @@ const chartIcons = {
 };
 
 export function ReportCard({ report, onView, onDelete }: ReportCardProps) {
-  const { getTemplate } = useReports();
-  const { getCategoryColor } = useReportFormatting();
-  
-  const template = getTemplate(report.templateId);
+  const template = reportStore.getTemplate(report.templateId);
   const chartType = report.config.chartType || template?.chartType || 'table';
   const ChartIcon = chartIcons[chartType];
 
@@ -58,18 +55,29 @@ export function ReportCard({ report, onView, onDelete }: ReportCardProps) {
     URL.revokeObjectURL(url);
   };
 
+  const getCategoryColor = (category?: string) => {
+    switch (category) {
+      case 'sales': return 'bg-blue-100 text-blue-800';
+      case 'properties': return 'bg-green-100 text-green-800';
+      case 'agents': return 'bg-purple-100 text-purple-800';
+      case 'market': return 'bg-orange-100 text-orange-800';
+      case 'financial': return 'bg-indigo-100 text-indigo-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
   return (
-    <Card className="luxury-card hover:shadow-md transition-shadow">
+    <Card className="hover:shadow-md transition-shadow">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex items-start gap-3">
-            <div className="p-2 bg-white/10 rounded-lg">
-              <ChartIcon className="h-5 w-5 text-white/90" />
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <ChartIcon className="h-5 w-5 text-primary" />
             </div>
             <div className="min-w-0 flex-1">
-              <CardTitle className="text-lg truncate font-display text-white">{report.name}</CardTitle>
+              <CardTitle className="text-lg truncate">{report.name}</CardTitle>
               {report.description && (
-                <p className="text-sm text-white/80 mt-1 line-clamp-2 font-body">
+                <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
                   {report.description}
                 </p>
               )}
@@ -77,7 +85,7 @@ export function ReportCard({ report, onView, onDelete }: ReportCardProps) {
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-white hover:bg-white/10">
+              <Button variant="ghost" size="icon" className="h-8 w-8">
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -102,11 +110,11 @@ export function ReportCard({ report, onView, onDelete }: ReportCardProps) {
         
         <div className="flex items-center gap-2 mt-3">
           {template && (
-            <Badge variant="outline" className="border-white/30 text-white/90 bg-white/10">
+            <Badge className={getCategoryColor(template.category)}>
               {template.category}
             </Badge>
           )}
-          <Badge variant="outline" className="text-xs border-white/30 text-white/90 bg-white/10">
+          <Badge variant="outline" className="text-xs">
             {chartType}
           </Badge>
         </div>
@@ -114,36 +122,35 @@ export function ReportCard({ report, onView, onDelete }: ReportCardProps) {
       
       <CardContent className="pt-0">
         <div className="space-y-3">
-          <div className="flex items-center gap-4 text-sm text-white/70">
+          <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />
-              <span className="font-body">
+              <span>
                 {report.config.dateRange.start.toLocaleDateString()} - {' '}
                 {report.config.dateRange.end.toLocaleDateString()}
               </span>
             </div>
           </div>
           
-          <div className="flex items-center gap-4 text-sm text-white/70">
+          <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
               <User className="h-4 w-4" />
-              <span className="font-body">{report.generatedBy}</span>
+              <span>{report.generatedBy}</span>
             </div>
-            <div className="font-body">
+            <div>
               Created: {report.createdAt.toLocaleDateString()}
             </div>
           </div>
           
-          <div className="text-sm text-white/80">
-            <span className="font-medium font-body">{report.data.length}</span> <span className="font-body">data points</span>
+          <div className="text-sm">
+            <span className="font-medium">{report.data.length}</span> data points
           </div>
           
           <div className="flex gap-2 pt-2">
             <Button 
               size="sm" 
               onClick={() => onView?.(report.id)}
-              className="flex-1 border-white/30 text-white hover:bg-white/10 hover:text-white"
-              variant="outline"
+              className="flex-1"
             >
               <Eye className="h-4 w-4 mr-2" />
               View Report
@@ -152,7 +159,6 @@ export function ReportCard({ report, onView, onDelete }: ReportCardProps) {
               size="sm" 
               variant="outline" 
               onClick={handleDownload}
-              className="border-white/30 text-white hover:bg-white/10 hover:text-white"
             >
               <Download className="h-4 w-4" />
             </Button>

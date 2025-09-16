@@ -1,4 +1,4 @@
-import { Deal } from "@/entities/deal/model/types";
+import { Deal } from './types';
 
 export const mockDeals: Deal[] = [
   {

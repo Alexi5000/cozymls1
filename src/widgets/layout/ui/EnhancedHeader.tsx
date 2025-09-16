@@ -3,9 +3,9 @@ import { Bell, Search, User, Settings } from 'lucide-react';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Badge } from '@/shared/ui/badge';
-import { NotificationsDropdown } from "@/widgets/layout/ui/NotificationsDropdown";
-import { SettingsDropdown } from "@/widgets/layout/ui/SettingsDropdown";
-import { UserAccountDropdown } from "@/widgets/layout/ui/UserAccountDropdown";
+import { NotificationsDropdown } from './NotificationsDropdown';
+import { SettingsDropdown } from './SettingsDropdown';
+import { UserAccountDropdown } from './UserAccountDropdown';
 
 interface HeaderProps {
   title: string;

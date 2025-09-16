@@ -31,7 +31,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Badge } from '@/shared/ui/badge';
 import { Separator } from '@/shared/ui/separator';
 import { useToast } from '@/shared/hooks/use-toast';
-import { useReports } from '@/features/reports';
+import { reportStore } from '@/shared/lib/report-store';
 import { ReportTemplate, ReportConfig } from '@/entities/report';
 import { Calendar, Filter, BarChart3, Plus, Settings } from 'lucide-react';
 
@@ -58,7 +58,8 @@ export function ReportBuilder({ children, onReportGenerated }: ReportBuilderProp
   const [open, setOpen] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState<ReportTemplate | null>(null);
   const { toast } = useToast();
-  const { templates, getTemplate, generateReport } = useReports();
+
+  const templates = reportStore.getTemplates();
 
   const form = useForm<ReportConfigForm>({
     resolver: zodResolver(reportConfigSchema),
@@ -75,7 +76,7 @@ export function ReportBuilder({ children, onReportGenerated }: ReportBuilderProp
   });
 
   const handleTemplateSelect = (templateId: string) => {
-    const template = getTemplate(templateId);
+    const template = reportStore.getTemplate(templateId);
     setSelectedTemplate(template || null);
     if (template) {
       form.setValue('chartType', template.chartType || 'bar');
@@ -100,7 +101,7 @@ export function ReportBuilder({ children, onReportGenerated }: ReportBuilderProp
         showTotals: data.showTotals,
       };
 
-      const report = generateReport(
+      const report = reportStore.generateReport(
         data.templateId,
         config,
         data.name,
@@ -137,7 +138,7 @@ export function ReportBuilder({ children, onReportGenerated }: ReportBuilderProp
       </DialogTrigger>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 font-display text-slate-800">
+          <DialogTitle className="flex items-center gap-2">
             <BarChart3 className="h-5 w-5" />
             Report Builder
           </DialogTitle>
@@ -148,7 +149,7 @@ export function ReportBuilder({ children, onReportGenerated }: ReportBuilderProp
           <div className="lg:col-span-1">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg font-display text-slate-800">Select Template</CardTitle>
+                <CardTitle className="text-lg">Select Template</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 {templates.map((template) => (
@@ -190,12 +191,12 @@ export function ReportBuilder({ children, onReportGenerated }: ReportBuilderProp
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <Card>
-                    <CardHeader>
-                      <CardTitle className="text-lg flex items-center gap-2 font-display text-slate-800">
-                        <Settings className="h-4 w-4" />
-                        Report Configuration
-                      </CardTitle>
-                    </CardHeader>
+                  <CardHeader>
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <Settings className="h-4 w-4" />
+                      Report Configuration
+                    </CardTitle>
+                  </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <FormField

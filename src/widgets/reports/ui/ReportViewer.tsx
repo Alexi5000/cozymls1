@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
 import { Report } from '@/entities/report';
-import { useReport, useReportFormatting } from '@/features/reports';
+import { reportStore } from '@/shared/lib/report-store';
 import { 
   BarChart, 
   LineChart, 
@@ -46,14 +46,30 @@ const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#8dd1e1'];
 export function ReportViewer({ reportId, onClose }: ReportViewerProps) {
   const [activeTab, setActiveTab] = useState<'chart' | 'table'>('chart');
   
-  const { report, template } = useReport(reportId);
-  const { formatValue } = useReportFormatting();
+  const report = reportId ? reportStore.getReport(reportId) : null;
+  const template = report ? reportStore.getTemplate(report.templateId) : null;
 
   if (!report || !template) {
     return null;
   }
 
   const chartType = report.config.chartType || template.chartType || 'table';
+
+  const formatValue = (value: any, type: string) => {
+    if (type === 'currency') {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      }).format(value);
+    }
+    if (type === 'number') {
+      return new Intl.NumberFormat('en-US').format(value);
+    }
+    if (type === 'date') {
+      return new Date(value).toLocaleDateString();
+    }
+    return value;
+  };
 
   const renderChart = () => {
     const data = report.data;
@@ -107,7 +123,7 @@ export function ReportViewer({ reportId, onClose }: ReportViewerProps) {
           </ResponsiveContainer>
         );
 
-      case 'pie': {
+      case 'pie':
         const pieField = template.fields.find(f => f.type === 'number' || f.type === 'currency');
         const labelField = template.fields.find(f => f.type === 'string');
         
@@ -135,7 +151,6 @@ export function ReportViewer({ reportId, onClose }: ReportViewerProps) {
             </PieChart>
           </ResponsiveContainer>
         );
-      }
 
       case 'area':
         return (
@@ -214,9 +229,9 @@ export function ReportViewer({ reportId, onClose }: ReportViewerProps) {
         <DialogHeader>
           <div className="flex items-center justify-between">
             <div>
-              <DialogTitle className="text-xl font-display text-slate-800">{report.name}</DialogTitle>
+              <DialogTitle className="text-xl">{report.name}</DialogTitle>
               {report.description && (
-                <p className="text-slate-600 mt-1 font-body">{report.description}</p>
+                <p className="text-muted-foreground mt-1">{report.description}</p>
               )}
             </div>
             <div className="flex gap-2">
@@ -297,7 +312,7 @@ export function ReportViewer({ reportId, onClose }: ReportViewerProps) {
           {/* Chart/Table Content */}
           <Card>
             <CardHeader>
-              <CardTitle className="font-display text-slate-800">{activeTab === 'chart' ? 'Chart View' : 'Table View'}</CardTitle>
+              <CardTitle>{activeTab === 'chart' ? 'Chart View' : 'Table View'}</CardTitle>
             </CardHeader>
             <CardContent>
               {activeTab === 'chart' ? renderChart() : renderTable()}
