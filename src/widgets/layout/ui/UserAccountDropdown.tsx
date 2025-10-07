@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAuth } from '@/shared/hooks/use-auth';
 import { Card, CardContent, CardHeader } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
 import { Separator } from '@/shared/ui/separator';
@@ -11,24 +12,29 @@ interface UserAccountDropdownProps {
 }
 
 export function UserAccountDropdown({ onClose }: UserAccountDropdownProps) {
+  const { user, signOut } = useAuth();
+
   const userInfo = {
-    name: 'Dawn Fintch',
-    email: 'dawn@dublinestate.ie',
-    role: 'Senior Real Estate Agent',
-    initials: 'DF',
-    accountType: 'Premium'
+    name: user?.user_metadata?.name || user?.email?.split('@')[0] || 'User',
+    email: user?.email || '',
+    role: 'Real Estate Agent',
+    initials: (user?.user_metadata?.name || user?.email || 'U')
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2),
+    accountType: 'Agent'
   };
 
   const handleNavigation = (page: string) => {
     console.log(`Navigate to ${page}`);
     onClose();
-    // In real app, you would navigate to the appropriate page
   };
 
-  const handleLogout = () => {
-    console.log('User logout');
+  const handleLogout = async () => {
+    await signOut();
     onClose();
-    // In real app, you would handle logout logic
   };
 
   return (
