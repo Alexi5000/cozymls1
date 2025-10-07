@@ -1,0 +1,149 @@
+name: PR Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+
+jobs:
+  pr-title-validation:
+    name: Validate PR Title
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR title format
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = context.payload.pull_request.title;
+            const conventionalCommitPattern = /^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\(.+\))?: .+/;
+            
+            if (!conventionalCommitPattern.test(title)) {
+              core.setFailed(
+                '❌ PR title must follow Conventional Commits format:\n' +
+                'Examples:\n' +
+                '  - feat: add user authentication\n' +
+                '  - fix(auth): resolve login redirect issue\n' +
+                '  - docs: update README with setup instructions\n' +
+                '\nYour title: ' + title
+              );
+            } else {
+              console.log('✅ PR title follows Conventional Commits format');
+            }
+
+  bundle-size:
+    name: Bundle Size Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build current branch
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
+      
+      - name: Get current bundle size
+        id: current-size
+        run: |
+          CURRENT_SIZE=$(du -sb dist/ | cut -f1)
+          echo "size=$CURRENT_SIZE" >> $GITHUB_OUTPUT
+          echo "Current bundle size: $(numfmt --to=iec-i --suffix=B $CURRENT_SIZE)"
+      
+      - name: Checkout base branch
+        run: |
+          git checkout ${{ github.base_ref }}
+      
+      - name: Install dependencies (base)
+        run: npm ci
+      
+      - name: Build base branch
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
+        continue-on-error: true
+      
+      - name: Get base bundle size
+        id: base-size
+        run: |
+          BASE_SIZE=$(du -sb dist/ | cut -f1)
+          echo "size=$BASE_SIZE" >> $GITHUB_OUTPUT
+          echo "Base bundle size: $(numfmt --to=iec-i --suffix=B $BASE_SIZE)"
+        continue-on-error: true
+      
+      - name: Compare bundle sizes
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const currentSize = parseInt('${{ steps.current-size.outputs.size }}');
+            const baseSize = parseInt('${{ steps.base-size.outputs.size }}') || currentSize;
+            
+            const diff = currentSize - baseSize;
+            const percentChange = ((diff / baseSize) * 100).toFixed(2);
+            
+            const formatSize = (bytes) => {
+              const sizes = ['B', 'KB', 'MB', 'GB'];
+              if (bytes === 0) return '0 B';
+              const i = Math.floor(Math.log(bytes) / Math.log(1024));
+              return `${(bytes / Math.pow(1024, i)).toFixed(2)} ${sizes[i]}`;
+            };
+            
+            let message = `## 📦 Bundle Size Report\n\n`;
+            message += `- **Current:** ${formatSize(currentSize)}\n`;
+            message += `- **Base:** ${formatSize(baseSize)}\n`;
+            message += `- **Difference:** ${diff >= 0 ? '+' : ''}${formatSize(diff)} (${percentChange >= 0 ? '+' : ''}${percentChange}%)\n\n`;
+            
+            if (Math.abs(percentChange) > 10) {
+              message += `⚠️ **Warning:** Bundle size changed by more than 10%!\n`;
+            } else if (diff > 0) {
+              message += `ℹ️ Bundle size increased slightly.\n`;
+            } else if (diff < 0) {
+              message += `✅ Bundle size decreased!\n`;
+            } else {
+              message += `✅ No change in bundle size.\n`;
+            }
+            
+            console.log(message);
+
+  code-quality:
+    name: Code Quality Checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run linter
+        run: npm run lint
+      
+      - name: Run type check
+        run: npx tsc --noEmit
+      
+      - name: Check for console.log statements
+        run: |
+          if grep -r "console\.log" src/ --exclude-dir=node_modules; then
+            echo "⚠️  Warning: console.log statements found in source code"
+            echo "Consider removing them before merging to production"
+          else
+            echo "✅ No console.log statements found"
+          fi
+        continue-on-error: true

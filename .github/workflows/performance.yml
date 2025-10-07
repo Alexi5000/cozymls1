@@ -1,0 +1,123 @@
+name: Performance Monitoring
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  bundle-analysis:
+    name: Bundle Size Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build project
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
+      
+      - name: Analyze bundle
+        run: |
+          echo "## 📦 Bundle Analysis Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Total size
+          TOTAL_SIZE=$(du -sh dist/ | cut -f1)
+          echo "**Total Bundle Size:** $TOTAL_SIZE" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Top 10 largest files
+          echo "### Largest Files" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| File | Size |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|------|" >> $GITHUB_STEP_SUMMARY
+          find dist/ -type f -exec du -h {} + | sort -rh | head -10 | while read size file; do
+            echo "| \`${file#dist/}\` | $size |" >> $GITHUB_STEP_SUMMARY
+          done
+          
+          # File count by type
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### File Statistics" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Type | Count | Total Size |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|-------|------------|" >> $GITHUB_STEP_SUMMARY
+          
+          for ext in js css html svg png jpg jpeg gif; do
+            COUNT=$(find dist/ -name "*.$ext" | wc -l)
+            if [ $COUNT -gt 0 ]; then
+              SIZE=$(find dist/ -name "*.$ext" -exec du -ch {} + | tail -1 | cut -f1)
+              echo "| .$ext | $COUNT | $SIZE |" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+      
+      - name: Check bundle size threshold
+        run: |
+          TOTAL_SIZE_BYTES=$(du -sb dist/ | cut -f1)
+          THRESHOLD=5242880  # 5MB in bytes
+          
+          if [ $TOTAL_SIZE_BYTES -gt $THRESHOLD ]; then
+            echo "⚠️  Warning: Bundle size exceeds 5MB threshold"
+            echo "Current: $(numfmt --to=iec-i --suffix=B $TOTAL_SIZE_BYTES)"
+            echo "Threshold: $(numfmt --to=iec-i --suffix=B $THRESHOLD)"
+            # Don't fail, just warn
+          else
+            echo "✅ Bundle size within acceptable limits"
+          fi
+
+  build-performance:
+    name: Build Performance Metrics
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Measure build time
+        run: |
+          echo "⏱️  Starting build performance test..."
+          START_TIME=$(date +%s)
+          
+          npm run build
+          
+          END_TIME=$(date +%s)
+          BUILD_TIME=$((END_TIME - START_TIME))
+          
+          echo "## ⏱️  Build Performance" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Build Time:** ${BUILD_TIME}s" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ $BUILD_TIME -gt 120 ]; then
+            echo "⚠️ Build time exceeds 2 minutes. Consider optimizing." >> $GITHUB_STEP_SUMMARY
+          elif [ $BUILD_TIME -gt 60 ]; then
+            echo "ℹ️ Build time is acceptable but could be improved." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ Build time is excellent!" >> $GITHUB_STEP_SUMMARY
+          fi
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}

@@ -1,0 +1,149 @@
+name: Security Scan
+
+on:
+  schedule:
+    # Run every Monday at 9:00 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  dependency-scan:
+    name: Dependency Vulnerability Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate --json > audit-results.json
+        continue-on-error: true
+      
+      - name: Generate security report
+        run: |
+          echo "## 🔒 Security Audit Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f audit-results.json ]; then
+            CRITICAL=$(jq '.metadata.vulnerabilities.critical // 0' audit-results.json)
+            HIGH=$(jq '.metadata.vulnerabilities.high // 0' audit-results.json)
+            MODERATE=$(jq '.metadata.vulnerabilities.moderate // 0' audit-results.json)
+            LOW=$(jq '.metadata.vulnerabilities.low // 0' audit-results.json)
+            
+            echo "| Severity | Count |" >> $GITHUB_STEP_SUMMARY
+            echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
+            echo "| 🔴 Critical | $CRITICAL |" >> $GITHUB_STEP_SUMMARY
+            echo "| 🟠 High | $HIGH |" >> $GITHUB_STEP_SUMMARY
+            echo "| 🟡 Moderate | $MODERATE |" >> $GITHUB_STEP_SUMMARY
+            echo "| 🟢 Low | $LOW |" >> $GITHUB_STEP_SUMMARY
+            
+            if [ "$CRITICAL" -gt 0 ] || [ "$HIGH" -gt 0 ]; then
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "⚠️  **Action Required:** Critical or high severity vulnerabilities found!" >> $GITHUB_STEP_SUMMARY
+              echo "Run \`npm audit fix\` to attempt automatic fixes." >> $GITHUB_STEP_SUMMARY
+            fi
+          fi
+      
+      - name: Upload audit results
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-audit-results
+          path: audit-results.json
+          retention-days: 90
+
+  codeql-analysis:
+    name: CodeQL Security Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript, typescript
+          queries: security-and-quality
+      
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:javascript"
+
+  secret-scan:
+    name: Secret Scanning
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Check for exposed secrets
+        run: |
+          echo "🔍 Scanning for exposed secrets..."
+          
+          # Check for common secret patterns
+          SECRET_PATTERNS=(
+            "api[_-]?key"
+            "secret[_-]?key"
+            "private[_-]?key"
+            "password"
+            "token"
+            "access[_-]?key"
+          )
+          
+          FOUND=0
+          for pattern in "${SECRET_PATTERNS[@]}"; do
+            if grep -ri "$pattern\s*=\s*['\"][^'\"]\+" src/ --exclude-dir=node_modules 2>/dev/null; then
+              echo "⚠️  Potential secret found matching pattern: $pattern"
+              FOUND=1
+            fi
+          done
+          
+          if [ $FOUND -eq 0 ]; then
+            echo "✅ No exposed secrets detected"
+          else
+            echo "❌ Potential secrets found in code. Please review!"
+            exit 1
+          fi
+
+  supabase-security:
+    name: Supabase Security Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Verify RLS policies exist
+        run: |
+          echo "🔒 Checking for Row Level Security policies..."
+          
+          if [ -d "supabase/migrations" ]; then
+            RLS_COUNT=$(grep -r "ENABLE ROW LEVEL SECURITY" supabase/migrations/ | wc -l)
+            POLICY_COUNT=$(grep -r "CREATE POLICY" supabase/migrations/ | wc -l)
+            
+            echo "📊 Security Statistics:" >> $GITHUB_STEP_SUMMARY
+            echo "- RLS enabled on $RLS_COUNT tables" >> $GITHUB_STEP_SUMMARY
+            echo "- $POLICY_COUNT policies configured" >> $GITHUB_STEP_SUMMARY
+            
+            if [ $RLS_COUNT -eq 0 ]; then
+              echo "⚠️  **Warning:** No RLS policies found!" >> $GITHUB_STEP_SUMMARY
+              echo "Consider enabling Row Level Security for data protection." >> $GITHUB_STEP_SUMMARY
+            else
+              echo "✅ RLS policies configured" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "ℹ️  No Supabase migrations found"
+          fi
