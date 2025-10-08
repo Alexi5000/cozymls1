@@ -75,7 +75,7 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
 
   const onSubmit = async (data: PropertyForm) => {
     try {
-      console.log('Property data:', data);
+      // TODO: Implement actual property creation with Supabase
       
       toast({
         title: "Property Added Successfully",
