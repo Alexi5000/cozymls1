@@ -28,20 +28,23 @@ import {
   SelectValue,
 } from '@/shared/ui/select';
 import { useToast } from '@/shared/hooks/use-toast';
+import { useCreateProperty } from '@/integrations/supabase/hooks';
+import { useAuth } from '@/shared/hooks/use-auth';
 import { Plus } from 'lucide-react';
 
 const propertySchema = z.object({
+  mls_id: z.string().min(1, 'MLS ID is required'),
   address: z.string().min(1, 'Address is required'),
   city: z.string().min(1, 'City is required'),
   state: z.string().min(1, 'State is required'),
-  zipCode: z.string().min(5, 'Valid ZIP code is required'),
+  zip_code: z.string().min(5, 'Valid ZIP code is required'),
   price: z.number().min(1, 'Price must be greater than 0'),
   bedrooms: z.number().min(0, 'Bedrooms must be 0 or greater'),
   bathrooms: z.number().min(0, 'Bathrooms must be 0 or greater'),
-  squareFeet: z.number().min(1, 'Square feet must be greater than 0'),
-  lotSize: z.number().min(0, 'Lot size must be 0 or greater'),
-  yearBuilt: z.number().min(1800, 'Year built must be valid'),
-  propertyType: z.enum(['house', 'apartment', 'townhouse', 'duplex', 'land', 'commercial']),
+  square_feet: z.number().min(1, 'Square feet must be greater than 0'),
+  lot_size: z.number().min(0, 'Lot size must be 0 or greater'),
+  year_built: z.number().min(1800, 'Year built must be valid'),
+  property_type: z.enum(['house', 'apartment', 'townhouse', 'duplex', 'land', 'commercial']),
   description: z.string().min(10, 'Description must be at least 10 characters'),
 });
 
@@ -54,43 +57,62 @@ interface AddPropertyDialogProps {
 export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
+  const createProperty = useCreateProperty();
+  const { user } = useAuth();
   
   const form = useForm<PropertyForm>({
     resolver: zodResolver(propertySchema),
     defaultValues: {
+      mls_id: '',
       address: '',
       city: '',
       state: '',
-      zipCode: '',
+      zip_code: '',
       price: 0,
       bedrooms: 0,
       bathrooms: 0,
-      squareFeet: 0,
-      lotSize: 0,
-      yearBuilt: new Date().getFullYear(),
-      propertyType: 'house',
+      square_feet: 0,
+      lot_size: 0,
+      year_built: new Date().getFullYear(),
+      property_type: 'house',
       description: '',
     },
   });
 
   const onSubmit = async (data: PropertyForm) => {
-    try {
-      // TODO: Implement actual property creation with Supabase
-      
-      toast({
-        title: "Property Added Successfully",
-        description: `${data.address} has been added to your listings.`,
-      });
-      
-      form.reset();
-      setOpen(false);
-    } catch (error) {
+    if (!user?.id) {
       toast({
         title: "Error",
-        description: "Failed to add property. Please try again.",
+        description: "You must be logged in to add properties.",
         variant: "destructive",
       });
+      return;
     }
+
+    // Ensure all fields have values before submitting
+    const propertyData = {
+      mls_id: data.mls_id,
+      address: data.address,
+      city: data.city,
+      state: data.state,
+      zip_code: data.zip_code,
+      price: data.price,
+      bedrooms: data.bedrooms,
+      bathrooms: data.bathrooms,
+      square_feet: data.square_feet,
+      lot_size: data.lot_size,
+      year_built: data.year_built,
+      property_type: data.property_type,
+      description: data.description,
+      agent_id: user.id,
+    };
+
+    createProperty.mutate(propertyData, {
+      onSuccess: () => {
+        form.reset();
+        setOpen(false);
+      },
+    });
   };
 
   return (
@@ -111,6 +133,20 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="mls_id"
+                render={({ field }) => (
+                  <FormItem className="md:col-span-2">
+                    <FormLabel>MLS ID</FormLabel>
+                    <FormControl>
+                      <Input placeholder="MLS-123456" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
               <FormField
                 control={form.control}
                 name="address"
@@ -155,7 +191,7 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
               
               <FormField
                 control={form.control}
-                name="zipCode"
+                name="zip_code"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>ZIP Code</FormLabel>
@@ -188,7 +224,7 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
               
               <FormField
                 control={form.control}
-                name="propertyType"
+                name="property_type"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Property Type</FormLabel>
@@ -253,7 +289,7 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
               
               <FormField
                 control={form.control}
-                name="squareFeet"
+                name="square_feet"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Square Feet</FormLabel>
@@ -272,7 +308,7 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
               
               <FormField
                 control={form.control}
-                name="lotSize"
+                name="lot_size"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Lot Size (sq ft)</FormLabel>
@@ -291,7 +327,7 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
               
               <FormField
                 control={form.control}
-                name="yearBuilt"
+                name="year_built"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Year Built</FormLabel>

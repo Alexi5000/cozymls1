@@ -3,14 +3,15 @@ import { MobileLayout } from '@/widgets/mobile';
 import { StatsCard, RecentActivity, DealsOverview } from '@/widgets/dashboard';
 import { HeroSection } from '@/widgets/dashboard/ui/HeroSection';
 import { MarketInsights } from '@/widgets/dashboard/ui/MarketInsights';
-import { mockDashboardStats } from '@/entities/dashboard';
+import { useDashboardStats } from '@/integrations/supabase/hooks';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
 import { useScrollAnimation } from '@/shared/hooks/use-scroll-animation';
 import { AdaptiveLayout, ResponsiveGrid } from '@/shared/ui/adaptive-layout';
 import { Home, Users, DollarSign, TrendingUp } from 'lucide-react';
+import { Skeleton } from '@/shared/ui/skeleton';
 
 export function DashboardPage() {
-  const stats = mockDashboardStats;
+  const { data: stats, isLoading } = useDashboardStats();
   const isMobile = useIsMobile();
   const { elementRef: contentRef, isVisible } = useScrollAnimation();
 
@@ -18,11 +19,26 @@ export function DashboardPage() {
     // Here you would typically refetch data
   };
 
+  if (isLoading) {
+    return (
+      <Layout title="Dashboard">
+        <div className="space-y-8">
+          <Skeleton className="h-64 w-full rounded-2xl" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[...Array(4)].map((_, i) => (
+              <Skeleton key={i} className="h-32 w-full" />
+            ))}
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
   const heroStats = {
-    activeProperties: stats.totalContacts,
-    pendingSales: stats.activeDeals,
-    monthlyRevenue: stats.totalRevenue,
-    newListings: 8,
+    activeProperties: Number(stats?.active_deals || 0),
+    pendingSales: Number(stats?.active_deals || 0),
+    monthlyRevenue: Number(stats?.total_revenue || 0),
+    newListings: Number(stats?.total_contacts || 0),
   };
 
   const content = (
@@ -43,32 +59,32 @@ export function DashboardPage() {
           gap={{ mobile: 3, tablet: 4, desktop: 6 }}
         >
           <StatsCard
-            title="Active Properties"
-            value={stats.totalContacts.toLocaleString()}
-            change="+8 new listings this week"
-            icon={Home}
-            trend="up"
+            title="Total Contacts"
+            value={stats?.total_contacts?.toString() || '0'}
+            change={`${Number(stats?.monthly_growth || 0).toFixed(1)}% growth`}
+            icon={Users}
+            trend={Number(stats?.monthly_growth || 0) >= 0 ? 'up' : 'down'}
           />
           <StatsCard
-            title="In Escrow"
-            value={stats.activeDeals}
+            title="Active Deals"
+            value={stats?.active_deals?.toString() || '0'}
             change="+3 pending sales"
             icon={TrendingUp}
             trend="up"
           />
           <StatsCard
-            title="Monthly Revenue"
-            value={`$${(stats.totalRevenue / 1000000).toFixed(1)}M`}
-            change={`+${stats.monthlyGrowth}% from last month`}
+            title="Total Revenue"
+            value={`$${((Number(stats?.total_revenue || 0)) / 1000).toFixed(1)}K`}
+            change={`${Number(stats?.monthly_growth || 0).toFixed(1)}% growth`}
             icon={DollarSign}
-            trend="up"
+            trend={Number(stats?.monthly_growth || 0) >= 0 ? 'up' : 'down'}
           />
           <StatsCard
-            title="Active Agents"
-            value="12"
-            change="2 new agents onboarded"
-            icon={Users}
-            trend="up"
+            title="Growth Rate"
+            value={`${Number(stats?.monthly_growth || 0).toFixed(1)}%`}
+            change="vs last month"
+            icon={Home}
+            trend={Number(stats?.monthly_growth || 0) >= 0 ? 'up' : 'down'}
           />
         </ResponsiveGrid>
 

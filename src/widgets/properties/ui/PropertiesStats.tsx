@@ -1,8 +1,7 @@
 import { Card } from '@/shared/ui/card';
-import { Property } from '@/entities/property';
 
 interface PropertiesStatsProps {
-  properties: Property[];
+  properties: any[];
 }
 
 export function PropertiesStats({ properties }: PropertiesStatsProps) {
@@ -29,13 +28,13 @@ export function PropertiesStats({ properties }: PropertiesStatsProps) {
       <Card className="p-3 md:p-4">
         <div className="text-xs md:text-sm font-medium text-gray-600">Avg. Days on Market</div>
         <div className="text-lg md:text-2xl font-bold text-gray-900">
-          {Math.round(properties.reduce((acc, p) => acc + p.daysOnMarket, 0) / properties.length)}
+          {properties.length > 0 ? Math.round(properties.reduce((acc, p) => acc + (p.days_on_market || 0), 0) / properties.length) : 0}
         </div>
       </Card>
       <Card className="p-3 md:p-4">
         <div className="text-xs md:text-sm font-medium text-gray-600">Avg. Price</div>
         <div className="text-lg md:text-2xl font-bold text-gray-900">
-          {formatPrice(properties.reduce((acc, p) => acc + p.price, 0) / properties.length)}
+          {properties.length > 0 ? formatPrice(properties.reduce((acc, p) => acc + (p.price || 0), 0) / properties.length) : '$0'}
         </div>
       </Card>
     </div>
