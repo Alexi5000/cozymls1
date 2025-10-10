@@ -5,6 +5,12 @@ on:
     branches: ['**']
   pull_request:
     branches: ['**']
+  workflow_dispatch:
+
+# Allow workflows to trigger on bot commits
+permissions:
+  contents: read
+  actions: write
 
 jobs:
   lint:
