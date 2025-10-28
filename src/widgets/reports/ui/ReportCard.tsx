@@ -1,8 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
-import { Report, ReportTemplate } from '@/entities/report';
-import { reportStore } from '@/shared/lib/report-store';
+import { Report as DbReport, ReportTemplate as DbTemplate, useReportTemplate } from '@/integrations/supabase/hooks';
 import { 
   BarChart3, 
   LineChart, 
@@ -23,7 +22,7 @@ import {
 } from '@/shared/ui/dropdown-menu';
 
 interface ReportCardProps {
-  report: Report;
+  report: DbReport;
   onView?: (reportId: string) => void;
   onDelete?: (reportId: string) => void;
 }
@@ -37,9 +36,9 @@ const chartIcons = {
 };
 
 export function ReportCard({ report, onView, onDelete }: ReportCardProps) {
-  const template = reportStore.getTemplate(report.templateId);
-  const chartType = report.config.chartType || template?.chartType || 'table';
-  const ChartIcon = chartIcons[chartType];
+  const { data: template } = useReportTemplate(report.template_id);
+  const chartType = report.config.chartType || template?.chart_type || 'table';
+  const ChartIcon = chartIcons[chartType as keyof typeof chartIcons] || Table;
 
   const handleDownload = () => {
     // Simulate report download
@@ -126,8 +125,7 @@ export function ReportCard({ report, onView, onDelete }: ReportCardProps) {
             <div className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />
               <span>
-                {report.config.dateRange.start.toLocaleDateString()} - {' '}
-                {report.config.dateRange.end.toLocaleDateString()}
+                {report.config.dateRange?.start || 'N/A'} - {report.config.dateRange?.end || 'N/A'}
               </span>
             </div>
           </div>
@@ -135,15 +133,15 @@ export function ReportCard({ report, onView, onDelete }: ReportCardProps) {
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
               <User className="h-4 w-4" />
-              <span>{report.generatedBy}</span>
+              <span>Generated</span>
             </div>
             <div>
-              Created: {report.createdAt.toLocaleDateString()}
+              Created: {new Date(report.created_at).toLocaleDateString()}
             </div>
           </div>
           
           <div className="text-sm">
-            <span className="font-medium">{report.data.length}</span> data points
+            <span className="font-medium">{Array.isArray(report.data) ? report.data.length : 0}</span> data points
           </div>
           
           <div className="flex gap-2 pt-2">

@@ -6,55 +6,52 @@ import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Badge } from '@/shared/ui/badge';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
-import { useToast } from '@/shared/hooks/use-toast';
-import { reportStore } from '@/shared/lib/report-store';
+import { useAuth } from '@/shared/hooks/use-auth';
+import { useReports, useReportTemplates, useDeleteReport } from '@/integrations/supabase/hooks';
 import { ReportBuilder, ReportCard, ReportViewer } from '@/widgets/reports';
 import { 
   BarChart3, 
-  TrendingUp, 
-  Users, 
-  DollarSign, 
   Plus,
   Search,
-  Filter,
   FileText,
   Calendar,
-  Download
+  Download,
+  Loader2
 } from 'lucide-react';
 
 export function ReportsPage() {
   const isMobile = useIsMobile();
-  const { toast } = useToast();
+  const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [viewingReportId, setViewingReportId] = useState<string | null>(null);
   
-  const reports = reportStore.getReports();
-  const analytics = reportStore.getReportAnalytics();
+  const { data: reports = [], isLoading: reportsLoading } = useReports(user?.id);
+  const { data: templates = [] } = useReportTemplates();
+  const deleteReport = useDeleteReport();
   
   const filteredReports = reports.filter(report => {
-    const template = reportStore.getTemplate(report.templateId);
+    const template = templates.find(t => t.id === report.template_id);
     const matchesSearch = report.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          report.description?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || template?.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
+  const analytics = {
+    totalReports: reports.length,
+    templatesUsed: new Set(reports.map(r => r.template_id)).size,
+    recentReports: reports.filter(r => 
+      new Date(r.created_at) >= new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+    ).length,
+  };
+
   const handleReportGenerated = (reportId: string) => {
-    toast({
-      title: "Report Generated",
-      description: "Your report has been created successfully.",
-    });
-    // Optionally auto-open the new report
     setViewingReportId(reportId);
   };
 
   const handleDeleteReport = (reportId: string) => {
-    reportStore.deleteReport(reportId);
-    toast({
-      title: "Report Deleted",
-      description: "The report has been removed.",
-    });
+    deleteReport.mutate(reportId);
   };
 
   const handleRefresh = async () => {
@@ -66,7 +63,13 @@ export function ReportsPage() {
   const content = (
     <div className="space-y-6">
       {/* Analytics Overview */}
-      <div className={`grid gap-3 ${isMobile ? 'grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-4'}`}>
+      {reportsLoading ? (
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+      ) : (
+        <>
+          <div className={`grid gap-3 ${isMobile ? 'grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-4'}`}>
         <Card className={isMobile ? "mobile-shadow" : ""}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className={isMobile ? "mobile-subtitle" : "text-sm font-medium"}>Total Reports</CardTitle>
@@ -109,11 +112,11 @@ export function ReportsPage() {
             <div className={isMobile ? "mobile-title" : "text-2xl font-bold"}>24</div>
             <p className={isMobile ? "mobile-caption" : "text-xs text-muted-foreground"}>Total downloads</p>
           </CardContent>
-        </Card>
-      </div>
+          </Card>
+        </div>
 
-      {/* Controls */}
-      <Card>
+        {/* Controls */}
+        <Card>
         <CardHeader>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
@@ -156,10 +159,10 @@ export function ReportsPage() {
             </div>
           </div>
         </CardContent>
-      </Card>
+        </Card>
 
-      {/* Reports Grid */}
-      {filteredReports.length > 0 ? (
+        {/* Reports Grid */}
+        {filteredReports.length > 0 ? (
         <div className={`grid gap-4 ${
           isMobile ? 'grid-cols-1' : 'md:grid-cols-2 lg:grid-cols-3'
         }`}>
@@ -171,9 +174,9 @@ export function ReportsPage() {
               onDelete={handleDeleteReport}
             />
           ))}
-        </div>
-      ) : (
-        <Card>
+          </div>
+        ) : (
+          <Card>
           <CardContent className="text-center py-12">
             <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-semibold mb-2">No Reports Found</h3>
@@ -190,13 +193,15 @@ export function ReportsPage() {
             </ReportBuilder>
           </CardContent>
         </Card>
-      )}
+        )}
 
-      {/* Report Viewer Modal */}
-      <ReportViewer
-        reportId={viewingReportId}
-        onClose={() => setViewingReportId(null)}
-      />
+        {/* Report Viewer Modal */}
+        <ReportViewer
+          reportId={viewingReportId}
+          onClose={() => setViewingReportId(null)}
+        />
+        </>
+      )}
     </div>
   );
 

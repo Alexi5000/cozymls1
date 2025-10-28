@@ -31,9 +31,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Badge } from '@/shared/ui/badge';
 import { Separator } from '@/shared/ui/separator';
 import { useToast } from '@/shared/hooks/use-toast';
-import { reportStore } from '@/shared/lib/report-store';
-import { ReportTemplate, ReportConfig } from '@/entities/report';
-import { Calendar, Filter, BarChart3, Plus, Settings } from 'lucide-react';
+import { useAuth } from '@/shared/hooks/use-auth';
+import { useReportTemplates, useCreateReport, ReportTemplate } from '@/integrations/supabase/hooks';
+import { Calendar, BarChart3, Plus, Settings, Loader2 } from 'lucide-react';
 
 const reportConfigSchema = z.object({
   name: z.string().min(1, 'Report name is required'),
@@ -58,8 +58,9 @@ export function ReportBuilder({ children, onReportGenerated }: ReportBuilderProp
   const [open, setOpen] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState<ReportTemplate | null>(null);
   const { toast } = useToast();
-
-  const templates = reportStore.getTemplates();
+  const { user } = useAuth();
+  const { data: templates = [], isLoading: templatesLoading } = useReportTemplates();
+  const createReport = useCreateReport();
 
   const form = useForm<ReportConfigForm>({
     resolver: zodResolver(reportConfigSchema),
@@ -76,54 +77,43 @@ export function ReportBuilder({ children, onReportGenerated }: ReportBuilderProp
   });
 
   const handleTemplateSelect = (templateId: string) => {
-    const template = reportStore.getTemplate(templateId);
+    const template = templates.find(t => t.id === templateId);
     setSelectedTemplate(template || null);
-    if (template) {
-      form.setValue('chartType', template.chartType || 'bar');
+    if (template && template.chart_type) {
+      const chartType = template.chart_type as 'bar' | 'line' | 'pie' | 'area' | 'table';
+      form.setValue('chartType', chartType);
     }
   };
 
   const onSubmit = async (data: ReportConfigForm) => {
-    try {
-      if (!selectedTemplate) {
-        throw new Error('No template selected');
-      }
+    if (!selectedTemplate || !user) return;
 
-      const config: ReportConfig = {
+    const reportData = {
+      name: data.name,
+      description: data.description,
+      template_id: data.templateId,
+      config: {
         dateRange: {
-          start: new Date(data.dateStart),
-          end: new Date(data.dateEnd),
+          start: data.dateStart,
+          end: data.dateEnd,
         },
-        filters: [], // Could be expanded with filter UI
         chartType: data.chartType,
         sortBy: data.sortBy,
         sortOrder: data.sortOrder,
         showTotals: data.showTotals,
-      };
+      },
+      data: [], // Empty data initially - will be populated based on filters
+      generated_by: user.id,
+    };
 
-      const report = reportStore.generateReport(
-        data.templateId,
-        config,
-        data.name,
-        data.description
-      );
-
-      toast({
-        title: "Report Generated Successfully",
-        description: `${data.name} has been created and is ready to view.`,
-      });
-
-      onReportGenerated?.(report.id);
-      form.reset();
-      setSelectedTemplate(null);
-      setOpen(false);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to generate report. Please try again.",
-        variant: "destructive",
-      });
-    }
+    createReport.mutate(reportData, {
+      onSuccess: (newReport) => {
+        onReportGenerated?.(newReport.id);
+        form.reset();
+        setSelectedTemplate(null);
+        setOpen(false);
+      },
+    });
   };
 
   return (
@@ -152,7 +142,16 @@ export function ReportBuilder({ children, onReportGenerated }: ReportBuilderProp
                 <CardTitle className="text-lg">Select Template</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                {templates.map((template) => (
+                {templatesLoading ? (
+                  <div className="flex items-center justify-center py-8">
+                    <Loader2 className="h-6 w-6 animate-spin" />
+                  </div>
+                ) : templates.length === 0 ? (
+                  <p className="text-sm text-muted-foreground text-center py-4">
+                    No templates available
+                  </p>
+                ) : (
+                  templates.map((template) => (
                   <Card
                     key={template.id}
                     className={`cursor-pointer transition-all hover:shadow-md ${
@@ -177,11 +176,12 @@ export function ReportBuilder({ children, onReportGenerated }: ReportBuilderProp
                       </p>
                       <div className="flex items-center gap-2 text-xs text-muted-foreground">
                         <BarChart3 className="h-3 w-3" />
-                        {template.chartType || 'table'}
+                        {template.chart_type || 'table'}
                       </div>
                     </CardContent>
                   </Card>
-                ))}
+                  ))
+                )}
               </CardContent>
             </Card>
           </div>
@@ -349,9 +349,10 @@ export function ReportBuilder({ children, onReportGenerated }: ReportBuilderProp
                   </Button>
                   <Button 
                     type="submit" 
-                    disabled={form.formState.isSubmitting || !selectedTemplate}
+                    disabled={createReport.isPending || !selectedTemplate || !user}
                   >
-                    {form.formState.isSubmitting ? 'Generating...' : 'Generate Report'}
+                    {createReport.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    Generate Report
                   </Button>
                 </div>
               </form>
