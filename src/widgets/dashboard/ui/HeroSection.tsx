@@ -7,6 +7,7 @@ import { TrendingUp, Home, Users, DollarSign, Sparkles, ArrowUpRight } from 'luc
 import { AddPropertyDialog } from '@/widgets/properties/ui/AddPropertyDialog';
 import { useReducedMotion } from '@/shared/hooks/use-reduced-motion';
 import { LASER_FLOW_CONFIG } from './animations/laser-flow-config';
+import { logger } from '@/shared/lib/logger';
 
 // 🎬 Lazy load LaserFlow for better initial page load
 const LaserFlow = lazy(() => import('./animations/LaserFlow'));
@@ -33,6 +34,30 @@ export function HeroSection({
     setIsVisible(true);
   }, []);
 
+  // 🎨 Log LaserFlow configuration for debugging
+  useEffect(() => {
+    if (!prefersReducedMotion) {
+      logger.ui('LaserFlow', 'Configuration loaded', {
+        color: LASER_FLOW_CONFIG.COLOR,
+        zIndex: LASER_FLOW_CONFIG.HERO_Z_INDEX,
+        position: {
+          horizontal: LASER_FLOW_CONFIG.HORIZONTAL_BEAM_OFFSET,
+          vertical: LASER_FLOW_CONFIG.VERTICAL_BEAM_OFFSET,
+        },
+        container: {
+          top: LASER_FLOW_CONFIG.CONTAINER_TOP,
+          right: LASER_FLOW_CONFIG.CONTAINER_RIGHT,
+          width: LASER_FLOW_CONFIG.CONTAINER_WIDTH,
+          height: LASER_FLOW_CONFIG.CONTAINER_HEIGHT,
+        },
+        size: {
+          vertical: LASER_FLOW_CONFIG.VERTICAL_SIZING,
+          horizontal: LASER_FLOW_CONFIG.HORIZONTAL_SIZING,
+        }
+      });
+    }
+  }, [prefersReducedMotion]);
+
   const achievements = [
     { label: "Top Performer", icon: Sparkles },
     { label: "Rising Star", icon: TrendingUp },
@@ -42,12 +67,16 @@ export function HeroSection({
     <div className="relative overflow-hidden">
       {/* Hero Background */}
       <div className="hero-section relative rounded-2xl p-8 md:p-12 mb-8">
-        {/* 🎬 LaserFlow Background Animation */}
+        {/* 🎨 LaserFlow Overlay - Positioned over top-right cards */}
         {!prefersReducedMotion && (
           <Suspense fallback={null}>
             <div 
-              className="absolute inset-0 rounded-2xl overflow-hidden"
+              className="absolute rounded-2xl overflow-hidden pointer-events-none"
               style={{ 
+                top: LASER_FLOW_CONFIG.CONTAINER_TOP,
+                right: LASER_FLOW_CONFIG.CONTAINER_RIGHT,
+                width: LASER_FLOW_CONFIG.CONTAINER_WIDTH,
+                height: LASER_FLOW_CONFIG.CONTAINER_HEIGHT,
                 opacity: LASER_FLOW_CONFIG.HERO_OPACITY,
                 zIndex: LASER_FLOW_CONFIG.HERO_Z_INDEX,
               }}
