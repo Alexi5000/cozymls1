@@ -4,22 +4,31 @@ import { StatsCard, RecentActivity, DealsOverview } from '@/widgets/dashboard';
 import { HeroSection } from '@/widgets/dashboard/ui/HeroSection';
 import { MarketInsights } from '@/widgets/dashboard/ui/MarketInsights';
 import { useDashboardStats } from '@/integrations/supabase/hooks';
+import { useDeals } from '@/integrations/supabase/hooks/use-deals';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
 import { useScrollAnimation } from '@/shared/hooks/use-scroll-animation';
 import { AdaptiveLayout, ResponsiveGrid } from '@/shared/ui/adaptive-layout';
 import { Home, Users, DollarSign, TrendingUp } from 'lucide-react';
 import { Skeleton } from '@/shared/ui/skeleton';
+import { logger } from '@/shared/lib/logger';
 
 export function DashboardPage() {
-  const { data: stats, isLoading } = useDashboardStats();
+  const { data: stats, isLoading: statsLoading, refetch: refetchStats } = useDashboardStats();
+  const { data: deals, refetch: refetchDeals } = useDeals();
   const isMobile = useIsMobile();
   const { elementRef: contentRef, isVisible } = useScrollAnimation();
 
+  logger.database('QUERY', 'dashboard_stats', stats);
+
   const handleRefresh = async () => {
-    // Here you would typically refetch data
+    logger.ui('DashboardPage', 'Refreshing dashboard data');
+    await Promise.all([refetchStats(), refetchDeals()]);
   };
 
-  if (isLoading) {
+  // Calculate pending sales (deals in proposal stage)
+  const pendingSalesCount = deals?.filter(d => d.stage === 'proposal').length || 0;
+
+  if (statsLoading) {
     return (
       <Layout title="Dashboard">
         <div className="space-y-8">
@@ -68,7 +77,7 @@ export function DashboardPage() {
           <StatsCard
             title="Active Deals"
             value={stats?.active_deals?.toString() || '0'}
-            change="+3 pending sales"
+            change={`${pendingSalesCount} pending sales`}
             icon={TrendingUp}
             trend="up"
           />
