@@ -102,6 +102,8 @@ Learn more about our architecture in [docs/architecture/ARCHITECTURE.md](docs/ar
 ### Development Tools
 - **ESLint** - Code linting
 - **Prettier** - Code formatting
+- **Vitest** - Fast unit test framework
+- **Testing Library** - React component testing
 - **GitHub Actions** - CI/CD automation
 - **Conventional Commits** - Standardized commit messages
 
@@ -137,6 +139,11 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 npm run dev              # Start development server
 npm run build            # Build for production
 npm run preview          # Preview production build
+
+# Testing
+npm test                 # Run unit tests
+npm run test:ui          # Run tests with UI
+npm run test:coverage    # Generate coverage report
 
 # Code Quality
 npm run lint             # Run ESLint
