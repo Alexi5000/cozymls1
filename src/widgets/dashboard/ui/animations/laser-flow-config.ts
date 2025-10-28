@@ -2,30 +2,34 @@
 // NO MAGIC NUMBERS - All constants defined here
 
 export const LASER_FLOW_CONFIG = {
-  // Camera Settings
-  CAMERA_POSITION: [0, 0, 5] as const,
-  CAMERA_FOV: 75,
+  // Visual Props (used by LaserFlow component)
+  WISP_DENSITY: 1,
+  FLOW_SPEED: 0.35,
+  VERTICAL_SIZING: 2.0,
+  HORIZONTAL_SIZING: 0.5,
+  FOG_INTENSITY: 0.45,
+  FOG_SCALE: 0.3,
+  WISP_SPEED: 15.0,
+  WISP_INTENSITY: 5.0,
+  FLOW_STRENGTH: 0.25,
+  DECAY: 1.1,
+  FALLOFF_START: 1.2,
+  FOG_FALL_SPEED: 0.6,
   
-  // Laser Line Settings
-  LASER_COUNT: 50,              // Number of flowing laser lines
-  LASER_LENGTH: 2,              // Length of each laser trail
-  LASER_SPEED: 0.015,           // Animation speed
-  LASER_SPREAD: 8,              // How spread out the lasers are
+  // Beam Positioning
+  HORIZONTAL_BEAM_OFFSET: 0.1,
+  VERTICAL_BEAM_OFFSET: 0.0,
+  
+  // Mouse Interaction
+  MOUSE_SMOOTH_TIME: 0.0,
+  MOUSE_TILT_STRENGTH: 0.01,
   
   // Colors (Theme-aware)
-  LASER_COLORS: {
-    PRIMARY: '#3b82f6',         // Blue
-    SECONDARY: '#8b5cf6',       // Purple  
-    ACCENT: '#06b6d4',          // Cyan
-  },
+  COLOR: '#FF79C6',             // Primary laser color
   
-  // Performance
-  LASER_OPACITY: 0.6,
-  PARTICLE_SIZE: 0.05,
-  
-  // Animation
-  FLOW_DIRECTION: 'horizontal', // 'horizontal' | 'vertical' | 'diagonal'
-  GLOW_INTENSITY: 1.2,
+  // Hero Section Integration
+  HERO_OPACITY: 0.6,            // Background opacity behind hero
+  HERO_Z_INDEX: 0,              // Layer behind content
 } as const;
 
 // Type safety

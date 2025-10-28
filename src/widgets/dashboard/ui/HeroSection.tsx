@@ -1,10 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
 import { TrendingUp, Home, Users, DollarSign, Sparkles, ArrowUpRight } from 'lucide-react';
 import { AddPropertyDialog } from '@/widgets/properties/ui/AddPropertyDialog';
+import { useReducedMotion } from '@/shared/hooks/use-reduced-motion';
+import { LASER_FLOW_CONFIG } from './animations/laser-flow-config';
+
+// 🎬 Lazy load LaserFlow for better initial page load
+const LaserFlow = lazy(() => import('./animations/LaserFlow'));
 
 interface HeroSectionProps {
   userName?: string;
@@ -22,6 +27,7 @@ export function HeroSection({
 }: HeroSectionProps) {
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     setIsVisible(true);
@@ -36,6 +42,39 @@ export function HeroSection({
     <div className="relative overflow-hidden">
       {/* Hero Background */}
       <div className="hero-section relative rounded-2xl p-8 md:p-12 mb-8">
+        {/* 🎬 LaserFlow Background Animation */}
+        {!prefersReducedMotion && (
+          <Suspense fallback={null}>
+            <div 
+              className="absolute inset-0 rounded-2xl overflow-hidden"
+              style={{ 
+                opacity: LASER_FLOW_CONFIG.HERO_OPACITY,
+                zIndex: LASER_FLOW_CONFIG.HERO_Z_INDEX,
+              }}
+            >
+              <LaserFlow
+                wispDensity={LASER_FLOW_CONFIG.WISP_DENSITY}
+                flowSpeed={LASER_FLOW_CONFIG.FLOW_SPEED}
+                verticalSizing={LASER_FLOW_CONFIG.VERTICAL_SIZING}
+                horizontalSizing={LASER_FLOW_CONFIG.HORIZONTAL_SIZING}
+                fogIntensity={LASER_FLOW_CONFIG.FOG_INTENSITY}
+                fogScale={LASER_FLOW_CONFIG.FOG_SCALE}
+                wispSpeed={LASER_FLOW_CONFIG.WISP_SPEED}
+                wispIntensity={LASER_FLOW_CONFIG.WISP_INTENSITY}
+                flowStrength={LASER_FLOW_CONFIG.FLOW_STRENGTH}
+                decay={LASER_FLOW_CONFIG.DECAY}
+                falloffStart={LASER_FLOW_CONFIG.FALLOFF_START}
+                fogFallSpeed={LASER_FLOW_CONFIG.FOG_FALL_SPEED}
+                horizontalBeamOffset={LASER_FLOW_CONFIG.HORIZONTAL_BEAM_OFFSET}
+                verticalBeamOffset={LASER_FLOW_CONFIG.VERTICAL_BEAM_OFFSET}
+                mouseSmoothTime={LASER_FLOW_CONFIG.MOUSE_SMOOTH_TIME}
+                mouseTiltStrength={LASER_FLOW_CONFIG.MOUSE_TILT_STRENGTH}
+                color={LASER_FLOW_CONFIG.COLOR}
+              />
+            </div>
+          </Suspense>
+        )}
+
         <div className={`relative z-10 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           {/* Welcome Message */}
           <div className="mb-8">
