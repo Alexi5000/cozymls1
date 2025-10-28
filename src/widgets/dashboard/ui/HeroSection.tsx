@@ -6,6 +6,7 @@ import { Badge } from '@/shared/ui/badge';
 import { TrendingUp, Home, Users, DollarSign, Sparkles, ArrowUpRight } from 'lucide-react';
 import { AddPropertyDialog } from '@/widgets/properties/ui/AddPropertyDialog';
 import { useReducedMotion } from '@/shared/hooks/use-reduced-motion';
+import { useIsMobile } from '@/shared/hooks/use-mobile';
 import { LASER_FLOW_CONFIG } from './animations/laser-flow-config';
 import { logger } from '@/shared/lib/logger';
 
@@ -29,6 +30,7 @@ export function HeroSection({
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
   const prefersReducedMotion = useReducedMotion();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     setIsVisible(true);
@@ -45,9 +47,9 @@ export function HeroSection({
           vertical: LASER_FLOW_CONFIG.VERTICAL_BEAM_OFFSET,
         },
         container: {
-          top: LASER_FLOW_CONFIG.CONTAINER_TOP,
-          right: LASER_FLOW_CONFIG.CONTAINER_RIGHT,
-          width: LASER_FLOW_CONFIG.CONTAINER_WIDTH,
+          top: isMobile ? LASER_FLOW_CONFIG.CONTAINER_TOP_MOBILE : LASER_FLOW_CONFIG.CONTAINER_TOP_DESKTOP,
+          right: isMobile ? LASER_FLOW_CONFIG.CONTAINER_RIGHT_MOBILE : LASER_FLOW_CONFIG.CONTAINER_RIGHT_DESKTOP,
+          width: isMobile ? LASER_FLOW_CONFIG.CONTAINER_WIDTH_MOBILE : LASER_FLOW_CONFIG.CONTAINER_WIDTH_DESKTOP,
           height: LASER_FLOW_CONFIG.CONTAINER_HEIGHT,
         },
         size: {
@@ -56,7 +58,7 @@ export function HeroSection({
         }
       });
     }
-  }, [prefersReducedMotion]);
+  }, [prefersReducedMotion, isMobile]);
 
   const achievements = [
     { label: "Top Performer", icon: Sparkles },
@@ -73,9 +75,9 @@ export function HeroSection({
             <div 
               className="absolute rounded-2xl overflow-hidden pointer-events-none"
               style={{ 
-                top: LASER_FLOW_CONFIG.CONTAINER_TOP,
-                right: LASER_FLOW_CONFIG.CONTAINER_RIGHT,
-                width: LASER_FLOW_CONFIG.CONTAINER_WIDTH,
+                top: isMobile ? LASER_FLOW_CONFIG.CONTAINER_TOP_MOBILE : LASER_FLOW_CONFIG.CONTAINER_TOP_DESKTOP,
+                right: isMobile ? LASER_FLOW_CONFIG.CONTAINER_RIGHT_MOBILE : LASER_FLOW_CONFIG.CONTAINER_RIGHT_DESKTOP,
+                width: isMobile ? LASER_FLOW_CONFIG.CONTAINER_WIDTH_MOBILE : LASER_FLOW_CONFIG.CONTAINER_WIDTH_DESKTOP,
                 height: LASER_FLOW_CONFIG.CONTAINER_HEIGHT,
                 opacity: LASER_FLOW_CONFIG.HERO_OPACITY,
                 zIndex: LASER_FLOW_CONFIG.HERO_Z_INDEX,
