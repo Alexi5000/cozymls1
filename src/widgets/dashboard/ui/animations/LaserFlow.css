@@ -9,17 +9,17 @@
   overflow: hidden;
   pointer-events: none;
   
-  /* 🎭 Smooth fade for "flowing down" effect */
+  /* 🎭 Gentler fade for more visible area (70% visible) */
   mask-image: radial-gradient(
-    ellipse at top right,
+    ellipse 120% 150% at top right,
     black 0%,
-    black 50%,
+    black 70%,
     transparent 100%
   );
   -webkit-mask-image: radial-gradient(
-    ellipse at top right,
+    ellipse 120% 150% at top right,
     black 0%,
-    black 50%,
+    black 70%,
     transparent 100%
   );
 }

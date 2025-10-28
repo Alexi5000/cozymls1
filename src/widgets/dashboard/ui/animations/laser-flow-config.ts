@@ -35,16 +35,16 @@ export const LASER_FLOW_CONFIG = {
   // Container Positioning - Responsive for mobile/tablet/desktop
   // Desktop (4-col grid) - Target top-right card
   CONTAINER_TOP_DESKTOP: '0%',
-  CONTAINER_RIGHT_DESKTOP: '50%',  // 📍 Centered over card 1
-  CONTAINER_WIDTH_DESKTOP: '30%',  // 📏 Narrower focus on top-right card
+  CONTAINER_RIGHT_DESKTOP: '25%',  // 📍 Shifted left for better centering over card 1
+  CONTAINER_WIDTH_DESKTOP: '50%',  // 📏 Larger width for more visible effect
   
   // Mobile/Tablet (2-col grid) - Target top-right card
-  CONTAINER_TOP_MOBILE: '15%',     // 📍 Offset for mobile header
+  CONTAINER_TOP_MOBILE: '10%',     // 📍 Adjusted offset for mobile header
   CONTAINER_RIGHT_MOBILE: '0%',    // 📍 Right edge alignment
-  CONTAINER_WIDTH_MOBILE: '50%',   // 📏 Covers right column (50% of 2-col)
+  CONTAINER_WIDTH_MOBILE: '60%',   // 📏 Wider coverage on mobile (60% of 2-col)
   
   // Shared
-  CONTAINER_HEIGHT: '40%',         // 📏 Reduced height for tighter focus
+  CONTAINER_HEIGHT: '60%',         // 📏 Increased height for more visible effect
 } as const;
 
 // Type safety

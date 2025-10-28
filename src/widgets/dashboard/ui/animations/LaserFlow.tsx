@@ -344,7 +344,7 @@ export const LaserFlow = ({
 
     const renderer = new THREE.WebGLRenderer({
       antialias: false,
-      alpha: false,
+      alpha: true,
       depth: false,
       stencil: false,
       powerPreference: 'high-performance',
@@ -353,6 +353,7 @@ export const LaserFlow = ({
       failIfMajorPerformanceCaveat: false,
       logarithmicDepthBuffer: false
     });
+    logger.ui('LaserFlow', '🎨 Renderer transparency enabled', { alpha: true });
     rendererRef.current = renderer;
 
     baseDprRef.current = Math.min(dpr ?? (window.devicePixelRatio || 1), LASERFLOW_PERF_CONFIG.MAX_DPR);
@@ -361,7 +362,7 @@ export const LaserFlow = ({
     renderer.setPixelRatio(currentDprRef.current);
     renderer.shadowMap.enabled = false;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.setClearColor(0x000000, 1);
+    renderer.setClearColor(0x000000, 0);
     const canvas = renderer.domElement;
     canvas.style.width = '100%';
     canvas.style.height = '100%';
@@ -404,10 +405,10 @@ export const LaserFlow = ({
       vertexShader: VERT,
       fragmentShader: FRAG,
       uniforms,
-      transparent: false,
+      transparent: true,
       depthTest: false,
       depthWrite: false,
-      blending: THREE.NormalBlending
+      blending: THREE.AdditiveBlending
     });
 
     const mesh = new THREE.Mesh(geometry, material);
@@ -429,6 +430,12 @@ export const LaserFlow = ({
       renderer.setSize(w, h, false);
       uniforms.iResolution.value.set(w * pr, h * pr, pr);
       rectRef.current = canvas.getBoundingClientRect();
+      
+      if (w === 0 || h === 0) {
+        logger.warn('LaserFlow', '⚠️ Container has zero dimensions', { width: w, height: h });
+      } else {
+        logger.ui('LaserFlow', '📦 Container dimensions', { width: w, height: h, dpr: pr });
+      }
     };
 
     let resizeRaf = 0;
@@ -606,6 +613,7 @@ export const LaserFlow = ({
 
     const { r, g, b } = hexToRGB(color || '#FFFFFF');
     uniforms.uColor.value.set(r, g, b);
+    logger.ui('LaserFlow', '🎨 Color applied', { hex: color, rgb: { r, g, b } });
   }, [
     wispDensity,
     mouseTiltStrength,
