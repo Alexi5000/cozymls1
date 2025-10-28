@@ -19,9 +19,9 @@ export function usePerformanceMonitor(componentName: string) {
     if (renderStartTime.current) {
       const renderTime = performance.now() - renderStartTime.current;
       
-      // Log slow renders in development
+      // Track slow renders in development (metrics sent to analytics only)
       if (process.env.NODE_ENV === 'development' && renderTime > 16) {
-        console.warn(`Slow render detected in ${componentName}: ${renderTime.toFixed(2)}ms`);
+        // Slow render detected - metrics tracked via analytics below
       }
 
       // Send metrics to analytics service in production
@@ -52,7 +52,7 @@ export function usePerformanceMonitor(componentName: string) {
       const duration = performance.now() - start;
       
       if (process.env.NODE_ENV === 'development' && duration > 5) {
-        console.warn(`Slow function in ${componentName}.${functionName}: ${duration.toFixed(2)}ms`);
+        // Slow function detected - can be tracked via analytics if needed
       }
       
       return result;
@@ -132,9 +132,8 @@ export const performanceUtils = {
     renderFn();
     const end = performance.now();
     
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`${componentName} render time: ${(end - start).toFixed(2)}ms`);
-    }
+    // Render time measured but not logged to console for security
+    return end - start;
   },
 
   // Check if user prefers reduced motion

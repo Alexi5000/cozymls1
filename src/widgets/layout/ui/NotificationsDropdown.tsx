@@ -71,12 +71,12 @@ export function NotificationsDropdown({ onClose }: NotificationsDropdownProps) {
   const unreadCount = mockNotifications.filter(n => !n.isRead).length;
 
   const handleMarkAllRead = () => {
-    console.log('Mark all notifications as read');
+    // Mark all notifications as read
     // In real app, you would update the notification state
   };
 
   const handleNotificationClick = (notification: Notification) => {
-    console.log('Clicked notification:', notification.id);
+    // Navigate to relevant page and mark as read
     // In real app, you would navigate to relevant page and mark as read
   };
 
@@ -147,7 +147,7 @@ export function NotificationsDropdown({ onClose }: NotificationsDropdownProps) {
             variant="outline" 
             className="w-full text-sm"
             onClick={() => {
-              console.log('View all notifications');
+              // View all notifications
               onClose();
             }}
           >

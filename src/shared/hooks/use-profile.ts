@@ -77,9 +77,28 @@ export function useUpdatePassword() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (newPassword: string) => {
+    mutationFn: async ({ currentPassword, newPassword }: { 
+      currentPassword: string; 
+      newPassword: string 
+    }) => {
       logger.database('useUpdatePassword', 'Updating password');
       
+      // First, verify current password by attempting to reauthenticate
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user?.email) {
+        throw new Error('User not authenticated');
+      }
+
+      const { error: verifyError } = await supabase.auth.signInWithPassword({
+        email: user.email,
+        password: currentPassword
+      });
+      
+      if (verifyError) {
+        throw new Error('Current password is incorrect');
+      }
+
+      // If verification succeeds, update to new password
       const { error } = await supabase.auth.updateUser({
         password: newPassword,
       });

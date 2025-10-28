@@ -31,15 +31,15 @@ export const PropertyCardDb = memo(function PropertyCardDb({ property }: Propert
   );
 
   const handleFavorite = useCallback(() => {
-    console.log('Favorite:', property.id);
+    // Toggle favorite status - will be implemented
   }, [property.id]);
 
   const handleShare = useCallback(() => {
-    console.log('Share:', property.id);
+    // Share property - will be implemented
   }, [property.id]);
 
   const handleView = useCallback(() => {
-    console.log('View:', property.id);
+    // View property details - will be implemented
   }, [property.id]);
 
   return (

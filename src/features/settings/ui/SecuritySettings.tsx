@@ -21,7 +21,10 @@ export function SecuritySettings() {
   });
 
   const onSubmit = (data: PasswordFormData) => {
-    updatePassword.mutate(data.newPassword, {
+    updatePassword.mutate({
+      currentPassword: data.currentPassword,
+      newPassword: data.newPassword
+    }, {
       onSuccess: () => {
         form.reset();
       },

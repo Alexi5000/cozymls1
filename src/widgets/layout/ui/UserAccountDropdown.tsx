@@ -28,7 +28,7 @@ export function UserAccountDropdown({ onClose }: UserAccountDropdownProps) {
   };
 
   const handleNavigation = (page: string) => {
-    console.log(`Navigate to ${page}`);
+    // Navigate to page - will be implemented with router
     onClose();
   };
 

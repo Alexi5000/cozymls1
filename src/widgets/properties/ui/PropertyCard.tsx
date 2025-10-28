@@ -46,23 +46,28 @@ export const PropertyCard = memo(function PropertyCard({ property }: PropertyCar
 
   // Event handlers with useCallback for performance
   const handleFavorite = useCallback(() => {
-    console.log('Favorite:', property.id);
+    // Toggle favorite status
+    logger.ui('PropertyCard', 'Favorite toggled', { propertyId: property.id });
   }, [property.id]);
 
   const handleShare = useCallback(() => {
-    console.log('Share:', property.id);
+    // Share property
+    logger.ui('PropertyCard', 'Share clicked', { propertyId: property.id });
   }, [property.id]);
 
   const handleView = useCallback(() => {
-    console.log('View:', property.id);
+    // View property details
+    logger.ui('PropertyCard', 'View clicked', { propertyId: property.id });
   }, [property.id]);
 
   const handleCall = useCallback(() => {
-    console.log('Call:', property.agent.name);
+    // Initiate call to agent
+    logger.ui('PropertyCard', 'Call agent clicked', { agentName: property.agent.name });
   }, [property.agent.name]);
 
   const handleEmail = useCallback(() => {
-    console.log('Email:', property.agent.name);
+    // Email agent
+    logger.ui('PropertyCard', 'Email agent clicked', { agentName: property.agent.name });
   }, [property.agent.name]);
 
   const handleDelete = useCallback(() => {
