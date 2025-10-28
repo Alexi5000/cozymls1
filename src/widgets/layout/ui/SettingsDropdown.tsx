@@ -1,4 +1,6 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useThemeStore } from '@/shared/lib/theme-store';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
 import { Separator } from '@/shared/ui/separator';
@@ -10,15 +12,12 @@ interface SettingsDropdownProps {
 }
 
 export function SettingsDropdown({ onClose }: SettingsDropdownProps) {
-  const handleSettingChange = (setting: string, value: boolean) => {
-    console.log(`${setting} changed to:`, value);
-    // In real app, you would save to user preferences
-  };
+  const navigate = useNavigate();
+  const { theme, notifications, autoRefresh, toggleTheme, setNotifications, setAutoRefresh } = useThemeStore();
 
   const handleNavigation = (page: string) => {
-    console.log(`Navigate to ${page} settings`);
+    navigate('/settings');
     onClose();
-    // In real app, you would navigate to the settings page
   };
 
   return (
@@ -42,8 +41,8 @@ export function SettingsDropdown({ onClose }: SettingsDropdownProps) {
               </div>
             </div>
             <Switch 
-              defaultChecked={true}
-              onCheckedChange={(checked) => handleSettingChange('notifications', checked)}
+              checked={notifications}
+              onCheckedChange={setNotifications}
             />
           </div>
           
@@ -58,8 +57,8 @@ export function SettingsDropdown({ onClose }: SettingsDropdownProps) {
               </div>
             </div>
             <Switch 
-              defaultChecked={false}
-              onCheckedChange={(checked) => handleSettingChange('darkMode', checked)}
+              checked={theme === 'dark'}
+              onCheckedChange={toggleTheme}
             />
           </div>
           
@@ -74,8 +73,8 @@ export function SettingsDropdown({ onClose }: SettingsDropdownProps) {
               </div>
             </div>
             <Switch 
-              defaultChecked={true}
-              onCheckedChange={(checked) => handleSettingChange('autoRefresh', checked)}
+              checked={autoRefresh}
+              onCheckedChange={setAutoRefresh}
             />
           </div>
         </div>
@@ -87,37 +86,10 @@ export function SettingsDropdown({ onClose }: SettingsDropdownProps) {
           <Button
             variant="ghost"
             className="w-full justify-start text-sm"
-            onClick={() => handleNavigation('account')}
+            onClick={() => handleNavigation('settings')}
           >
             <User className="h-4 w-4 mr-3" />
-            Account Settings
-          </Button>
-          
-          <Button
-            variant="ghost"
-            className="w-full justify-start text-sm"
-            onClick={() => handleNavigation('privacy')}
-          >
-            <Shield className="h-4 w-4 mr-3" />
-            Privacy & Security
-          </Button>
-          
-          <Button
-            variant="ghost"
-            className="w-full justify-start text-sm"
-            onClick={() => handleNavigation('notifications')}
-          >
-            <Bell className="h-4 w-4 mr-3" />
-            Notification Preferences
-          </Button>
-          
-          <Button
-            variant="ghost"
-            className="w-full justify-start text-sm"
-            onClick={() => handleNavigation('language')}
-          >
-            <Globe className="h-4 w-4 mr-3" />
-            Language & Region
+            All Settings
           </Button>
           
           <Separator className="my-2" />

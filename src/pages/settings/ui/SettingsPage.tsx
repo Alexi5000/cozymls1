@@ -1,88 +1,49 @@
+import { useState } from 'react';
 import { Layout } from '@/widgets/layout';
 import { MobileLayout } from '@/widgets/mobile';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
+import { ProfileSettings, SecuritySettings, AppPreferences } from '@/features/settings';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
-import { Settings, User, Bell, Shield } from 'lucide-react';
-import { cn } from '@/shared/lib/utils';
+import { User, Shield, Settings } from 'lucide-react';
 
 export function SettingsPage() {
   const isMobile = useIsMobile();
+  const [activeTab, setActiveTab] = useState('profile');
   
   const handleRefresh = async () => {
-    // Here you would typically refetch data
+    // Refetch data if needed
   };
 
   const content = (
     <div className="space-y-6">
-      <div className={`grid gap-3 ${isMobile ? 'grid-cols-1' : 'md:grid-cols-2'}`}>
-        <Card className={isMobile ? "mobile-shadow" : ""}>
-          <CardHeader>
-            <CardTitle className={cn(
-              "flex items-center gap-2",
-              isMobile ? "mobile-title" : ""
-            )}>
-              <User className="h-5 w-5" />
-              Profile Settings
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className={isMobile ? "mobile-body" : "text-gray-600"}>
-              Manage your personal information, contact details, and profile preferences.
-            </p>
-          </CardContent>
-        </Card>
-        
-        <Card className={isMobile ? "mobile-shadow" : ""}>
-          <CardHeader>
-            <CardTitle className={cn(
-              "flex items-center gap-2",
-              isMobile ? "mobile-title" : ""
-            )}>
-              <Bell className="h-5 w-5" />
-              Notifications
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className={isMobile ? "mobile-body" : "text-gray-600"}>
-              Configure email alerts, push notifications, and communication preferences.
-            </p>
-          </CardContent>
-        </Card>
-        
-        <Card className={isMobile ? "mobile-shadow" : ""}>
-          <CardHeader>
-            <CardTitle className={cn(
-              "flex items-center gap-2",
-              isMobile ? "mobile-title" : ""
-            )}>
-              <Shield className="h-5 w-5" />
-              Security
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className={isMobile ? "mobile-body" : "text-gray-600"}>
-              Update your password, enable two-factor authentication, and manage security settings.
-            </p>
-          </CardContent>
-        </Card>
-        
-        <Card className={isMobile ? "mobile-shadow" : ""}>
-          <CardHeader>
-            <CardTitle className={cn(
-              "flex items-center gap-2",
-              isMobile ? "mobile-title" : ""
-            )}>
-              <Settings className="h-5 w-5" />
-              General
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className={isMobile ? "mobile-body" : "text-gray-600"}>
-              Configure application preferences, theme settings, and default values.
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className={isMobile ? "w-full grid grid-cols-3" : ""}>
+          <TabsTrigger value="profile" className="flex items-center gap-2">
+            <User className="h-4 w-4" />
+            {!isMobile && <span>Profile</span>}
+          </TabsTrigger>
+          <TabsTrigger value="security" className="flex items-center gap-2">
+            <Shield className="h-4 w-4" />
+            {!isMobile && <span>Security</span>}
+          </TabsTrigger>
+          <TabsTrigger value="preferences" className="flex items-center gap-2">
+            <Settings className="h-4 w-4" />
+            {!isMobile && <span>Preferences</span>}
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="profile" className="space-y-4">
+          <ProfileSettings />
+        </TabsContent>
+
+        <TabsContent value="security" className="space-y-4">
+          <SecuritySettings />
+        </TabsContent>
+
+        <TabsContent value="preferences" className="space-y-4">
+          <AppPreferences />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 
