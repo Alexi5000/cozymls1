@@ -159,7 +159,7 @@ export function DealDialog({ dealId, isOpen, onClose }: DealDialogProps) {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {contacts?.map((contact) => (
+                          {contacts?.data?.map((contact) => (
                             <SelectItem key={contact.id} value={contact.id}>
                               {contact.name}
                             </SelectItem>
@@ -187,7 +187,7 @@ export function DealDialog({ dealId, isOpen, onClose }: DealDialogProps) {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {properties?.map((property) => (
+                          {properties?.data?.map((property) => (
                             <SelectItem key={property.id} value={property.id}>
                               {property.address}
                             </SelectItem>

@@ -231,7 +231,7 @@ export function ActivityDialog({ activityId, isOpen, onClose }: ActivityDialogPr
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {contacts?.map((contact) => (
+                          {contacts?.data?.map((contact) => (
                             <SelectItem key={contact.id} value={contact.id}>
                               {contact.name}
                             </SelectItem>

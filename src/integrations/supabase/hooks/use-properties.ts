@@ -22,17 +22,41 @@ export interface PropertyInsert {
   agent_id: string;
 }
 
-export function useProperties() {
+export interface PropertiesQueryParams {
+  page?: number;
+  pageSize?: number;
+}
+
+export function useProperties(params?: PropertiesQueryParams) {
+  const { page = 1, pageSize = 20 } = params || {};
+  
   return useQuery({
-    queryKey: ['properties'],
+    queryKey: ['properties', page, pageSize],
     queryFn: async () => {
+      const from = (page - 1) * pageSize;
+      const to = from + pageSize - 1;
+
+      // Get total count
+      const { count } = await supabase
+        .from('properties')
+        .select('*', { count: 'exact', head: true });
+
+      // Get paginated data
       const { data, error } = await supabase
         .from('properties')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .range(from, to);
       
       if (error) throw error;
-      return data;
+      
+      return {
+        data: data || [],
+        totalCount: count || 0,
+        page,
+        pageSize,
+        totalPages: Math.ceil((count || 0) / pageSize),
+      };
     }
   });
 }

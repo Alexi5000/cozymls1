@@ -31,10 +31,10 @@ const typeColors = {
 
 export function RecentActivity() {
   const { data: activities, isLoading: activitiesLoading } = useRecentActivities();
-  const { data: properties, isLoading: propertiesLoading } = useProperties();
+  const { data: propertiesData, isLoading: propertiesLoading } = useProperties();
   
   const recentActivities = activities?.slice(0, 6) || [];
-  const featuredProperties = properties?.slice(0, 2) || [];
+  const featuredProperties = propertiesData?.data?.slice(0, 2) || [];
 
   return (
     <Card className="luxury-card hover-lift animate-scale-in">

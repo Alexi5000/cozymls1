@@ -13,17 +13,41 @@ export interface ContactInsert {
   created_by: string;
 }
 
-export function useContacts() {
+export interface ContactsQueryParams {
+  page?: number;
+  pageSize?: number;
+}
+
+export function useContacts(params?: ContactsQueryParams) {
+  const { page = 1, pageSize = 20 } = params || {};
+  
   return useQuery({
-    queryKey: ['contacts'],
+    queryKey: ['contacts', page, pageSize],
     queryFn: async () => {
+      const from = (page - 1) * pageSize;
+      const to = from + pageSize - 1;
+
+      // Get total count
+      const { count } = await supabase
+        .from('contacts')
+        .select('*', { count: 'exact', head: true });
+
+      // Get paginated data
       const { data, error } = await supabase
         .from('contacts')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .range(from, to);
       
       if (error) throw error;
-      return data;
+      
+      return {
+        data: data || [],
+        totalCount: count || 0,
+        page,
+        pageSize,
+        totalPages: Math.ceil((count || 0) / pageSize),
+      };
     }
   });
 }

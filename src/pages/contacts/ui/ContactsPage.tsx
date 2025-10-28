@@ -8,6 +8,7 @@ import { MobileOptimizedCard } from '@/shared/ui/mobile-optimized-card';
 import { Skeleton } from '@/shared/ui/skeleton';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog';
+import { DataPagination } from '@/shared/ui/data-pagination';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/shared/ui/dropdown-menu';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
 import { useContacts, useDeleteContact } from '@/integrations/supabase/hooks/use-contacts';
@@ -17,7 +18,9 @@ import { Plus, Phone, Mail, Building, MoreVertical, Edit, Trash2, Users } from '
 
 export function ContactsPage() {
   const isMobile = useIsMobile();
-  const { data: contacts, isLoading, refetch } = useContacts();
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
+  const { data: contactsData, isLoading, refetch } = useContacts({ page, pageSize });
   const deleteContact = useDeleteContact();
   
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -31,7 +34,10 @@ export function ContactsPage() {
     client: 'bg-green-100 text-green-800',
   };
 
-  logger.database('QUERY', 'contacts', { count: contacts?.length });
+  const contacts = contactsData?.data || [];
+  const totalCount = contactsData?.totalCount || 0;
+
+  logger.database('QUERY', 'contacts', { count: contacts.length });
 
   const handleRefresh = async () => {
     logger.ui('ContactsPage', 'Refreshing contacts');
@@ -187,6 +193,24 @@ export function ContactsPage() {
               </ContactCard>
             );
           })}
+        </div>
+      )}
+
+      {totalCount > pageSize && (
+        <div className="mt-6">
+          <DataPagination
+            page={page}
+            pageSize={pageSize}
+            totalItems={totalCount}
+            totalPages={contactsData?.totalPages || 1}
+            onPageChange={setPage}
+            onPageSizeChange={(newSize) => {
+              setPageSize(newSize);
+              setPage(1);
+            }}
+            from={(page - 1) * pageSize}
+            to={Math.min(page * pageSize - 1, totalCount - 1)}
+          />
         </div>
       )}
 
