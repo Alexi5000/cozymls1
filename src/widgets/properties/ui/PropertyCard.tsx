@@ -1,15 +1,21 @@
-import React, { memo, useCallback, useMemo } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
+import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog';
 import { Property } from '@/entities/property';
-import { Bed, Bath, Square, Calendar, Phone, Mail, MapPin, Eye, Heart, Share2 } from 'lucide-react';
+import { useDeleteProperty } from '@/integrations/supabase/hooks';
+import { logger } from '@/shared/lib/logger';
+import { Bed, Bath, Square, Calendar, Phone, Mail, MapPin, Eye, Heart, Share2, Trash2 } from 'lucide-react';
 
 interface PropertyCardProps {
   property: Property;
 }
 
 export const PropertyCard = memo(function PropertyCard({ property }: PropertyCardProps) {
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const deleteProperty = useDeleteProperty();
+
   // Memoized status colors for performance
   const statusColors = useMemo(() => ({
     active: 'bg-emerald-500/20 text-emerald-700 border-emerald-500/30',
@@ -59,6 +65,24 @@ export const PropertyCard = memo(function PropertyCard({ property }: PropertyCar
     console.log('Email:', property.agent.name);
   }, [property.agent.name]);
 
+  const handleDelete = useCallback(() => {
+    logger.ui('PropertyCard', 'Delete button clicked', { propertyId: property.id });
+    setDeleteDialogOpen(true);
+  }, [property.id]);
+
+  const handleConfirmDelete = useCallback(() => {
+    logger.database('PropertyCard', 'Deleting property', { propertyId: property.id });
+    deleteProperty.mutate(property.id, {
+      onSuccess: () => {
+        logger.database('PropertyCard', 'Property deleted successfully', { propertyId: property.id });
+        setDeleteDialogOpen(false);
+      },
+      onError: (error) => {
+        logger.error('PropertyCard', 'Failed to delete property', { propertyId: property.id, error });
+      }
+    });
+  }, [property.id, deleteProperty]);
+
   return (
     <Card className="property-card hover-lift group animate-scale-in overflow-hidden">
       <div className="aspect-video bg-muted relative overflow-hidden">
@@ -91,6 +115,14 @@ export const PropertyCard = memo(function PropertyCard({ property }: PropertyCar
           </Button>
           <Button size="sm" variant="glass" className="w-8 h-8 p-0 rounded-full" onClick={handleShare}>
             <Share2 className="w-4 h-4" />
+          </Button>
+          <Button 
+            size="sm" 
+            variant="glass" 
+            className="w-8 h-8 p-0 rounded-full hover:bg-destructive/90" 
+            onClick={handleDelete}
+          >
+            <Trash2 className="w-4 h-4" />
           </Button>
         </div>
         
@@ -192,6 +224,15 @@ export const PropertyCard = memo(function PropertyCard({ property }: PropertyCar
           </div>
         </div>
       </CardContent>
+
+      <DeleteConfirmDialog
+        isOpen={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="Delete Property"
+        description={`Are you sure you want to delete ${property.address}? This action cannot be undone.`}
+        isLoading={deleteProperty.isPending}
+      />
     </Card>
   );
 });
