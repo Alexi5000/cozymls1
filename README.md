@@ -1,37 +1,55 @@
-# 🏠 Haven Estate Suite
+<div align="center">
 
-> A modern, full-featured real estate CRM platform with MLS integration, advanced analytics, and comprehensive client management tools.
+<img src="assets/icon.png" alt="Haven Estate Suite Logo" width="120" />
 
-[![CI Status](https://github.com/yourusername/haven-estate-suite/workflows/CI/badge.svg)](https://github.com/yourusername/haven-estate-suite/actions)
-[![Deploy Status](https://github.com/yourusername/haven-estate-suite/workflows/Deploy/badge.svg)](https://github.com/yourusername/haven-estate-suite/actions)
+# Haven Estate Suite
+
+### The CRM Real Estate Agents Actually Want to Use
+
+**MLS integration, deal pipeline, client management, and market analytics — all in one beautiful dashboard. Built for agents who close.**
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-18.3-blue)](https://react.dev/)
-[![Vite](https://img.shields.io/badge/Vite-5-blue)](https://vitejs.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-18.3-61dafb?logo=react)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-5-646cff?logo=vite)](https://vitejs.dev/)
+[![Supabase](https://img.shields.io/badge/Supabase-Backend-3ecf8e?logo=supabase)](https://supabase.com)
+[![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-Components-000)](https://ui.shadcn.com)
 
-## ✨ Features
+[Features](#features) · [Quick Start](#-quick-start) · [Architecture](#-project-structure) · [Tech Stack](#-technology-stack) · [Docs](#-documentation)
 
-### 🎯 Core Functionality
-- **Property Management** - Comprehensive MLS integration with advanced search and filtering
-- **Client Management** - Track contacts, leads, and client relationships
-- **Deal Pipeline** - Visualize and manage deals through customizable stages
-- **Activity Timeline** - Complete history of interactions and events
-- **Analytics Dashboard** - Real-time insights and market trends
-- **Report Generation** - Create custom reports with data visualizations
+---
 
-### 🎨 User Experience
-- **Responsive Design** - Seamless experience across desktop, tablet, and mobile
-- **Dark Mode** - Beautiful dark theme support
-- **Modern UI** - Built with shadcn/ui component library
-- **Touch Optimized** - Mobile-first approach with touch-friendly interactions
-- **Real-time Updates** - Live data synchronization across devices
+<img src="assets/cover.png" alt="Haven Estate Suite Dashboard" width="100%" />
 
-### 🔐 Security & Performance
-- **Secure Authentication** - Email-based authentication with row-level security
-- **Data Protection** - Comprehensive RLS policies on all database tables
-- **Optimized Performance** - Code splitting, lazy loading, and efficient caching
-- **Type Safety** - Full TypeScript implementation
-- **CI/CD Pipeline** - Automated testing, linting, and deployment
+</div>
+
+---
+
+## The Problem
+
+Real estate CRMs are either bloated enterprise tools that cost $500/month or basic spreadsheets that fall apart at 50 contacts. Agents need a modern, fast, and affordable platform that handles properties, clients, deals, and analytics without the learning curve.
+
+## The Solution
+
+Haven Estate Suite is a **full-featured real estate CRM** built with modern web technologies. It integrates with MLS for property data, provides a visual deal pipeline, tracks every client interaction, and delivers real-time market analytics — all wrapped in a beautiful, responsive UI with dark mode.
+
+> *Search MLS listings. Drag deals through your pipeline. Track client touchpoints. Generate reports. All from one dashboard.*
+
+---
+
+## Features
+
+- **Property Management** — Comprehensive MLS integration with advanced search, filtering, and property details
+- **Client Management** — Track contacts, leads, and client relationships with full interaction history
+- **Deal Pipeline** — Visual kanban board to manage deals through customizable stages
+- **Activity Timeline** — Complete history of every interaction, showing, and event
+- **Analytics Dashboard** — Real-time market insights, sales performance, and trend visualization
+- **Report Generation** — Custom reports with data visualizations and export
+- **Dark Mode** — Beautiful dark theme with seamless toggle
+- **Responsive Design** — Desktop, tablet, and mobile with touch optimization
+- **Real-Time Updates** — Live data synchronization across devices via Supabase
+- **Row-Level Security** — Database-level security policies protecting every record
+- **CI/CD Pipeline** — Automated testing, linting, and deployment via GitHub Actions
 
 ## 🚀 Quick Start
 
@@ -198,6 +216,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-<p align="center">
-  Made with ❤️ for real estate professionals
-</p>
+<div align="center">
+
+**Built by [Alex Cinovoj](https://github.com/Alexi5000) · [TechTide AI](https://github.com/Alexi5000)**
+
+*Close more deals. Manage less chaos.*
+
+</div>
