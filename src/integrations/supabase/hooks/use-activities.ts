@@ -67,7 +67,7 @@ export function useCreateActivity() {
         description: 'Activity created successfully'
       });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to create activity',
@@ -101,7 +101,7 @@ export function useUpdateActivity() {
         description: 'Activity updated successfully'
       });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to update activity',
@@ -131,7 +131,7 @@ export function useDeleteActivity() {
         description: 'Activity deleted successfully'
       });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to delete activity',
@@ -165,7 +165,7 @@ export function useCompleteActivity() {
         description: 'Activity marked as complete'
       });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to complete activity',

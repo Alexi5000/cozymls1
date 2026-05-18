@@ -66,7 +66,7 @@ export function ReportViewer({ reportId, onClose }: ReportViewerProps) {
 
   const chartType = report.config.chartType || template.chart_type || 'table';
 
-  const formatValue = (value: any, type: string) => {
+  const formatValue = (value: unknown, type: string) => {
     if (type === 'currency') {
       return new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -134,11 +134,14 @@ export function ReportViewer({ reportId, onClose }: ReportViewerProps) {
           </ResponsiveContainer>
         );
 
-      case 'pie':
-        const pieField = template.fields.find(f => f.type === 'number' || f.type === 'currency');
-        const labelField = template.fields.find(f => f.type === 'string');
-        
-        if (!pieField || !labelField) return <div>No suitable data for pie chart</div>;
+      case 'pie': {
+        const pieField = template.fields.find(
+          (f) => f.type === 'number' || f.type === 'currency'
+        );
+        const labelField = template.fields.find((f) => f.type === 'string');
+
+        if (!pieField || !labelField)
+          return <div>No suitable data for pie chart</div>;
 
         return (
           <ResponsiveContainer width="100%" height={400}>
@@ -162,6 +165,7 @@ export function ReportViewer({ reportId, onClose }: ReportViewerProps) {
             </PieChart>
           </ResponsiveContainer>
         );
+      }
 
       case 'area':
         return (

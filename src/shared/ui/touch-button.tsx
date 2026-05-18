@@ -23,7 +23,7 @@ export const TouchButton = React.forwardRef<HTMLButtonElement, TouchButtonProps>
       if (enableHaptic && 'vibrate' in navigator) {
         navigator.vibrate(10); // Short haptic feedback
       }
-      onClick?.(undefined as any);
+      onClick?.(undefined as unknown as React.MouseEvent<HTMLButtonElement>);
     }, [onClick, enableHaptic]);
 
     const handleLongPress = React.useCallback(() => {

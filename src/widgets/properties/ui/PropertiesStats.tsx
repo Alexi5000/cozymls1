@@ -1,7 +1,10 @@
+import type { Database } from '@/integrations/supabase/types';
+
+type PropertyRow = Database['public']['Tables']['properties']['Row'];
 import { Card } from '@/shared/ui/card';
 
 interface PropertiesStatsProps {
-  properties: any[];
+  properties: PropertyRow[];
 }
 
 export function PropertiesStats({ properties }: PropertiesStatsProps) {

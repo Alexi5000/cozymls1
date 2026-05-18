@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 export interface PaginationOptions {
   initialPage?: number;
@@ -39,8 +39,8 @@ export function usePagination(options: PaginationOptions = {}): PaginationContro
   const to = Math.min(from + pageSize - 1, totalItems - 1);
 
   const setPage = useCallback((newPage: number) => {
-    setPageState(Math.max(1, Math.min(newPage, totalPages || 1)));
-  }, [totalPages]);
+    setPageState(Math.max(1, newPage));
+  }, []);
 
   const nextPage = useCallback(() => {
     setPage(page + 1);
@@ -85,11 +85,6 @@ export function usePagination(options: PaginationOptions = {}): PaginationContro
 
     return rangeWithDots;
   }, [page, totalPages]);
-
-  function useMemo<T>(factory: () => T, deps: any[]): T {
-    const [value] = useState(factory);
-    return value;
-  }
 
   return {
     page,

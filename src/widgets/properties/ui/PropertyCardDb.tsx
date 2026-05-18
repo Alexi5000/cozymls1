@@ -1,3 +1,6 @@
+import type { Database } from '@/integrations/supabase/types';
+
+type PropertyRow = Database['public']['Tables']['properties']['Row'];
 import React, { memo, useCallback, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
@@ -5,7 +8,7 @@ import { Badge } from '@/shared/ui/badge';
 import { Bed, Bath, Square, Calendar, Phone, Mail, MapPin, Eye, Heart, Share2 } from 'lucide-react';
 
 interface PropertyCardDbProps {
-  property: any; // Database property type
+  property: PropertyRow;
 }
 
 export const PropertyCardDb = memo(function PropertyCardDb({ property }: PropertyCardDbProps) {
@@ -32,15 +35,15 @@ export const PropertyCardDb = memo(function PropertyCardDb({ property }: Propert
 
   const handleFavorite = useCallback(() => {
     // Toggle favorite status - will be implemented
-  }, [property.id]);
+  }, []);
 
   const handleShare = useCallback(() => {
     // Share property - will be implemented
-  }, [property.id]);
+  }, []);
 
   const handleView = useCallback(() => {
     // View property details - will be implemented
-  }, [property.id]);
+  }, []);
 
   return (
     <Card className="property-card hover-lift group animate-scale-in overflow-hidden">

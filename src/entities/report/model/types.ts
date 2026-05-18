@@ -31,7 +31,7 @@ export interface Report {
 }
 
 export interface ReportData {
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface ReportConfig {
@@ -50,7 +50,7 @@ export interface ReportConfig {
 export interface ReportFilter {
   field: string;
   operator: 'equals' | 'contains' | 'greater' | 'less' | 'between';
-  value: any;
+  value: unknown;
 }
 
 export interface DashboardReport {

@@ -8,8 +8,8 @@ export interface Report {
   name: string;
   description?: string;
   template_id: string;
-  data: any;
-  config: any;
+  data: Record<string, unknown>;
+  config: Record<string, unknown>;
   generated_by: string;
   created_at: string;
   updated_at: string;
@@ -21,7 +21,7 @@ export interface ReportTemplate {
   description: string;
   category: string;
   chart_type?: string;
-  fields: any;
+  fields: Record<string, unknown>;
   created_by: string;
   created_at: string;
   updated_at: string;
@@ -108,7 +108,7 @@ export function useCreateReport() {
         description: 'Your report has been generated successfully.',
       });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to create report',
@@ -148,7 +148,7 @@ export function useUpdateReport() {
         description: 'Your report has been updated successfully.',
       });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to update report',
@@ -183,7 +183,7 @@ export function useDeleteReport() {
         description: 'Report has been deleted successfully.',
       });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to delete report',

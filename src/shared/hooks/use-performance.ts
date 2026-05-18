@@ -1,9 +1,30 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 interface PerformanceMetrics {
   renderTime: number;
   componentName: string;
   timestamp: number;
+}
+
+interface NavigatorConnectionInfo {
+  effectiveType?: string;
+  downlink?: number;
+  rtt?: number;
+}
+
+interface NavigatorWithCapabilities extends Navigator {
+  deviceMemory?: number;
+  connection?: NavigatorConnectionInfo;
+}
+
+declare global {
+  interface Window {
+    gtag?: (
+      command: string,
+      action: string,
+      parameters: Record<string, unknown>
+    ) => void;
+  }
 }
 
 export function usePerformanceMonitor(componentName: string) {
@@ -18,46 +39,47 @@ export function usePerformanceMonitor(componentName: string) {
   useEffect(() => {
     if (renderStartTime.current) {
       const renderTime = performance.now() - renderStartTime.current;
-      
-      // Track slow renders in development (metrics sent to analytics only)
+
       if (process.env.NODE_ENV === 'development' && renderTime > 16) {
-        // Slow render detected - metrics tracked via analytics below
+        // Slow render detected. Metrics are available for analytics below.
       }
 
-      // Send metrics to analytics service in production
       const metrics: PerformanceMetrics = {
         renderTime,
         componentName,
         timestamp: Date.now(),
       };
 
-      // You can send this to your analytics service
-      if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('event', 'component_render', {
-          custom_component_name: componentName,
-          custom_render_time: renderTime,
+      if (typeof window !== 'undefined' && window.gtag) {
+        window.gtag('event', 'component_render', {
+          custom_component_name: metrics.componentName,
+          custom_render_time: metrics.renderTime,
           custom_render_count: renderCount.current,
+          custom_timestamp: metrics.timestamp,
         });
       }
     }
   });
 
-  const measureFunction = useCallback(<T extends any[], R>(
-    fn: (...args: T) => R,
-    functionName: string
-  ) => {
-    return (...args: T): R => {
-      const start = performance.now();
-      const result = fn(...args);
-      const duration = performance.now() - start;
-      
-      if (process.env.NODE_ENV === 'development' && duration > 5) {
-        // Slow function detected - can be tracked via analytics if needed
-      }
-      
-      return result;
-    };
-  }, [componentName]);
+  const measureFunction = useCallback(
+    <TArgs extends unknown[], TResult>(
+      fn: (...args: TArgs) => TResult,
+      functionName: string
+    ) => {
+      return (...args: TArgs): TResult => {
+        const start = performance.now();
+        const result = fn(...args);
+        const duration = performance.now() - start;
+
+        if (process.env.NODE_ENV === 'development' && duration > 5) {
+          void functionName;
+        }
+
+        return result;
+      };
+    },
+    []
+  );
 
   return { measureFunction, renderCount: renderCount.current };
 }
@@ -72,18 +94,20 @@ export function useIntersectionObserver(
     const element = elementRef.current;
     if (!element) return;
 
-    observerRef.current = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          // Trigger lazy loading or animations
-          element.classList.add('in-viewport');
-        }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '50px',
-      ...options,
-    });
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            element.classList.add('in-viewport');
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '50px',
+        ...options,
+      }
+    );
 
     observerRef.current.observe(element);
 
@@ -97,57 +121,54 @@ export function useIntersectionObserver(
   return elementRef;
 }
 
-// Performance utilities
 export const performanceUtils = {
-  // Debounce function calls for performance
-  debounce: <T extends (...args: any[]) => any>(
-    func: T,
+  debounce: <TArgs extends unknown[], TResult>(
+    func: (...args: TArgs) => TResult,
     wait: number
-  ): ((...args: Parameters<T>) => void) => {
+  ): ((...args: TArgs) => void) => {
     let timeout: NodeJS.Timeout;
-    return (...args: Parameters<T>) => {
+    return (...args: TArgs) => {
       clearTimeout(timeout);
       timeout = setTimeout(() => func(...args), wait);
     };
   },
 
-  // Throttle function calls for performance
-  throttle: <T extends (...args: any[]) => any>(
-    func: T,
+  throttle: <TArgs extends unknown[], TResult>(
+    func: (...args: TArgs) => TResult,
     limit: number
-  ): ((...args: Parameters<T>) => void) => {
-    let inThrottle: boolean;
-    return (...args: Parameters<T>) => {
+  ): ((...args: TArgs) => void) => {
+    let inThrottle = false;
+    return (...args: TArgs) => {
       if (!inThrottle) {
         func(...args);
         inThrottle = true;
-        setTimeout(() => (inThrottle = false), limit);
+        setTimeout(() => {
+          inThrottle = false;
+        }, limit);
       }
     };
   },
 
-  // Measure component render time
   measureRender: (componentName: string, renderFn: () => void) => {
     const start = performance.now();
     renderFn();
     const end = performance.now();
-    
-    // Render time measured but not logged to console for security
+    void componentName;
     return end - start;
   },
 
-  // Check if user prefers reduced motion
   prefersReducedMotion: (): boolean => {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   },
 
-  // Get device performance capabilities
   getDeviceCapabilities: () => {
-    const navigator = window.navigator as any;
+    const navigatorWithCapabilities =
+      window.navigator as NavigatorWithCapabilities;
+
     return {
-      hardwareConcurrency: navigator.hardwareConcurrency || 4,
-      deviceMemory: navigator.deviceMemory || 4,
-      connection: navigator.connection || null,
+      hardwareConcurrency: navigatorWithCapabilities.hardwareConcurrency || 4,
+      deviceMemory: navigatorWithCapabilities.deviceMemory || 4,
+      connection: navigatorWithCapabilities.connection || null,
     };
   },
 };

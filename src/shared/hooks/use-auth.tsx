@@ -1,14 +1,15 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import type { AuthError } from '@supabase/supabase-js';
 import { useToast } from '@/shared/hooks/use-toast';
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string, name?: string) => Promise<{ error: any }>;
-  signIn: (email: string, password: string) => Promise<{ error: any }>;
+  signUp: (email: string, password: string, name?: string) => Promise<{ error: AuthError | Error | null }>;
+  signIn: (email: string, password: string) => Promise<{ error: AuthError | Error | null }>;
   signOut: () => Promise<void>;
 }
 
@@ -68,14 +69,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         });
       }
       
-      return { error };
-    } catch (error: any) {
+      return { error: error instanceof Error ? error : new Error(String(error)) };
+    } catch (error: unknown) {
       toast({
         title: 'Error',
         description: error.message,
         variant: 'destructive'
       });
-      return { error };
+      return { error: error instanceof Error ? error : new Error(String(error)) };
     }
   };
 
@@ -94,14 +95,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         });
       }
       
-      return { error };
-    } catch (error: any) {
+      return { error: error instanceof Error ? error : new Error(String(error)) };
+    } catch (error: unknown) {
       toast({
         title: 'Error',
         description: error.message,
         variant: 'destructive'
       });
-      return { error };
+      return { error: error instanceof Error ? error : new Error(String(error)) };
     }
   };
 
@@ -112,7 +113,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         title: 'Signed out',
         description: 'You have been signed out successfully.'
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         title: 'Error',
         description: error.message,

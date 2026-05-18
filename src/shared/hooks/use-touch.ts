@@ -27,6 +27,7 @@ export function useTouch(
   options: UseTouchOptions = {}
 ) {
   const { threshold = 50, longPressDelay = 500 } = options;
+  const { onSwipeLeft, onSwipeRight, onSwipeUp, onSwipeDown, onTap, onLongPress } = handlers;
   const touchState = useRef<TouchState>({
     startX: 0,
     startY: 0,
@@ -50,12 +51,12 @@ export function useTouch(
     
     setIsPressed(true);
     
-    if (handlers.onLongPress) {
+    if (onLongPress) {
       longPressTimer.current = setTimeout(() => {
-        handlers.onLongPress?.();
+        onLongPress();
       }, longPressDelay);
     }
-  }, [handlers.onLongPress, longPressDelay]);
+  }, [onLongPress, longPressDelay]);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (!touchState.current.isTouch) return;
@@ -93,25 +94,25 @@ export function useTouch(
       if (absDeltaX > absDeltaY) {
         // Horizontal swipe
         if (deltaX > 0) {
-          handlers.onSwipeRight?.();
+          onSwipeRight?.();
         } else {
-          handlers.onSwipeLeft?.();
+          onSwipeLeft?.();
         }
       } else {
         // Vertical swipe
         if (deltaY > 0) {
-          handlers.onSwipeDown?.();
+          onSwipeDown?.();
         } else {
-          handlers.onSwipeUp?.();
+          onSwipeUp?.();
         }
       }
     } else if (absDeltaX < 10 && absDeltaY < 10) {
       // Tap gesture
-      handlers.onTap?.();
+      onTap?.();
     }
     
     touchState.current.isTouch = false;
-  }, [handlers, threshold]);
+  }, [onSwipeLeft, onSwipeRight, onSwipeUp, onSwipeDown, onTap, threshold]);
 
   return {
     touchHandlers: {

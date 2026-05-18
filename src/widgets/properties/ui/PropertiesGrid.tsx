@@ -1,9 +1,12 @@
+import type { Database } from '@/integrations/supabase/types';
+
+type PropertyRow = Database['public']['Tables']['properties']['Row'];
 import React, { memo, useMemo } from 'react';
 import { PropertyCardDb } from './PropertyCardDb';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
 
 interface PropertiesGridProps {
-  properties: any[];
+  properties: PropertyRow[];
 }
 
 export const PropertiesGrid = memo(function PropertiesGrid({ properties }: PropertiesGridProps) {

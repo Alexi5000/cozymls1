@@ -48,11 +48,11 @@ export function PropertiesPage() {
       <div className="space-y-6 md:space-y-8 animate-slide-up">
         <PropertiesHeader />
         {!isMobile && <PropertiesFilters />}
-        <PropertiesStats properties={properties as any} />
+        <PropertiesStats properties={properties} />
         <Suspense 
           fallback={<PropertiesGridSkeleton count={6} mobile={isMobile} />}
         >
-          <PropertiesGrid properties={properties as any} />
+          <PropertiesGrid properties={properties} />
         </Suspense>
         
         {totalCount > 0 && (

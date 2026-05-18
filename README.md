@@ -6,12 +6,12 @@
 
 ### The CRM Real Estate Agents Actually Want to Use
 
-**MLS integration, deal pipeline, client management, and market analytics — all in one beautiful dashboard. Built for agents who close.**
+**MLS integration, deal pipeline, client management, and market analytics, all in one beautiful dashboard. Built for agents who close.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18.3-61dafb?logo=react)](https://react.dev/)
-[![Vite](https://img.shields.io/badge/Vite-5-646cff?logo=vite)](https://vitejs.dev/)
+[![Vite](https://img.shields.io/badge/Vite-7-646cff?logo=vite)](https://vitejs.dev/)
 [![Supabase](https://img.shields.io/badge/Supabase-Backend-3ecf8e?logo=supabase)](https://supabase.com)
 [![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-Components-000)](https://ui.shadcn.com)
 
@@ -31,7 +31,7 @@ Real estate CRMs are either bloated enterprise tools that cost $500/month or bas
 
 ## The Solution
 
-Haven Estate Suite is a **full-featured real estate CRM** built with modern web technologies. It integrates with MLS for property data, provides a visual deal pipeline, tracks every client interaction, and delivers real-time market analytics — all wrapped in a beautiful, responsive UI with dark mode.
+Haven Estate Suite is a **full-featured real estate CRM** built with modern web technologies. It integrates with MLS for property data, provides a visual deal pipeline, tracks every client interaction, and delivers real-time market analytics, all wrapped in a beautiful, responsive UI with dark mode.
 
 > *Search MLS listings. Drag deals through your pipeline. Track client touchpoints. Generate reports. All from one dashboard.*
 
@@ -39,17 +39,17 @@ Haven Estate Suite is a **full-featured real estate CRM** built with modern web 
 
 ## Features
 
-- **Property Management** — Comprehensive MLS integration with advanced search, filtering, and property details
-- **Client Management** — Track contacts, leads, and client relationships with full interaction history
-- **Deal Pipeline** — Visual kanban board to manage deals through customizable stages
-- **Activity Timeline** — Complete history of every interaction, showing, and event
-- **Analytics Dashboard** — Real-time market insights, sales performance, and trend visualization
-- **Report Generation** — Custom reports with data visualizations and export
-- **Dark Mode** — Beautiful dark theme with seamless toggle
-- **Responsive Design** — Desktop, tablet, and mobile with touch optimization
-- **Real-Time Updates** — Live data synchronization across devices via Supabase
-- **Row-Level Security** — Database-level security policies protecting every record
-- **CI/CD Pipeline** — Automated testing, linting, and deployment via GitHub Actions
+- **Property Management**, Comprehensive MLS integration with advanced search, filtering, and property details
+- **Client Management**, Track contacts, leads, and client relationships with full interaction history
+- **Deal Pipeline**, Visual kanban board to manage deals through customizable stages
+- **Activity Timeline**, Complete history of every interaction, showing, and event
+- **Analytics Dashboard**, Real-time market insights, sales performance, and trend visualization
+- **Report Generation**, Custom reports with data visualizations and export
+- **Dark Mode**, Beautiful dark theme with seamless toggle
+- **Responsive Design**, Desktop, tablet, and mobile with touch optimization
+- **Real-Time Updates**, Live data synchronization across devices via Supabase
+- **Row-Level Security**, Database-level security policies protecting every record
+- **CI/CD Pipeline**, Automated testing, linting, and deployment via GitHub Actions
 
 ## 🚀 Quick Start
 

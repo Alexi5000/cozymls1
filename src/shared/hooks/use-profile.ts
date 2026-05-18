@@ -63,7 +63,7 @@ export function useUpdateProfile() {
         description: 'Your profile has been updated successfully.',
       });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
         title: 'Update failed',
         description: error.message || 'Failed to update profile',
@@ -114,7 +114,7 @@ export function useUpdatePassword() {
         description: 'Your password has been changed successfully.',
       });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
         title: 'Update failed',
         description: error.message || 'Failed to update password',

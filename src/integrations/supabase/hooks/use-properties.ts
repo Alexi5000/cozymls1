@@ -100,7 +100,7 @@ export function useCreateProperty() {
         description: 'Property created successfully'
       });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to create property',
@@ -134,7 +134,7 @@ export function useUpdateProperty() {
         description: 'Property updated successfully'
       });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to update property',
@@ -164,7 +164,7 @@ export function useDeleteProperty() {
         description: 'Property deleted successfully'
       });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to delete property',

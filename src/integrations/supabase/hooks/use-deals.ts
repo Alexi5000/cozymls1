@@ -67,7 +67,7 @@ export function useCreateDeal() {
         description: 'Deal created successfully'
       });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to create deal',
@@ -101,7 +101,7 @@ export function useUpdateDeal() {
         description: 'Deal updated successfully'
       });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to update deal',
@@ -131,7 +131,7 @@ export function useDeleteDeal() {
         description: 'Deal deleted successfully'
       });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to delete deal',

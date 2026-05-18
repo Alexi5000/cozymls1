@@ -91,7 +91,7 @@ export function useCreateContact() {
         description: 'Contact created successfully'
       });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to create contact',
@@ -125,7 +125,7 @@ export function useUpdateContact() {
         description: 'Contact updated successfully'
       });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to update contact',
@@ -155,7 +155,7 @@ export function useDeleteContact() {
         description: 'Contact deleted successfully'
       });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to delete contact',

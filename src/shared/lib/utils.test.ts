@@ -8,7 +8,8 @@ describe('cn utility', () => {
   });
 
   it('handles conditional classes', () => {
-    const result = cn('text-sm', false && 'hidden', 'font-bold');
+    const shouldHide = false;
+    const result = cn('text-sm', shouldHide ? 'hidden' : undefined, 'font-bold');
     expect(result).toBe('text-sm font-bold');
   });
 

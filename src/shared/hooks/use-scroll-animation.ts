@@ -53,7 +53,7 @@ export function useScrollAnimation(options: UseScrollAnimationOptions = {}) {
 }
 
 // Hook for staggered animations - optimized for performance
-export function useStaggeredAnimation(items: any[], delay: number = 50) {
+export function useStaggeredAnimation(items: unknown[], delay: number = 50) {
   // Performance optimization: show all items immediately to avoid stagger delays
   const [visibleItems, setVisibleItems] = useState<Set<number>>(
     new Set(items.map((_, index) => index))

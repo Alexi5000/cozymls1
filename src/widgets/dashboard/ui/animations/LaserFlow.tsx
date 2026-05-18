@@ -305,7 +305,7 @@ export const LaserFlow = ({
 }: LaserFlowProps) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const uniformsRef = useRef<Record<string, { value: any }> | null>(null);
+  const uniformsRef = useRef<Record<string, { value: unknown }> | null>(null);
   const hasFadedRef = useRef(false);
   const rectRef = useRef<DOMRect | null>(null);
   const baseDprRef = useRef<number>(1);
@@ -589,6 +589,7 @@ export const LaserFlow = ({
       renderer.dispose();
       if (mount.contains(canvas)) mount.removeChild(canvas);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dpr, prefersReducedMotion]);
 
   useEffect(() => {
