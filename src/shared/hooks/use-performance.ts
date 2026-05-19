@@ -126,7 +126,7 @@ export const performanceUtils = {
     func: (...args: TArgs) => TResult,
     wait: number
   ): ((...args: TArgs) => void) => {
-    let timeout: NodeJS.Timeout;
+    let timeout: ReturnType<typeof setTimeout>;
     return (...args: TArgs) => {
       clearTimeout(timeout);
       timeout = setTimeout(() => func(...args), wait);
