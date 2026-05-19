@@ -613,7 +613,7 @@ export const LaserFlow = ({
     uniforms.uFogFallSpeed.value = fogFallSpeed;
 
     const { r, g, b } = hexToRGB(color || '#FFFFFF');
-    uniforms.uColor.value.set(r, g, b);
+    (uniforms.uColor.value as THREE.Vector3).set(r, g, b);
     logger.ui('LaserFlow', '🎨 Color applied', { hex: color, rgb: { r, g, b } });
   }, [
     wispDensity,

@@ -66,20 +66,20 @@ export function ReportViewer({ reportId, onClose }: ReportViewerProps) {
 
   const chartType = report.config.chartType || template.chart_type || 'table';
 
-  const formatValue = (value: unknown, type: string) => {
+  const formatValue = (value: unknown, type: string): React.ReactNode => {
     if (type === 'currency') {
       return new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
-      }).format(value);
+      }).format(Number(value));
     }
     if (type === 'number') {
-      return new Intl.NumberFormat('en-US').format(value);
+      return new Intl.NumberFormat('en-US').format(Number(value));
     }
     if (type === 'date') {
-      return new Date(value).toLocaleDateString();
+      return new Date(value as string | number).toLocaleDateString();
     }
-    return value;
+    return value as React.ReactNode;
   };
 
   const renderChart = () => {

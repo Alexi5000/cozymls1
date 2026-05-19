@@ -40,7 +40,7 @@ export function usePerformanceMonitor(componentName: string) {
     if (renderStartTime.current) {
       const renderTime = performance.now() - renderStartTime.current;
 
-      if (process.env.NODE_ENV === 'development' && renderTime > 16) {
+      if (import.meta.env.DEV && renderTime > 16) {
         // Slow render detected. Metrics are available for analytics below.
       }
 
@@ -71,7 +71,7 @@ export function usePerformanceMonitor(componentName: string) {
         const result = fn(...args);
         const duration = performance.now() - start;
 
-        if (process.env.NODE_ENV === 'development' && duration > 5) {
+        if (import.meta.env.DEV && duration > 5) {
           void functionName;
         }
 
@@ -126,7 +126,7 @@ export const performanceUtils = {
     func: (...args: TArgs) => TResult,
     wait: number
   ): ((...args: TArgs) => void) => {
-    let timeout: NodeJS.Timeout;
+    let timeout: ReturnType<typeof setTimeout>;
     return (...args: TArgs) => {
       clearTimeout(timeout);
       timeout = setTimeout(() => func(...args), wait);
