@@ -40,7 +40,7 @@ export function usePerformanceMonitor(componentName: string) {
     if (renderStartTime.current) {
       const renderTime = performance.now() - renderStartTime.current;
 
-      if (process.env.NODE_ENV === 'development' && renderTime > 16) {
+      if (import.meta.env.DEV && renderTime > 16) {
         // Slow render detected. Metrics are available for analytics below.
       }
 
