@@ -116,9 +116,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         description: 'You have been signed out successfully.'
       });
     } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
       toast({
         title: 'Error',
-        description: error.message,
+        description: message,
         variant: 'destructive'
       });
     }
