@@ -36,7 +36,7 @@ export function useTouch(
     isTouch: false,
   });
   
-  const longPressTimer = useRef<NodeJS.Timeout>();
+  const longPressTimer = useRef<ReturnType<typeof setTimeout>>();
   const [isPressed, setIsPressed] = useState(false);
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
