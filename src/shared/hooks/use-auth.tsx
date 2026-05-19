@@ -71,9 +71,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       return { error: error instanceof Error ? error : new Error(String(error)) };
     } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
       toast({
         title: 'Error',
-        description: error.message,
+        description: message,
         variant: 'destructive'
       });
       return { error: error instanceof Error ? error : new Error(String(error)) };
