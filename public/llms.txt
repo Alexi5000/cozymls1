@@ -1,0 +1,17 @@
+# CozyMLS
+
+> CozyMLS is a real-estate CRM for agents: manage MLS-style property listings, contacts, deals, activities, and reports in one place.
+
+## Pages
+
+- [Home](/): Dashboard overview of contacts, deals, revenue, and recent activity.
+- [Properties](/properties): MLS-style property listings with filtering by status and type.
+- [Contacts](/contacts): Lead and contact management with status tracking and tagging.
+- [Deals](/deals): Sales pipeline across prospect, qualified, proposal, negotiation, closed-won, and closed-lost stages.
+- [Activities](/activities): Tasks, meetings, and calls timeline with priorities and due dates.
+- [Reports](/reports): Custom report builder with chart and table templates.
+
+## Optional
+
+- [Sign in / Sign up](/auth): Account access for agents and administrators.
+- [Settings](/settings): Profile, preferences, and security settings.
