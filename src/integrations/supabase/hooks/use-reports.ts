@@ -230,7 +230,7 @@ export function useReportTemplates() {
         throw error;
       }
 
-      return data as ReportTemplate[];
+      return data as unknown as ReportTemplate[];
     },
   });
 }
