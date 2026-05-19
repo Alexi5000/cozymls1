@@ -3,16 +3,36 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/shared/hooks/use-toast';
 import { logger } from '@/shared/lib/logger';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnyRecord = any;
+
+export interface ReportConfigShape {
+  dateRange?: { start?: string; end?: string };
+  chartType?: 'bar' | 'line' | 'pie' | 'area' | 'table';
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+  showTotals?: boolean;
+  [key: string]: unknown;
+}
+
 export interface Report {
   id: string;
   name: string;
   description?: string;
   template_id: string;
-  data: Record<string, unknown>;
-  config: Record<string, unknown>;
+  data: AnyRecord[];
+  config: ReportConfigShape;
   generated_by: string;
   created_at: string;
   updated_at: string;
+}
+
+export interface ReportTemplateField {
+  id: string;
+  name: string;
+  label: string;
+  type: 'string' | 'number' | 'date' | 'boolean' | 'currency';
+  required?: boolean;
 }
 
 export interface ReportTemplate {
@@ -21,7 +41,7 @@ export interface ReportTemplate {
   description: string;
   category: string;
   chart_type?: string;
-  fields: Record<string, unknown>;
+  fields: ReportTemplateField[];
   created_by: string;
   created_at: string;
   updated_at: string;
