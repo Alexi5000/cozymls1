@@ -71,7 +71,7 @@ export function usePerformanceMonitor(componentName: string) {
         const result = fn(...args);
         const duration = performance.now() - start;
 
-        if (process.env.NODE_ENV === 'development' && duration > 5) {
+        if (import.meta.env.DEV && duration > 5) {
           void functionName;
         }
 
