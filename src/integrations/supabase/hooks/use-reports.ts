@@ -110,7 +110,7 @@ export function useCreateReport() {
       
       const { data, error } = await supabase
         .from('reports')
-        .insert(report)
+        .insert(report as never)
         .select()
         .single();
 
