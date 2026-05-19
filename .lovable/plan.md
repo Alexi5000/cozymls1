@@ -1,152 +1,118 @@
-# CozyMLS — 3-Month Technical Roadmap
 
-Based on the current PRD (React 18 + Vite + Tailwind + shadcn, Lovable Cloud/Supabase backend, FSD architecture, modules: Dashboard, Properties, Contacts, Deals, Activities, Reports, Settings).
+# Build Prompt: AI Property Description Generator
 
-Prioritization uses **RICE-lite**: P0 = blocker/foundational, P1 = high user value, P2 = nice-to-have / polish.
-
----
-
-## Month 1 — Stabilize & Harden (Foundation)
-
-Goal: lock down quality, security, and core UX gaps before stacking new features.
-
-### Week 1 — Quality baseline
-- **[P0] Fix LaserFlow responsive + color regression** (carry-over)
-  - Verify on real iOS/Android/tablet via responsive QA
-  - Add visual regression snapshot if feasible
-- **[P0] Test coverage audit**
-  - Identify untested critical paths (auth, deals pipeline, RLS-protected mutations)
-  - Target: 60% coverage on `features/` and `integrations/supabase/hooks/`
-- **[P0] Error boundary + logging review**
-  - Confirm `ErrorBoundary` wraps every page route
-  - Wire `logger` to a remote sink (e.g., Supabase `logs` table or edge function)
-
-### Week 2 — Security & RLS hardening
-- **[P0] RLS policy audit**
-  - Verify every table denies anonymous by default
-  - Add automated `supabase--linter` check to CI
-- **[P0] Role-based UI gating**
-  - Hook `has_role()` into sidebar/route guards (admin/manager/agent)
-  - Hide destructive actions for non-admins
-- **[P1] Audit log table**
-  - Track create/update/delete on properties, deals, contacts
-  - Admin-only viewer page
-
-### Week 3 — Mobile UX polish
-- **[P1] Mobile dashboard parity**
-  - StatsCards stack correctly, LaserFlow gracefully degrades
-  - Pull-to-refresh on dashboard + lists
-- **[P1] Mobile navigation overhaul**
-  - Verify `MobileTabBar` reflects role permissions
-  - Safe-area handling on notched devices
-- **[P2] Offline-friendly read cache**
-  - React Query persist to localStorage for last-viewed lists
-
-### Week 4 — Performance pass
-- **[P1] Bundle analysis + code splitting**
-  - Lazy-load Reports (Recharts), Three.js LaserFlow, ReportBuilder
-  - Target: initial JS < 250KB gzipped
-- **[P1] Image optimization for properties**
-  - Add Supabase storage transforms, lazy-load, blur placeholders
-- **[P2] Lighthouse 90+ on dashboard + properties list**
+Paste this as a single prompt into Lovable to scaffold the feature. Roadmap item: `34702d4b`.
 
 ---
 
-## Month 2 — Core Feature Expansion
+## Goal
 
-Goal: deliver the highest-value missing CRM capabilities.
+Let agents generate polished MLS-ready property descriptions from structured listing fields with one click, streamed into the property form, editable, with regenerate + tone controls. Save the final copy back to `properties.description`.
 
-### Week 5–6 — Real-time collaboration
-- **[P0] Realtime deal pipeline**
-  - Subscribe to `deals` table changes; live-update Kanban
-- **[P1] Realtime activity feed**
-  - Notifications dropdown shows new assignments live
-- **[P1] Presence indicators** on shared properties/deals
+## Stack (already in project — do not change)
 
-### Week 7 — MLS data import
-- **[P0] CSV import for properties**
-  - Edge function: parse, validate, batch insert with progress
-  - Field mapping UI + dry-run preview
-- **[P1] MLS feed ingestion (RETS/RESO scaffold)**
-  - Edge function placeholder + scheduled cron via `pg_cron`
-  - Configurable per-agent feed credentials (secrets)
+- React 18 + Vite + TS, Tailwind + shadcn/ui, TanStack Query, Zustand
+- Feature-Sliced Design — new code lives in `src/features/ai-description/`
+- Supabase (Lovable Cloud), edge functions in `supabase/functions/`
+- Lovable AI Gateway via `@ai-sdk/openai-compatible` + `ai` (streamText)
+- Logger: `src/shared/utils/logger`; config: `src/shared/constants/app-config.ts` (add new constants here — no magic numbers)
+- Semantic HSL tokens only; primary brand `#E85D2E` already mapped
 
-### Week 8 — Communications
-- **[P1] Email integration**
-  - Send-from-app via Resend (transactional email skill)
-  - Templates for new-lead, showing reminder, deal-stage change
-- **[P1] Contact timeline**
-  - Unified view: activities + emails + deal changes per contact
-- **[P2] SMS reminders** (Twilio connector) — backlog
+## Model
+
+`google/gemini-2.5-flash` via Lovable AI Gateway. Server-only `LOVABLE_API_KEY` (already set). Stream response.
+
+## Pages / surfaces
+
+1. **Property form** (`src/widgets/properties/ui/PropertyForm.tsx` or equivalent): new "Generate with AI" section above the description textarea.
+2. **Property detail / quick-edit drawer**: same component reused.
+3. No new route.
+
+## UX states
+
+- `idle` — button "Generate description" + tone selector (Professional / Warm / Luxury / Concise) + length (Short ~60w / Standard ~120w / Long ~220w).
+- `streaming` — textarea fills token-by-token, button becomes "Stop", shimmer on textarea border.
+- `ready` — "Regenerate", "Accept", "Edit" actions; diff indicator if user edited after generation.
+- `error` — inline alert with retry. Distinguish 429 (rate limit, retry hint) and 402 (out of credits, link to Workspace usage).
+- `empty-input` — disabled button + tooltip listing required fields.
+
+## Data model
+
+No schema changes required. Optional additions (create migration only if user confirms):
+
+- `properties.description_generated_at timestamptz null`
+- `properties.description_source text null check (description_source in ('manual','ai','ai-edited'))`
+- `ai_generations` (audit): `id, user_id, property_id, model, tone, length, prompt_tokens, completion_tokens, created_at` — RLS: agent reads own rows; insert via edge function with service role.
+
+## Edge function
+
+`supabase/functions/generate-property-description/index.ts`
+
+- `verify_jwt = true` (default); resolve `auth.uid()` from JWT.
+- Input (zod): `{ propertyId: string, tone: enum, length: enum }`.
+- Fetch property row with RLS-respecting client; 404 if not visible.
+- Build prompt from: address, beds/baths, sqft, year built, lot size, property_type, features[], neighborhood, price.
+- `streamText({ model: gateway('google/gemini-2.5-flash'), system, prompt })` → `toUIMessageStreamResponse`.
+- After stream end (use `onFinish`), insert into `ai_generations` and update `properties.description_generated_at`.
+- CORS via `npm:@supabase/supabase-js@2/cors`.
+- Map upstream 429/402 to same status codes back to client.
+
+## Frontend module (FSD)
+
+```
+src/features/ai-description/
+  api/generate.ts            // useChat-style hook bound to the edge function URL
+  ui/GenerateDescriptionPanel.tsx
+  ui/ToneSelect.tsx
+  ui/LengthSelect.tsx
+  model/types.ts             // Tone, Length, GenerationState
+  model/use-generate-description.ts  // wraps AI SDK useChat, exposes start/stop/regenerate
+  index.ts
+```
+
+Wire `GenerateDescriptionPanel` into the property form. On Accept, write to form field via existing react-hook-form context; mark `description_source = 'ai'` (or `'ai-edited'` if dirty after generation).
+
+## Constants (add to `app-config.ts`)
+
+```
+AI_DESCRIPTION: {
+  MODEL: 'google/gemini-2.5-flash',
+  TONES: ['professional','warm','luxury','concise'],
+  LENGTHS: { short: 60, standard: 120, long: 220 },
+  MAX_REGENERATIONS_PER_HOUR: 20,
+}
+```
+
+## Non-goals (do NOT build)
+
+- Bulk generation across many properties
+- Translation / multi-language
+- Image-based description (vision)
+- Saving multiple description variants per property
+- Public sharing or marketing site embed
+- Billing / usage UI (link out to Workspace usage only)
+- Changes to existing property CRUD, RLS, or auth
+- Touching `src/integrations/supabase/{client,types}.ts`
+
+## Acceptance criteria
+
+1. Agent opens a property with required fields, clicks Generate → text streams into the textarea within 2s of first token.
+2. Stop cancels the stream; partial text remains and is editable.
+3. Regenerate replaces text; manual edits flip source to `ai-edited`.
+4. Saving the form persists description (and optional `description_source` / `description_generated_at` if migration applied).
+5. Unauthenticated call returns 401; cross-tenant property returns 404.
+6. 429 and 402 show distinct, actionable inline errors.
+7. No new magic numbers, no direct color classes, no edits to generated Supabase files, no `verify_jwt = false`.
+8. Logger used for start/finish/error events; no `console.*`.
+
+## Verification checklist (post-build)
+
+- Route: property form, viewport 1301×1211 + 390×844
+- Console: no errors during stream
+- Network: single POST to edge function, streamed chunks, final 200
+- DB: `ai_generations` row inserted (if migration applied), `properties.description` updated on save
+- Edge logs: clean, `auth.uid()` non-null, model id correct
 
 ---
 
-## Month 3 — Intelligence & Growth
-
-Goal: differentiate with AI and analytics; prepare for scale.
-
-### Week 9 — AI assistance (Lovable AI Gateway)
-- **[P1] AI property description generator**
-  - `google/gemini-2.5-flash` from property attributes
-- **[P1] AI lead-scoring**
-  - Score contacts 0–100 from activity + deal history
-  - Surface on contacts list and dashboard
-- **[P2] Natural-language report query**
-  - "Show me deals closing this month" → builds report config
-
-### Week 10 — Advanced reports
-- **[P1] Scheduled reports**
-  - Cron-trigger edge function → email PDF/CSV
-- **[P1] Report sharing**
-  - Public read-only links with expiry tokens
-- **[P2] Custom dashboard widgets** from saved reports
-
-### Week 11 — Document management
-- **[P1] Contract/document storage per deal**
-  - Supabase Storage bucket with signed URLs
-  - Drag-drop upload, version history
-- **[P2] E-signature stub** (DocuSign/Dropbox Sign connector) — backlog
-
-### Week 12 — Launch prep
-- **[P0] End-to-end QA pass** across all modules
-- **[P0] Production observability**
-  - Edge function logs dashboard, error rate alerts
-- **[P1] Onboarding flow**
-  - First-run wizard: profile → import contacts → create first property
-- **[P1] Documentation refresh**
-  - User guide, admin guide, API reference for edge functions
-
----
-
-## Technical Cross-Cuts (continuous)
-
-| Area | Standing investment |
-|---|---|
-| **Design system** | Migrate any remaining direct-color usage to semantic HSL tokens |
-| **Accessibility** | WCAG AA audit each shipped feature; keyboard nav, ARIA, contrast |
-| **CI/CD** | Add `supabase--linter`, vitest coverage gate, Lighthouse CI |
-| **Tech debt** | Replace remaining mock-data fallbacks with real Supabase queries |
-| **Type safety** | Eliminate `unknown`/`any` in `report` and `dashboard` entities |
-
----
-
-## Milestones & Success Criteria
-
-- **End of Month 1**: 0 P0 security findings, mobile parity, <250KB initial bundle, 60% test coverage on critical paths.
-- **End of Month 2**: Realtime pipeline live, CSV import shipping ≥1k rows reliably, email notifications in production.
-- **End of Month 3**: AI features behind feature flag for beta users, scheduled reports operational, onboarding flow live, ready for paid launch.
-
----
-
-## Out of Scope (parked)
-
-- Native mobile apps (Capacitor) — re-evaluate Q2
-- Multi-tenant white-label — re-evaluate after paid users >50
-- Mapbox property maps — backlog, blocked on design direction
-- Public marketing site — separate project
-
----
-
-## Next Step
-
-On approval, I will create roadmap items for **Month 1, Week 1** tasks (LaserFlow fix verification, test coverage audit, error/logging review) and begin executing the first `in_progress` item.
+After you approve this plan I'll implement it: edge function → FSD feature module → form integration → optional migration (with your sign-off) → verification pass.
