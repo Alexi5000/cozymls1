@@ -439,7 +439,7 @@ export type Database = {
     }
     Functions: {
       get_dashboard_stats: {
-        Args: { user_id: string }
+        Args: never
         Returns: {
           active_deals: number
           monthly_growth: number
