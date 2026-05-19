@@ -254,7 +254,7 @@ export function useReportTemplate(templateId?: string) {
         throw error;
       }
 
-      return data as ReportTemplate;
+      return data as unknown as ReportTemplate;
     },
     enabled: !!templateId,
   });
