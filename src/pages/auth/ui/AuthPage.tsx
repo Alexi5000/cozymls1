@@ -203,6 +203,6 @@ export function AuthPage() {
           </Tabs>
         </CardContent>
       </Card>
-    </div>
+    </main>
   );
 }
