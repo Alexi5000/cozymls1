@@ -11,7 +11,8 @@ export function useDashboardStats() {
       if (!user?.id) throw new Error('User not authenticated');
 
       const { data, error } = await supabase
-        .rpc('get_dashboard_stats', { user_id: user.id });
+        .rpc('get_dashboard_stats');
+      
       
       if (error) throw error;
       
