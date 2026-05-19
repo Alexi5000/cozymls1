@@ -148,7 +148,7 @@ export function useUpdateReport() {
       
       const { data, error } = await supabase
         .from('reports')
-        .update(updates)
+        .update(updates as never)
         .eq('id', id)
         .select()
         .single();
