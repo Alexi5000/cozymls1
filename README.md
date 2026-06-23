@@ -62,7 +62,7 @@ Haven Estate Suite is a **full-featured real estate CRM** built with modern web 
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/haven-estate-suite.git
+git clone https://github.com/Alexi5000/cozymls1.git
 cd haven-estate-suite
 
 # Install dependencies
@@ -211,7 +211,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 
 - **Documentation**: [docs/](docs/)
-- **Issues**: [GitHub Issues](https://github.com/yourusername/haven-estate-suite/issues)
+- **Issues**: [GitHub Issues](https://github.com/Alexi5000/cozymls1/issues)
 - **Security**: [SECURITY.md](SECURITY.md)
 
 ---
