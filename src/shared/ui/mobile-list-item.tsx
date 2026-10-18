@@ -75,7 +75,7 @@ export const MobileListItem = React.forwardRef<HTMLDivElement, MobileListItemPro
       >
         {/* Icon */}
         {icon && (
-          <div className="flex-shrink-0 w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+          <div className="shrink-0 w-10 h-10 rounded-full bg-muted flex items-center justify-center">
             {icon}
           </div>
         )}
@@ -100,7 +100,7 @@ export const MobileListItem = React.forwardRef<HTMLDivElement, MobileListItemPro
         
         {/* Chevron indicator */}
         {(showChevron || onTap) && (
-          <ChevronRight className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+          <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
         )}
         
         {/* Swipe indicator */}

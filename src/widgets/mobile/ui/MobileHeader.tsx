@@ -21,7 +21,7 @@ export function MobileHeader({ title, showSearch = true, onMenuClick }: MobileHe
       <header 
         className={cn(
           "fixed top-0 left-0 right-0 z-30",
-          "bg-card/95 backdrop-blur-sm border-b border-border",
+          "bg-card/95 backdrop-blur-xs border-b border-border",
           "flex items-center justify-between px-4 h-14"
         )}
         style={applySafeArea('top')}

@@ -55,7 +55,7 @@ export const MobileOptimizedCard = React.forwardRef<HTMLDivElement, MobileOptimi
         case 'compact':
           return 'mobile-shadow p-3';
         case 'featured':
-          return 'mobile-shadow-lg border-primary/20 bg-gradient-to-br from-card to-card/80';
+          return 'mobile-shadow-lg border-primary/20 bg-linear-to-br from-card to-card/80';
         default:
           return 'mobile-shadow';
       }

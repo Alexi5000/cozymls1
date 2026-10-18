@@ -65,7 +65,7 @@ export const PropertyCardDb = memo(function PropertyCardDb({ property }: Propert
           </div>
         )}
         
-        <Badge className={`absolute top-3 right-3 ${statusColors[property.status]} shadow-elegant border backdrop-blur-sm font-medium`}>
+        <Badge className={`absolute top-3 right-3 ${statusColors[property.status]} shadow-elegant border backdrop-blur-xs font-medium`}>
           {property.status}
         </Badge>
         
@@ -90,7 +90,7 @@ export const PropertyCardDb = memo(function PropertyCardDb({ property }: Propert
           </div>
         </div>
         
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
       
       <CardHeader className="pb-3 relative">

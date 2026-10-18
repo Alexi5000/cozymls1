@@ -50,7 +50,7 @@ export function Header({ title }: HeaderProps) {
         />
       )}
       
-      <header className="relative h-14 md:h-16 border-b border-gray-200 bg-white px-4 md:px-6 lg:px-8 flex items-center justify-between shadow-sm z-50">
+      <header className="relative h-14 md:h-16 border-b border-gray-200 bg-white px-4 md:px-6 lg:px-8 flex items-center justify-between shadow-xs z-50">
         <div className="flex items-center gap-4 min-w-0">
           <h1 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 truncate">{title}</h1>
         </div>

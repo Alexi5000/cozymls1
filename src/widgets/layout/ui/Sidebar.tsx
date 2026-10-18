@@ -49,7 +49,7 @@ export function Sidebar() {
         <div className="flex items-center justify-between">
           {!isCollapsed && (
             <div className="flex items-center gap-3 animate-slide-up">
-              <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-soft">
+              <div className="w-8 h-8 bg-white/20 backdrop-blur-xs rounded-lg flex items-center justify-center shadow-soft">
                 <div className="w-4 h-4 bg-white rounded animate-glow"></div>
               </div>
               <h2 className="text-xl font-display font-bold">CozyMLS</h2>
@@ -83,7 +83,7 @@ export function Sidebar() {
                       style={{ animationDelay: `${index * 50}ms` }}
                     >
                       <Link to={item.href}>
-                        <item.icon className="h-5 w-5 flex-shrink-0" />
+                        <item.icon className="h-5 w-5 shrink-0" />
                         {!isCollapsed && <span className="font-medium">{item.name}</span>}
                       </Link>
                     </SidebarMenuButton>

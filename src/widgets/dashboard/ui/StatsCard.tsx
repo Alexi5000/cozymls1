@@ -22,7 +22,7 @@ export function StatsCard({ title, value, change, icon: Icon, trend = 'neutral' 
         <CardTitle className="text-xs md:text-sm font-semibold text-muted-foreground uppercase tracking-wide leading-tight">
           {title}
         </CardTitle>
-        <div className="w-8 h-8 md:w-12 md:h-12 bg-gradient-primary rounded-lg md:rounded-xl flex items-center justify-center shadow-elegant flex-shrink-0 group-hover:animate-glow">
+        <div className="w-8 h-8 md:w-12 md:h-12 bg-gradient-primary rounded-lg md:rounded-xl flex items-center justify-center shadow-elegant shrink-0 group-hover:animate-glow">
           <Icon className="h-4 w-4 md:h-6 md:w-6 text-white" />
         </div>
       </CardHeader>

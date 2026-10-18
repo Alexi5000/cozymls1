@@ -55,8 +55,8 @@ Haven Estate Suite is a **full-featured real estate CRM** built with modern web 
 
 ### Prerequisites
 
-- Node.js 20+ ([install with nvm](https://github.com/nvm-sh/nvm))
-- npm or bun package manager
+- Node.js 22.13+ ([install with nvm](https://github.com/nvm-sh/nvm))
+- npm 11 package manager (the committed package-lock.json is authoritative)
 
 ### Installation
 

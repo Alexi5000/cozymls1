@@ -51,7 +51,7 @@ export function MobileTabBar({ items, className }: MobileTabBarProps) {
             <div className="relative">
               <Icon className={cn(
                 "h-5 w-5 mb-1",
-                isActive && "drop-shadow-sm"
+                isActive && "drop-shadow-xs"
               )} />
               
               {/* Badge */}

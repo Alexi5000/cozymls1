@@ -79,7 +79,7 @@ export function PullToRefresh({
       <div 
         className={cn(
           "absolute top-0 left-0 right-0 flex items-center justify-center",
-          "bg-background/95 backdrop-blur-sm transition-all duration-200",
+          "bg-background/95 backdrop-blur-xs transition-all duration-200",
           "z-10"
         )}
         style={{ 
