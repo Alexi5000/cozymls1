@@ -70,8 +70,8 @@ export function RecentActivity() {
                   className="flex items-center gap-4 p-4 rounded-xl hover:bg-gradient-subtle transition-all duration-300 hover-lift group animate-slide-up"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <div className="flex-shrink-0">
-                    <div className={`w-12 h-12 bg-gradient-to-br ${gradientColor} rounded-xl flex items-center justify-center shadow-elegant group-hover:animate-glow`}>
+                  <div className="shrink-0">
+                    <div className={`w-12 h-12 bg-linear-to-br ${gradientColor} rounded-xl flex items-center justify-center shadow-elegant group-hover:animate-glow`}>
                       <Icon className="h-6 w-6 text-white" />
                     </div>
                   </div>

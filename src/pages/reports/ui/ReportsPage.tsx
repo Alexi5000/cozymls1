@@ -148,7 +148,7 @@ export function ReportsPage() {
               {categories.map((category) => (
                 <Button
                   key={category}
-                  variant={selectedCategory === category ? 'default' : 'outline'}
+                  variant={selectedCategory === category ? 'default' : 'outline-solid'}
                   size="sm"
                   onClick={() => setSelectedCategory(category)}
                   className="capitalize"

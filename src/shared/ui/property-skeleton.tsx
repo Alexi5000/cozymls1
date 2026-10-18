@@ -61,7 +61,7 @@ export const MobilePropertyCardSkeleton = memo(function MobilePropertyCardSkelet
   return (
     <Card className="overflow-hidden animate-pulse">
       {/* Image skeleton */}
-      <Skeleton className="aspect-[4/3] w-full" />
+      <Skeleton className="aspect-4/3 w-full" />
       
       {/* Content skeleton */}
       <div className="p-4 space-y-3">

@@ -114,7 +114,7 @@ export function NotificationsDropdown({ onClose }: NotificationsDropdownProps) {
                 onClick={() => handleNotificationClick(notification)}
               >
                 <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 mt-1">
+                  <div className="shrink-0 mt-1">
                     {notification.icon}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -125,7 +125,7 @@ export function NotificationsDropdown({ onClose }: NotificationsDropdownProps) {
                         {notification.title}
                       </h4>
                       {!notification.isRead && (
-                        <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0 ml-2" />
+                        <div className="w-2 h-2 bg-blue-500 rounded-full shrink-0 ml-2" />
                       )}
                     </div>
                     <p className="text-xs text-muted-foreground mb-1 line-clamp-2">

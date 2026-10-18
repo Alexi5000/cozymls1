@@ -173,7 +173,7 @@ export function HeroSection({
                 style={{ animationDelay: `${index * 150}ms` }}
               >
                 <CardContent className="p-4 text-center">
-                  <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${stat.color} mx-auto mb-3 flex items-center justify-center shadow-glow`}>
+                  <div className={`w-12 h-12 rounded-lg bg-linear-to-br ${stat.color} mx-auto mb-3 flex items-center justify-center shadow-glow`}>
                     <stat.icon className="w-6 h-6 text-white" />
                   </div>
                   <div className="text-2xl md:text-3xl font-bold text-foreground mb-1 font-display">

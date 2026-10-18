@@ -174,7 +174,7 @@ export function ActivitiesPage() {
               <Card key={activity.id} className={isCompleted ? 'opacity-60' : ''}>
                 <CardContent className="p-4 md:p-6">
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
                       <Icon className="h-5 w-5 text-primary" />
                     </div>
                     

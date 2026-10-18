@@ -310,14 +310,14 @@ export function ReportViewer({ reportId, onClose }: ReportViewerProps) {
           {/* Chart/Table Toggle */}
           <div className="flex gap-2">
             <Button
-              variant={activeTab === 'chart' ? 'default' : 'outline'}
+              variant={activeTab === 'chart' ? 'default' : 'outline-solid'}
               size="sm"
               onClick={() => setActiveTab('chart')}
             >
               Chart View
             </Button>
             <Button
-              variant={activeTab === 'table' ? 'default' : 'outline'}
+              variant={activeTab === 'table' ? 'default' : 'outline-solid'}
               size="sm"
               onClick={() => setActiveTab('table')}
             >

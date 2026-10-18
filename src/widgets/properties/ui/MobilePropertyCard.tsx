@@ -48,7 +48,7 @@ export const MobilePropertyCard = memo(function MobilePropertyCard({ property, o
       enableHaptic
     >
       {/* Image with Status Badge */}
-      <div className="aspect-[4/3] bg-muted relative">
+      <div className="aspect-4/3 bg-muted relative">
         {property.images.length > 0 ? (
           <img
             src={property.images[0]}
@@ -73,7 +73,7 @@ export const MobilePropertyCard = memo(function MobilePropertyCard({ property, o
             {formattedPrice}
           </div>
           <div className="flex items-start gap-1 text-sm text-muted-foreground">
-            <MapPin className="h-3 w-3 mt-0.5 flex-shrink-0" />
+            <MapPin className="h-3 w-3 mt-0.5 shrink-0" />
             <div>
               <div>{property.address}</div>
               <div>{fullAddress}</div>

@@ -51,7 +51,7 @@ export function MarketInsights() {
               className="flex items-center gap-4 p-4 rounded-xl hover:bg-gradient-subtle transition-all duration-300 hover-lift group animate-slide-up"
               style={{ animationDelay: `${index * 150}ms` }}
             >
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${insight.color} flex items-center justify-center shadow-elegant group-hover:animate-glow`}>
+              <div className={`w-12 h-12 rounded-xl bg-linear-to-br ${insight.color} flex items-center justify-center shadow-elegant group-hover:animate-glow`}>
                 <insight.icon className="w-6 h-6 text-white" />
               </div>
               

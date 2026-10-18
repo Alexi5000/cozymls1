@@ -1,9 +1,487 @@
-
 /* Optimized system fonts for instant loading */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@plugin 'tailwindcss-animate';
+
+@custom-variant dark (&:is(.dark *));
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+  @media (width >= --theme(--breakpoint-sm)) {
+    max-width: none;
+  }
+  @media (width >= 1400px) {
+    max-width: 1400px;
+  }
+}
+
+@theme {
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-glow: hsl(var(--primary-glow));
+  --color-primary-dark: hsl(var(--primary-dark));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-sidebar: hsl(var(--sidebar-background));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --font-display: Playfair Display, serif;
+  --font-body: Inter, system-ui, sans-serif;
+
+  --background-image-gradient-primary: var(--gradient-primary);
+  --background-image-gradient-warm: var(--gradient-warm);
+  --background-image-gradient-subtle: var(--gradient-subtle);
+  --background-image-gradient-card: var(--gradient-card);
+
+  --shadow-elegant: var(--shadow-elegant);
+  --shadow-glow: var(--shadow-glow);
+  --shadow-soft: var(--shadow-soft);
+  --shadow-luxury: var(--shadow-luxury);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-float: float 3s ease-in-out infinite;
+  --animate-glow: glow 2s ease-in-out infinite;
+  --animate-shimmer: shimmer 2s infinite;
+  --animate-slide-up: slide-up 0.6s ease-out;
+  --animate-scale-in: scale-in 0.4s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  @keyframes glow {
+    0%,
+    100% {
+      box-shadow: var(--shadow-elegant);
+    }
+    50% {
+      box-shadow: var(--shadow-glow);
+    }
+  }
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+/* CozyMLS Enhanced Components */
+
+@utility luxury-card {
+  /* Premium Card Styles */
+  background: var(--gradient-card);
+  border: 1px solid hsl(var(--border));
+  border-radius: calc(var(--radius) + 4px);
+  box-shadow: var(--shadow-elegant);
+  transition: var(--transition-smooth);
+
+  &:hover {
+    box-shadow: var(--shadow-luxury);
+    transform: translateY(-2px);
+  }
+}
+
+@utility property-card {
+  @apply luxury-card overflow-hidden;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-warm);
+    opacity: 0;
+    transition: var(--transition-smooth);
+  }
+
+  &:hover::before {
+    opacity: 1;
+  }
+}
+
+@utility stats-card {
+  /* Stats Card Enhancement */
+  @apply luxury-card relative overflow-hidden;
+  background: var(--gradient-card);
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    background: var(--gradient-primary);
+    opacity: 0.05;
+    border-radius: 50%;
+    transform: translate(30px, -30px);
+  }
+}
+
+@utility nav-item {
+  /* Enhanced Navigation */
+  @apply flex items-center gap-3 px-4 py-3 rounded-lg;
+  @apply text-sidebar-foreground/80 hover:text-sidebar-foreground;
+  @apply hover:bg-sidebar-accent/10 transition-all duration-200;
+  position: relative;
+
+  &.active {
+    @apply bg-sidebar-accent text-sidebar-accent-foreground;
+    box-shadow: var(--shadow-soft);
+  }
+
+  &.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 20px;
+    background: var(--gradient-warm);
+    border-radius: 0 2px 2px 0;
+  }
+}
+
+@utility active {
+  &.nav-item {
+    @apply bg-sidebar-accent text-sidebar-accent-foreground;
+    box-shadow: var(--shadow-soft);
+  }
+
+  &.nav-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 20px;
+    background: var(--gradient-warm);
+    border-radius: 0 2px 2px 0;
+  }
+}
+
+@utility hero-section {
+  /* Hero Section */
+  background: transparent;
+  border: 1px solid hsl(var(--border));
+  position: relative;
+  overflow: hidden;
+}
+
+@utility btn-primary {
+  /* Button Enhancements */
+  background: var(--gradient-primary);
+  border: none;
+  box-shadow: var(--shadow-elegant);
+  transition: var(--transition-bounce);
+
+  &:hover {
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-1px);
+  }
+}
+
+@utility display-heading {
+  /* Typography Enhancements */
+  font-family: var(--font-display);
+  background: var(--gradient-warm);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-weight: 700;
+}
+
+@utility elegant-text {
+  font-family: var(--font-display);
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+@utility animate-float {
+  /* Animation Classes */
+  animation: var(--animation-float);
+}
+
+@utility animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+@utility animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    hsl(var(--primary) / 0.1),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@utility animate-slide-up {
+  animation: slide-in-up 0.6s ease-out;
+}
+
+@utility animate-scale-in {
+  animation: scale-in 0.4s ease-out;
+}
+
+@utility hover-lift {
+  /* Hover Effects */
+  transition: var(--transition-smooth);
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-luxury);
+  }
+}
+
+@utility hover-glow {
+  transition: var(--transition-smooth);
+
+  &:hover {
+    box-shadow: var(--shadow-glow);
+  }
+}
+
+@utility glass-effect {
+  /* Glass Effect */
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+  }
+}
+
+@utility mobile-touch-target {
+  /* Mobile-optimized components */
+  @apply min-h-[44px] min-w-[44px];
+}
+
+@utility mobile-safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+@utility mobile-safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@utility mobile-safe-area-left {
+  padding-left: env(safe-area-inset-left);
+}
+
+@utility mobile-safe-area-right {
+  padding-right: env(safe-area-inset-right);
+}
+
+@utility mobile-scroll-momentum {
+  -webkit-overflow-scrolling: touch;
+}
+
+@utility mobile-no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+@utility mobile-tap-highlight-none {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@utility mobile-card {
+  /* Enhanced mobile cards */
+  @apply luxury-card mobile-tap-highlight-none;
+  @apply active:scale-[0.98] transition-transform duration-150;
+}
+
+@utility mobile-nav-safe {
+  /* Mobile navigation improvements */
+  @apply mobile-safe-area-bottom;
+}
+
+@utility mobile-input {
+  /* Touch-friendly inputs */
+  @apply mobile-touch-target text-base; /* Prevents zoom on iOS */
+}
+
+@utility swipe-indicator {
+  /* Swipe indicators */
+  @apply w-1 h-8 bg-muted-foreground/20 rounded-full;
+  @apply absolute right-2 top-1/2 transform -translate-y-1/2;
+}
+
+@utility mobile-spacing {
+  /* Mobile-optimized spacing */
+  @apply p-4 space-y-4;
+
+  @media (max-width: 640px) {
+    @apply p-3 space-y-3;
+  }
+}
+
+@utility mobile-title {
+  /* Enhanced mobile typography */
+  @apply text-lg font-semibold leading-tight;
+}
+
+@utility mobile-subtitle {
+  @apply text-sm text-muted-foreground;
+}
+
+@utility mobile-body {
+  @apply text-sm leading-relaxed;
+}
+
+@utility mobile-caption {
+  @apply text-xs text-muted-foreground;
+}
+
+@utility mobile-stack {
+  /* Mobile-first responsive utilities */
+  @apply flex flex-col space-y-2;
+}
+
+@utility mobile-row {
+  @apply flex items-center justify-between;
+}
+
+@utility mobile-grid-2 {
+  @apply grid grid-cols-2 gap-3;
+}
+
+@utility mobile-grid-3 {
+  @apply grid grid-cols-3 gap-2;
+}
+
+@utility mobile-press {
+  /* Enhanced mobile interactions */
+  @apply active:scale-[0.98] transition-transform duration-100;
+}
+
+@utility mobile-bounce {
+  @apply active:animate-pulse;
+}
+
+@utility mobile-shadow {
+  /* Mobile-optimized shadows */
+  @apply shadow-xs;
+}
+
+@utility mobile-shadow-lg {
+  @apply shadow-md;
+}
+
+@utility mobile-focus {
+  /* Better mobile focus states */
+  @apply focus:outline-hidden focus:ring-2 focus:ring-primary focus:ring-offset-2;
+}
 
 /* CozyMLS Enhanced Design System */
 
@@ -169,304 +647,5 @@
       opacity: 1;
       transform: scale(1);
     }
-  }
-}
-
-/* CozyMLS Enhanced Components */
-@layer components {
-  /* Premium Card Styles */
-  .luxury-card {
-    background: var(--gradient-card);
-    border: 1px solid hsl(var(--border));
-    border-radius: calc(var(--radius) + 4px);
-    box-shadow: var(--shadow-elegant);
-    transition: var(--transition-smooth);
-  }
-
-  .luxury-card:hover {
-    box-shadow: var(--shadow-luxury);
-    transform: translateY(-2px);
-  }
-
-  .property-card {
-    @apply luxury-card overflow-hidden;
-    position: relative;
-  }
-
-  .property-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: var(--gradient-warm);
-    opacity: 0;
-    transition: var(--transition-smooth);
-  }
-
-  .property-card:hover::before {
-    opacity: 1;
-  }
-
-  /* Stats Card Enhancement */
-  .stats-card {
-    @apply luxury-card relative overflow-hidden;
-    background: var(--gradient-card);
-  }
-
-  .stats-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100px;
-    height: 100px;
-    background: var(--gradient-primary);
-    opacity: 0.05;
-    border-radius: 50%;
-    transform: translate(30px, -30px);
-  }
-
-  /* Enhanced Navigation */
-  .nav-item {
-    @apply flex items-center gap-3 px-4 py-3 rounded-lg;
-    @apply text-sidebar-foreground/80 hover:text-sidebar-foreground;
-    @apply hover:bg-sidebar-accent/10 transition-all duration-200;
-    position: relative;
-  }
-
-  .nav-item.active {
-    @apply bg-sidebar-accent text-sidebar-accent-foreground;
-    box-shadow: var(--shadow-soft);
-  }
-
-  .nav-item.active::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 3px;
-    height: 20px;
-    background: var(--gradient-warm);
-    border-radius: 0 2px 2px 0;
-  }
-
-  /* Hero Section */
-  .hero-section {
-    background: transparent;
-    border: 1px solid hsl(var(--border));
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* Button Enhancements */
-  .btn-primary {
-    background: var(--gradient-primary);
-    border: none;
-    box-shadow: var(--shadow-elegant);
-    transition: var(--transition-bounce);
-  }
-
-  .btn-primary:hover {
-    box-shadow: var(--shadow-glow);
-    transform: translateY(-1px);
-  }
-
-  /* Typography Enhancements */
-  .display-heading {
-    font-family: var(--font-display);
-    background: var(--gradient-warm);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    font-weight: 700;
-  }
-
-  .elegant-text {
-    font-family: var(--font-display);
-    letter-spacing: -0.025em;
-    line-height: 1.2;
-  }
-
-  /* Animation Classes */
-  .animate-float {
-    animation: var(--animation-float);
-  }
-
-  .animate-glow {
-    animation: glow 2s ease-in-out infinite;
-  }
-
-  .animate-shimmer {
-    background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.1), transparent);
-    background-size: 200% 100%;
-    animation: shimmer 2s infinite;
-  }
-
-  .animate-slide-up {
-    animation: slide-in-up 0.6s ease-out;
-  }
-
-  .animate-scale-in {
-    animation: scale-in 0.4s ease-out;
-  }
-
-  /* Hover Effects */
-  .hover-lift {
-    transition: var(--transition-smooth);
-  }
-
-  .hover-lift:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-luxury);
-  }
-
-  .hover-glow {
-    transition: var(--transition-smooth);
-  }
-
-  .hover-glow:hover {
-    box-shadow: var(--shadow-glow);
-  }
-
-  /* Glass Effect */
-  .glass-effect {
-    background: rgba(255, 255, 255, 0.1) !important;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  }
-  
-  .glass-effect:hover {
-    background: rgba(255, 255, 255, 0.2) !important;
-  }
-  
-  /* Mobile-optimized components */
-  .mobile-touch-target {
-    @apply min-h-[44px] min-w-[44px];
-  }
-  
-  .mobile-safe-area-top {
-    padding-top: env(safe-area-inset-top);
-  }
-  
-  .mobile-safe-area-bottom {
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-  
-  .mobile-safe-area-left {
-    padding-left: env(safe-area-inset-left);
-  }
-  
-  .mobile-safe-area-right {
-    padding-right: env(safe-area-inset-right);
-  }
-  
-  .mobile-scroll-momentum {
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  .mobile-no-select {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
-  
-  .mobile-tap-highlight-none {
-    -webkit-tap-highlight-color: transparent;
-  }
-  
-  /* Enhanced mobile cards */
-  .mobile-card {
-    @apply luxury-card mobile-tap-highlight-none;
-    @apply active:scale-[0.98] transition-transform duration-150;
-  }
-  
-  /* Mobile navigation improvements */
-  .mobile-nav-safe {
-    @apply mobile-safe-area-bottom;
-  }
-  
-  /* Touch-friendly inputs */
-  .mobile-input {
-    @apply mobile-touch-target text-base; /* Prevents zoom on iOS */
-  }
-  
-  /* Swipe indicators */
-  .swipe-indicator {
-    @apply w-1 h-8 bg-muted-foreground/20 rounded-full;
-    @apply absolute right-2 top-1/2 transform -translate-y-1/2;
-  }
-  
-  /* Mobile-optimized spacing */
-  .mobile-spacing {
-    @apply p-4 space-y-4;
-  }
-  
-  @media (max-width: 640px) {
-    .mobile-spacing {
-      @apply p-3 space-y-3;
-    }
-  }
-
-  /* Enhanced mobile typography */
-  .mobile-title {
-    @apply text-lg font-semibold leading-tight;
-  }
-  
-  .mobile-subtitle {
-    @apply text-sm text-muted-foreground;
-  }
-  
-  .mobile-body {
-    @apply text-sm leading-relaxed;
-  }
-  
-  .mobile-caption {
-    @apply text-xs text-muted-foreground;
-  }
-  
-  /* Mobile-first responsive utilities */
-  .mobile-stack {
-    @apply flex flex-col space-y-2;
-  }
-  
-  .mobile-row {
-    @apply flex items-center justify-between;
-  }
-  
-  .mobile-grid-2 {
-    @apply grid grid-cols-2 gap-3;
-  }
-  
-  .mobile-grid-3 {
-    @apply grid grid-cols-3 gap-2;
-  }
-  
-  /* Enhanced mobile interactions */
-  .mobile-press {
-    @apply active:scale-[0.98] transition-transform duration-100;
-  }
-  
-  .mobile-bounce {
-    @apply active:animate-pulse;
-  }
-  
-  /* Mobile-optimized shadows */
-  .mobile-shadow {
-    @apply shadow-sm;
-  }
-  
-  .mobile-shadow-lg {
-    @apply shadow-md;
-  }
-  
-  /* Better mobile focus states */
-  .mobile-focus {
-    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
   }
 }
