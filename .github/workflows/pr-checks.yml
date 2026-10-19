@@ -4,9 +4,13 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, edited]
 
+permissions:
+  contents: read
+
 jobs:
   pr-title-validation:
     name: Validate PR Title
+    permissions: {}
     runs-on: ubuntu-latest
     steps:
       - name: Check PR title format
