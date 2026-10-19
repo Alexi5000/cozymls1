@@ -1,3 +1,6 @@
+// REFACTORING START: 2026-10-19 02:47 UTC
+// Original functionality: shared button variants; preserve all existing styles.
+// Backup: /tmp/cozymls-backups/button_backup_2026-10-19_0247.tsx
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -13,6 +16,9 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-soft",
         outline:
+          "border border-input bg-background hover:bg-accent hover:text-accent-foreground hover:border-primary/50",
+        // CHECKPOINT: Restore the solid outlined variant used by reports and pagination.
+        "outline-solid":
           "border border-input bg-background hover:bg-accent hover:text-accent-foreground hover:border-primary/50",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-soft",
