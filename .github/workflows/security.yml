@@ -5,6 +5,9 @@ on:
     # Run every Monday at 9:00 AM UTC
     - cron: '0 9 * * 1'
   workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/security.yml'
   push:
     branches:
       - main
@@ -65,7 +68,7 @@ jobs:
           retention-days: 90
 
   codeql-analysis:
-    name: CodeQL Security Analysis
+    name: Supplementary CodeQL Security and Quality Report
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -82,9 +85,25 @@ jobs:
           queries: security-and-quality
       
       - name: Perform CodeQL Analysis
+        id: supplementary-codeql
         uses: github/codeql-action/analyze@v3
         with:
           category: "/language:javascript"
+          upload: never
+          upload-database: false
+
+      - name: Preserve supplementary findings
+        uses: actions/upload-artifact@v4
+        with:
+          name: codeql-security-and-quality
+          path: ${{ steps.supplementary-codeql.outputs.sarif-output }}
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Explain scan ownership
+        run: |
+          echo 'GitHub default CodeQL setup uploads security alerts for JavaScript, TypeScript, and Actions.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'This supplemental security-and-quality analysis is retained in the codeql-security-and-quality artifact; it does not upload duplicate dashboard alerts.' >> "$GITHUB_STEP_SUMMARY"
 
   secret-scan:
     name: Secret Scanning
