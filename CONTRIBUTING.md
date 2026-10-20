@@ -237,7 +237,7 @@ See [docs/development/TESTING.md](docs/development/TESTING.md) for detailed test
 
 - **Bug reports**: Use the [bug report template](.github/ISSUE_TEMPLATE/bug_report.md)
 - **Feature requests**: Use the [feature request template](.github/ISSUE_TEMPLATE/feature_request.md)
-- **Questions**: Use the [question template](.github/ISSUE_TEMPLATE/question.md)
+- **Questions**: Use the [repository issue tracker](https://github.com/Alexi5000/cozymls1/issues)
 - **Security issues**: See [SECURITY.md](SECURITY.md)
 
 ## Recognition

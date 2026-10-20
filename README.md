@@ -160,15 +160,13 @@ npm run preview          # Preview production build
 
 # Testing
 npm test                 # Run unit tests
-npm run test:ui          # Run tests with UI
 npm run test:coverage    # Generate coverage report
 
 # Code Quality
 npm run lint             # Run ESLint
-npm run lint:fix         # Fix ESLint issues
-npm run type-check       # Run TypeScript compiler check
-npm run format           # Format code with Prettier
-npm run format:check     # Check code formatting
+npm run lint -- --fix    # Apply ESLint fixes
+npm run typecheck        # Run TypeScript compiler check
+npm run validate         # Lint, types, tests, and production build
 
 # CI/CD (automated)
 npm run build:dev        # Build for development environment
