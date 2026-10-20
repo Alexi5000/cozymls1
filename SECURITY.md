@@ -220,7 +220,7 @@ Security updates will be:
 
 ## Questions?
 
-For security-related questions that aren't vulnerabilities, please use the [question template](.github/ISSUE_TEMPLATE/question.md).
+For security-related questions that aren't vulnerabilities, please use the [repository issue tracker](https://github.com/Alexi5000/cozymls1/issues).
 
 ---
 
