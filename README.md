@@ -6,10 +6,10 @@
 
 ### The CRM Real Estate Agents Actually Want to Use
 
-**MLS integration, deal pipeline, client management, and market analytics, all in one beautiful dashboard. Built for agents who close.**
+**MLS-style property records, deal pipeline, client management, and market analytics, all in one dashboard. Built for agents who close.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18.3-61dafb?logo=react)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-7-646cff?logo=vite)](https://vitejs.dev/)
 [![Supabase](https://img.shields.io/badge/Supabase-Backend-3ecf8e?logo=supabase)](https://supabase.com)
@@ -25,21 +25,19 @@
 
 ---
 
-## The Problem
+## Why this exists
 
-Real estate CRMs are either bloated enterprise tools that cost $500/month or basic spreadsheets that fall apart at 50 contacts. Agents need a modern, fast, and affordable platform that handles properties, clients, deals, and analytics without the learning curve.
+**What it does.** Haven Estate Suite is a React, TypeScript, and Supabase CRM for residential real estate agents. It stores MLS-style listing records (MLS ID, status, listing date, days on market, agent), contacts and interaction history, a kanban deal pipeline, an activity timeline, and an analytics dashboard with report export. Listings live in a Supabase Postgres table with row-level security; the repository does not contain a live MLS feed connector (RESO Web API or RETS), so listing data is entered or imported by the operator.
 
-## The Solution
+**Who it serves.** Solo agents and small brokerages who have outgrown a spreadsheet but do not want a seat-priced enterprise CRM: one person or a small team tracking listings, buyers, and deals from a browser, with data isolated per user by database policy.
 
-Haven Estate Suite is a **full-featured real estate CRM** built with modern web technologies. It integrates with MLS for property data, provides a visual deal pipeline, tracks every client interaction, and delivers real-time market analytics, all wrapped in a beautiful, responsive UI with dark mode.
+**Why Alex built it.** The repository's own problem statement, added in the branding pass (commit `becb367`, 2026-02-18, "feat: state-of-the-art README, cover art, icon, and branding"), records the motivation: real estate CRMs are either expensive enterprise tools or spreadsheets that fall apart at 50 contacts, and agents need a modern, fast, affordable platform without the learning curve. The project started as a Lovable-generated build on 2025-06-18 (first commit `53d074a`, "Use tech stack vite_react_shadcn_ts"; `b446082`, "Implement HavenCRM project plan"), was rebranded CozyMLS the same day (`5fadfa8`), and was hardened in October 2026 through PRs #1 to #5 (dependency and Tailwind migration, workflow token permissions, CodeQL reporting, validation commands).
 
-> *Search MLS listings. Drag deals through your pipeline. Track client touchpoints. Generate reports. All from one dashboard.*
-
----
+**Real-world use case (2025-2026 evidence).** **Proposed use case.** A small brokerage needs every listing's status and dates in one place because the rules for when a listing may be marketed changed in 2025. NAR's "Multiple Listing Options for Sellers" policy (effective 2025-03-25, implementation deadline 2025-09-30) created delayed-marketing exempt listings that are filed with the MLS but held back from IDX and syndication for a local period[^1]. Zillow's Listing Access Standards, enforced from 2025-06-30, exclude any publicly marketed listing not entered into the MLS within one business day[^2], and a federal judge declined to block that policy in February 2026[^3]. An agent using this CRM would record each property's `status` (active, pending, sold, off-market), `listingDate`, and `daysOnMarket`, and use the activity timeline to log when marketing started, so the office can show its compliance window per listing. The repository has unit tests for the UI and Supabase migrations for the schema, but no evidence of use by a brokerage, so this remains proposed.
 
 ## Features
 
-- **Property Management**, Comprehensive MLS integration with advanced search, filtering, and property details
+- **Property Management**, MLS-style listing records (MLS ID, status, listing date, days on market) with search, filtering, and property details
 - **Client Management**, Track contacts, leads, and client relationships with full interaction history
 - **Deal Pipeline**, Visual kanban board to manage deals through customizable stages
 - **Activity Timeline**, Complete history of every interaction, showing, and event
@@ -63,7 +61,7 @@ Haven Estate Suite is a **full-featured real estate CRM** built with modern web 
 ```bash
 # Clone the repository
 git clone https://github.com/Alexi5000/cozymls1.git
-cd haven-estate-suite
+cd cozymls1
 
 # Install dependencies
 npm install
@@ -100,9 +98,9 @@ Learn more about our architecture in [docs/architecture/ARCHITECTURE.md](docs/ar
 
 ### Frontend
 - **React 18.3** - UI library with hooks and modern patterns
-- **TypeScript 5.6** - Type-safe JavaScript
-- **Vite 5** - Fast build tool and dev server
-- **Tailwind CSS** - Utility-first CSS framework
+- **TypeScript 5.9** - Type-safe JavaScript
+- **Vite 7** - Fast build tool and dev server
+- **Tailwind CSS 4** - Utility-first CSS framework
 - **shadcn/ui** - High-quality component library
 - **Radix UI** - Accessible component primitives
 - **React Router v6** - Client-side routing
@@ -195,6 +193,8 @@ We take security seriously. Please read our [Security Policy](SECURITY.md) for:
 - RLS policy guidelines
 - Authentication security
 
+Dependency and code-scanning status: 0 open Dependabot alerts and 0 open CodeQL alerts as of 2026-10-20. The `Security Scan` and `CodeQL` workflows run on every push.
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -216,8 +216,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-**Built by [Alex Cinovoj](https://github.com/Alexi5000) · [TechTide AI](https://github.com/Alexi5000)**
+**Built by [Alex Cinovoj](https://github.com/Alexi5000), Founder & CTO of TechTide AI**
 
 *Close more deals. Manage less chaos.*
 
 </div>
+
+[^1]: National Association of REALTORS, "NAR Introduces New MLS Policy to Expand Choice for Consumers", press release, 2025-03-25. https://www.nar.realtor/press-releases/nar-introduces-new-mls-policy-to-expand-choice-for-consumers
+[^2]: HousingWire, "Zillow will begin banning noncompliant listings on June 30", 2025-05-20. https://www.housingwire.com/articles/zillow-ban-noncompliant-listings-june-30-clear-cooperation-office-exclusives
+[^3]: National Association of REALTORS, "Judge Rejects Compass's Request to Block Zillow's Private Listing Rule", 2026-02-06. https://www.nar.realtor/news/real-estate-news/law-and-ethics/judge-rejects-compasss-request-to-block-zillows-private-listing-rule

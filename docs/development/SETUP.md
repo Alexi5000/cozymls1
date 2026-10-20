@@ -8,7 +8,7 @@ Before you begin, ensure you have the following installed:
 
 ### Required
 
-- **Node.js 20+** - [Install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- **Node.js 22.13+** - [Install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 - **npm 10+** or **bun 1.0+** - Package manager (comes with Node.js)
 - **Git** - Version control
 
@@ -23,7 +23,7 @@ Before you begin, ensure you have the following installed:
 
 ```bash
 git clone https://github.com/yourusername/haven-estate-suite.git
-cd haven-estate-suite
+cd cozymls1
 ```
 
 ### 2. Set Node Version (with nvm)
