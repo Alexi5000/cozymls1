@@ -193,7 +193,7 @@ We take security seriously. Please read our [Security Policy](SECURITY.md) for:
 - RLS policy guidelines
 - Authentication security
 
-Dependency and code-scanning status: 0 open Dependabot alerts and 0 open CodeQL alerts as of 2026-10-20. The `Security Scan` and `CodeQL` workflows run on every push.
+Dependency and code-scanning status as of 2026-10-21: 0 open Dependabot alerts and 0 open critical or high code-scanning alerts. CodeQL's security-and-quality suite reports 16 open low-severity quality findings (unused local variables and superfluous observer arguments); they are not security issues and have not been suppressed. The `Security Scan` workflow (dependency audit plus a supplementary CodeQL job) runs on push and pull request, and GitHub's CodeQL default setup also scans the repository.
 
 ## 📄 License
 
