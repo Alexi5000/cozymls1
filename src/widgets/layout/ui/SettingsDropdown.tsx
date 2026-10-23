@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
 import { Separator } from '@/shared/ui/separator';
 import { Switch } from '@/shared/ui/switch';
-import { Settings, Bell, User, Eye, Moon, Globe, Shield, HelpCircle } from 'lucide-react';
+import { Settings, Bell, User, Eye, Moon, HelpCircle } from 'lucide-react';
 
 interface SettingsDropdownProps {
   onClose: () => void;

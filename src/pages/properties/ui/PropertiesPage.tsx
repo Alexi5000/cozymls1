@@ -9,7 +9,7 @@ import { useIsMobile } from '@/shared/hooks/use-mobile';
 
 export function PropertiesPage() {
   const isMobile = useIsMobile();
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [, setIsRefreshing] = useState(false);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
   
