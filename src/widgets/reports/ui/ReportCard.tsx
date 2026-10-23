@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
-import { Report as DbReport, ReportTemplate as DbTemplate, useReportTemplate } from '@/integrations/supabase/hooks';
+import { Report as DbReport, useReportTemplate } from '@/integrations/supabase/hooks';
 import { 
   BarChart3, 
   LineChart, 

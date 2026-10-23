@@ -4,7 +4,6 @@ import { MobileLayout } from '@/widgets/mobile';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
-import { Badge } from '@/shared/ui/badge';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
 import { useAuth } from '@/shared/hooks/use-auth';
 import { useReports, useReportTemplates, useDeleteReport } from '@/integrations/supabase/hooks';

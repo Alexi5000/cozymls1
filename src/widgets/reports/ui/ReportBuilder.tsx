@@ -57,7 +57,7 @@ interface ReportBuilderProps {
 export function ReportBuilder({ children, onReportGenerated }: ReportBuilderProps) {
   const [open, setOpen] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState<ReportTemplate | null>(null);
-  const { toast } = useToast();
+  useToast();
   const { user } = useAuth();
   const { data: templates = [], isLoading: templatesLoading } = useReportTemplates();
   const createReport = useCreateReport();

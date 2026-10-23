@@ -53,12 +53,9 @@ export function useScrollAnimation(options: UseScrollAnimationOptions = {}) {
 }
 
 // Hook for staggered animations - optimized for performance
-export function useStaggeredAnimation(items: unknown[], delay: number = 50) {
+export function useStaggeredAnimation(_items: unknown[], _delay: number = 50) {
   // Performance optimization: show all items immediately to avoid stagger delays
-  const [visibleItems, setVisibleItems] = useState<Set<number>>(
-    new Set(items.map((_, index) => index))
-  );
-  const { elementRef, isVisible } = useScrollAnimation();
+  const { elementRef } = useScrollAnimation();
 
   return {
     elementRef,
@@ -76,7 +73,6 @@ export function useParallax(speed: number = 0.5) {
       const element = elementRef.current;
       if (!element) return;
 
-      const rect = element.getBoundingClientRect();
       const scrolled = window.pageYOffset;
       const rate = scrolled * speed;
       setOffset(rate);
