@@ -30,7 +30,7 @@ import { useAuth } from '@/shared/hooks/use-auth';
 import { useDeal, useCreateDeal, useUpdateDeal } from '@/integrations/supabase/hooks/use-deals';
 import { useContacts } from '@/integrations/supabase/hooks/use-contacts';
 import { useProperties } from '@/integrations/supabase/hooks/use-properties';
-import { dealFormSchema, type DealFormData } from '../lib/validation';
+import { dealFormSchema, type DealFormData, type DealFormInput } from '../lib/validation';
 import { logger } from '@/shared/lib/logger';
 import { Loader2 } from 'lucide-react';
 
@@ -51,7 +51,7 @@ export function DealDialog({ dealId, isOpen, onClose }: DealDialogProps) {
   const isEditing = Boolean(dealId);
   const isLoading = createDeal.isPending || updateDeal.isPending;
 
-  const form = useForm<DealFormData>({
+  const form = useForm<DealFormInput, unknown, DealFormData>({
     resolver: zodResolver(dealFormSchema),
     defaultValues: {
       title: '',

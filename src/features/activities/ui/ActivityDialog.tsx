@@ -31,7 +31,7 @@ import { useAuth } from '@/shared/hooks/use-auth';
 import { useActivity, useCreateActivity, useUpdateActivity } from '@/integrations/supabase/hooks/use-activities';
 import { useContacts } from '@/integrations/supabase/hooks/use-contacts';
 import { useDeals } from '@/integrations/supabase/hooks/use-deals';
-import { activityFormSchema, type ActivityFormData } from '../lib/validation';
+import { activityFormSchema, type ActivityFormData, type ActivityFormInput } from '../lib/validation';
 import { logger } from '@/shared/lib/logger';
 import { Loader2 } from 'lucide-react';
 
@@ -52,7 +52,7 @@ export function ActivityDialog({ activityId, isOpen, onClose }: ActivityDialogPr
   const isEditing = Boolean(activityId);
   const isLoading = createActivity.isPending || updateActivity.isPending;
 
-  const form = useForm<ActivityFormData>({
+  const form = useForm<ActivityFormInput, unknown, ActivityFormData>({
     resolver: zodResolver(activityFormSchema),
     defaultValues: {
       type: 'task',

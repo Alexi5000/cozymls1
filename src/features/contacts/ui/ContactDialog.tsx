@@ -29,7 +29,7 @@ import {
 } from '@/shared/ui/select';
 import { useAuth } from '@/shared/hooks/use-auth';
 import { useContact, useCreateContact, useUpdateContact } from '@/integrations/supabase/hooks/use-contacts';
-import { contactFormSchema, type ContactFormData } from '../lib/validation';
+import { contactFormSchema, type ContactFormData, type ContactFormInput } from '../lib/validation';
 import { logger } from '@/shared/lib/logger';
 import { Loader2 } from 'lucide-react';
 
@@ -48,7 +48,7 @@ export function ContactDialog({ contactId, isOpen, onClose }: ContactDialogProps
   const isEditing = Boolean(contactId);
   const isLoading = createContact.isPending || updateContact.isPending;
 
-  const form = useForm<ContactFormData>({
+  const form = useForm<ContactFormInput, unknown, ContactFormData>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
       name: '',

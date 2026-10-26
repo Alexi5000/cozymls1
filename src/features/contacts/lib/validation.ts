@@ -59,3 +59,5 @@ export const contactFormSchema = z.object({
 });
 
 export type ContactFormData = z.infer<typeof contactFormSchema>;
+/** Form field values before schema defaults are applied (react-hook-form input type). */
+export type ContactFormInput = z.input<typeof contactFormSchema>;
