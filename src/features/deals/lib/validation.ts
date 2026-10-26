@@ -47,3 +47,5 @@ export const dealFormSchema = z.object({
 });
 
 export type DealFormData = z.infer<typeof dealFormSchema>;
+/** Form field values before schema defaults are applied (react-hook-form input type). */
+export type DealFormInput = z.input<typeof dealFormSchema>;

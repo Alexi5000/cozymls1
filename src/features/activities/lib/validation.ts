@@ -48,3 +48,5 @@ export const activityFormSchema = z.object({
 });
 
 export type ActivityFormData = z.infer<typeof activityFormSchema>;
+/** Form field values before schema defaults are applied (react-hook-form input type). */
+export type ActivityFormInput = z.input<typeof activityFormSchema>;
