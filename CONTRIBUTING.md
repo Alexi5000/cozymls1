@@ -199,7 +199,7 @@ For detailed standards, see [docs/development/CODING_STANDARDS.md](docs/developm
 ### Code Formatting
 
 - Use Prettier for code formatting
-- Run `npm run format` before committing
+- Run `npm run format` before committing (`npm run format:check` lists files that need it)
 - Configure your editor to format on save
 
 ### Import Order
