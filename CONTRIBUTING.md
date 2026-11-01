@@ -207,7 +207,8 @@ For detailed standards, see [docs/development/CODING_STANDARDS.md](docs/developm
 ### Code Formatting
 
 - Use Prettier for code formatting
-- Run `npm run format` before committing
+- Run `npm run format` before committing (CI runs `npm run format:check`)
+- To skip the one-time reformat commit in `git blame`, run `git config blame.ignoreRevsFile .git-blame-ignore-revs`
 - Configure your editor to format on save
 
 ### Import Order
