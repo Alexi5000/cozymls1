@@ -1,19 +1,14 @@
 import { useState } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/shared/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/shared/ui/dialog';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
 import { useReport, useReportTemplate } from '@/integrations/supabase/hooks';
-import { 
-  BarChart, 
-  LineChart, 
-  PieChart, 
-  AreaChart, 
+import {
+  BarChart,
+  LineChart,
+  PieChart,
+  AreaChart,
   ResponsiveContainer,
   XAxis,
   YAxis,
@@ -24,16 +19,9 @@ import {
   Line,
   Pie,
   Cell,
-  Area
+  Area,
 } from 'recharts';
-import { 
-  Download, 
-  Printer, 
-  Share2,
-  Calendar,
-  User,
-  TrendingUp
-} from 'lucide-react';
+import { Download, Printer, Share2, Calendar, User, TrendingUp } from 'lucide-react';
 
 interface ReportViewerProps {
   reportId: string | null;
@@ -44,7 +32,7 @@ const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#8dd1e1'];
 
 export function ReportViewer({ reportId, onClose }: ReportViewerProps) {
   const [activeTab, setActiveTab] = useState<'chart' | 'table'>('chart');
-  
+
   const { data: report, isLoading: reportLoading } = useReport(reportId || undefined);
   const { data: template, isLoading: templateLoading } = useReportTemplate(report?.template_id);
 
@@ -95,16 +83,18 @@ export function ReportViewer({ reportId, onClose }: ReportViewerProps) {
               <YAxis />
               <Tooltip />
               <Legend />
-              {template.fields.slice(1).map((field, index) => (
-                field.type === 'number' || field.type === 'currency' ? (
-                  <Bar 
-                    key={field.name}
-                    dataKey={field.name} 
-                    fill={COLORS[index % COLORS.length]}
-                    name={field.label}
-                  />
-                ) : null
-              ))}
+              {template.fields
+                .slice(1)
+                .map((field, index) =>
+                  field.type === 'number' || field.type === 'currency' ? (
+                    <Bar
+                      key={field.name}
+                      dataKey={field.name}
+                      fill={COLORS[index % COLORS.length]}
+                      name={field.label}
+                    />
+                  ) : null
+                )}
             </BarChart>
           </ResponsiveContainer>
         );
@@ -118,30 +108,29 @@ export function ReportViewer({ reportId, onClose }: ReportViewerProps) {
               <YAxis />
               <Tooltip />
               <Legend />
-              {template.fields.slice(1).map((field, index) => (
-                field.type === 'number' || field.type === 'currency' ? (
-                  <Line 
-                    key={field.name}
-                    type="monotone" 
-                    dataKey={field.name} 
-                    stroke={COLORS[index % COLORS.length]}
-                    name={field.label}
-                    strokeWidth={2}
-                  />
-                ) : null
-              ))}
+              {template.fields
+                .slice(1)
+                .map((field, index) =>
+                  field.type === 'number' || field.type === 'currency' ? (
+                    <Line
+                      key={field.name}
+                      type="monotone"
+                      dataKey={field.name}
+                      stroke={COLORS[index % COLORS.length]}
+                      name={field.label}
+                      strokeWidth={2}
+                    />
+                  ) : null
+                )}
             </LineChart>
           </ResponsiveContainer>
         );
 
       case 'pie': {
-        const pieField = template.fields.find(
-          (f) => f.type === 'number' || f.type === 'currency'
-        );
-        const labelField = template.fields.find((f) => f.type === 'string');
+        const pieField = template.fields.find(f => f.type === 'number' || f.type === 'currency');
+        const labelField = template.fields.find(f => f.type === 'string');
 
-        if (!pieField || !labelField)
-          return <div>No suitable data for pie chart</div>;
+        if (!pieField || !labelField) return <div>No suitable data for pie chart</div>;
 
         return (
           <ResponsiveContainer width="100%" height={400}>
@@ -176,19 +165,21 @@ export function ReportViewer({ reportId, onClose }: ReportViewerProps) {
               <YAxis />
               <Tooltip />
               <Legend />
-              {template.fields.slice(1).map((field, index) => (
-                field.type === 'number' || field.type === 'currency' ? (
-                  <Area 
-                    key={field.name}
-                    type="monotone" 
-                    dataKey={field.name} 
-                    stackId="1"
-                    stroke={COLORS[index % COLORS.length]}
-                    fill={COLORS[index % COLORS.length]}
-                    name={field.label}
-                  />
-                ) : null
-              ))}
+              {template.fields
+                .slice(1)
+                .map((field, index) =>
+                  field.type === 'number' || field.type === 'currency' ? (
+                    <Area
+                      key={field.name}
+                      type="monotone"
+                      dataKey={field.name}
+                      stackId="1"
+                      stroke={COLORS[index % COLORS.length]}
+                      fill={COLORS[index % COLORS.length]}
+                      name={field.label}
+                    />
+                  ) : null
+                )}
             </AreaChart>
           </ResponsiveContainer>
         );
@@ -203,8 +194,11 @@ export function ReportViewer({ reportId, onClose }: ReportViewerProps) {
       <table className="w-full border-collapse border border-gray-200">
         <thead>
           <tr className="bg-gray-50">
-            {template.fields.map((field) => (
-              <th key={field.name} className="border border-gray-200 px-4 py-2 text-left font-medium">
+            {template.fields.map(field => (
+              <th
+                key={field.name}
+                className="border border-gray-200 px-4 py-2 text-left font-medium"
+              >
                 {field.label}
               </th>
             ))}
@@ -213,7 +207,7 @@ export function ReportViewer({ reportId, onClose }: ReportViewerProps) {
         <tbody>
           {report.data.map((row, index) => (
             <tr key={index} className="hover:bg-gray-50">
-              {template.fields.map((field) => (
+              {template.fields.map(field => (
                 <td key={field.name} className="border border-gray-200 px-4 py-2">
                   {formatValue(row[field.name], field.type)}
                 </td>
@@ -271,16 +265,17 @@ export function ReportViewer({ reportId, onClose }: ReportViewerProps) {
           <Card>
             <CardContent className="pt-6">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                  <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
                   <div>
                     <p className="text-sm font-medium">Date Range</p>
                     <p className="text-sm text-muted-foreground">
-                      {report.config.dateRange?.start || 'N/A'} - {report.config.dateRange?.end || 'N/A'}
+                      {report.config.dateRange?.start || 'N/A'} -{' '}
+                      {report.config.dateRange?.end || 'N/A'}
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-2">
                   <User className="h-4 w-4 text-muted-foreground" />
                   <div>
@@ -290,7 +285,7 @@ export function ReportViewer({ reportId, onClose }: ReportViewerProps) {
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-2">
                   <TrendingUp className="h-4 w-4 text-muted-foreground" />
                   <div>
@@ -298,7 +293,7 @@ export function ReportViewer({ reportId, onClose }: ReportViewerProps) {
                     <p className="text-sm text-muted-foreground">{report.data.length} records</p>
                   </div>
                 </div>
-                
+
                 <div>
                   <p className="text-sm font-medium mb-1">Template</p>
                   <Badge>{template.category}</Badge>
@@ -330,9 +325,7 @@ export function ReportViewer({ reportId, onClose }: ReportViewerProps) {
             <CardHeader>
               <CardTitle>{activeTab === 'chart' ? 'Chart View' : 'Table View'}</CardTitle>
             </CardHeader>
-            <CardContent>
-              {activeTab === 'chart' ? renderChart() : renderTable()}
-            </CardContent>
+            <CardContent>{activeTab === 'chart' ? renderChart() : renderTable()}</CardContent>
           </Card>
         </div>
       </DialogContent>

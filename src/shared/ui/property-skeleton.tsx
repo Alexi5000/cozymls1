@@ -7,7 +7,7 @@ export const PropertyCardSkeleton = memo(function PropertyCardSkeleton() {
     <Card className="overflow-hidden animate-pulse">
       {/* Image skeleton */}
       <Skeleton className="aspect-video w-full" />
-      
+
       <CardHeader className="pb-3">
         <div className="flex justify-between items-start">
           <div className="flex-1 space-y-2">
@@ -18,7 +18,7 @@ export const PropertyCardSkeleton = memo(function PropertyCardSkeleton() {
           <Skeleton className="h-8 w-8 rounded-full" />
         </div>
       </CardHeader>
-      
+
       <CardContent className="pt-0">
         {/* Property features skeleton */}
         <div className="grid grid-cols-3 gap-3 mb-4 p-4 bg-muted/50 rounded-xl">
@@ -30,13 +30,13 @@ export const PropertyCardSkeleton = memo(function PropertyCardSkeleton() {
             </div>
           ))}
         </div>
-        
+
         {/* Market info skeleton */}
         <div className="flex items-center justify-between mb-4 p-3 bg-muted/30 rounded-lg">
           <Skeleton className="h-4 w-32" />
           <Skeleton className="h-5 w-20 rounded-full" />
         </div>
-        
+
         {/* Agent section skeleton */}
         <div className="border-t border-border pt-4">
           <div className="flex items-center justify-between mb-4">
@@ -46,7 +46,7 @@ export const PropertyCardSkeleton = memo(function PropertyCardSkeleton() {
             </div>
             <Skeleton className="w-8 h-8 rounded-full" />
           </div>
-          
+
           <div className="grid grid-cols-2 gap-2">
             <Skeleton className="h-8 rounded-md" />
             <Skeleton className="h-8 rounded-md" />
@@ -62,7 +62,7 @@ export const MobilePropertyCardSkeleton = memo(function MobilePropertyCardSkelet
     <Card className="overflow-hidden animate-pulse">
       {/* Image skeleton */}
       <Skeleton className="aspect-4/3 w-full" />
-      
+
       {/* Content skeleton */}
       <div className="p-4 space-y-3">
         {/* Price and address */}
@@ -73,7 +73,7 @@ export const MobilePropertyCardSkeleton = memo(function MobilePropertyCardSkelet
             <Skeleton className="h-4 w-40" />
           </div>
         </div>
-        
+
         {/* Property details */}
         <div className="flex items-center justify-between py-2 border-y border-border">
           {Array.from({ length: 3 }).map((_, i) => (
@@ -84,7 +84,7 @@ export const MobilePropertyCardSkeleton = memo(function MobilePropertyCardSkelet
             </div>
           ))}
         </div>
-        
+
         {/* Agent and actions */}
         <div className="flex items-center justify-between">
           <div className="space-y-1">
@@ -101,15 +101,15 @@ export const MobilePropertyCardSkeleton = memo(function MobilePropertyCardSkelet
   );
 });
 
-export const PropertiesGridSkeleton = memo(function PropertiesGridSkeleton({ 
-  count = 6, 
-  mobile = false 
-}: { 
-  count?: number; 
-  mobile?: boolean; 
+export const PropertiesGridSkeleton = memo(function PropertiesGridSkeleton({
+  count = 6,
+  mobile = false,
+}: {
+  count?: number;
+  mobile?: boolean;
 }) {
   const SkeletonComponent = mobile ? MobilePropertyCardSkeleton : PropertyCardSkeleton;
-  
+
   if (mobile) {
     return (
       <div className="space-y-4">

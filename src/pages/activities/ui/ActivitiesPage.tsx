@@ -9,24 +9,45 @@ import { MobileListItem } from '@/shared/ui/mobile-list-item';
 import { Skeleton } from '@/shared/ui/skeleton';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/shared/ui/dropdown-menu';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/shared/ui/dropdown-menu';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
-import { useActivities, useDeleteActivity, useCompleteActivity } from '@/integrations/supabase/hooks/use-activities';
+import {
+  useActivities,
+  useDeleteActivity,
+  useCompleteActivity,
+} from '@/integrations/supabase/hooks/use-activities';
 import { ActivityDialog } from '@/features/activities';
 import { logger } from '@/shared/lib/logger';
-import { Plus, Calendar, Phone, Mail, Users, Clock, MoreVertical, Edit, Trash2, CheckCircle, ListTodo } from 'lucide-react';
+import {
+  Plus,
+  Calendar,
+  Phone,
+  Mail,
+  Users,
+  Clock,
+  MoreVertical,
+  Edit,
+  Trash2,
+  CheckCircle,
+  ListTodo,
+} from 'lucide-react';
 
 export function ActivitiesPage() {
   const isMobile = useIsMobile();
   const { data: activities, isLoading, refetch } = useActivities();
   const deleteActivity = useDeleteActivity();
   const completeActivity = useCompleteActivity();
-  
+
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingActivityId, setEditingActivityId] = useState<string | undefined>();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [activityToDelete, setActivityToDelete] = useState<string | null>(null);
-  
+
   const activityIcons = {
     call: Phone,
     email: Mail,
@@ -75,7 +96,7 @@ export function ActivitiesPage() {
 
   const handleDeleteConfirm = async () => {
     if (!activityToDelete) return;
-    
+
     logger.warn('ActivitiesPage', 'Deleting activity', { activityId: activityToDelete });
     await deleteActivity.mutateAsync(activityToDelete);
     setDeleteDialogOpen(false);
@@ -98,7 +119,9 @@ export function ActivitiesPage() {
     );
 
     return isMobile ? (
-      <MobileLayout title="Activities" onRefresh={handleRefresh}>{content}</MobileLayout>
+      <MobileLayout title="Activities" onRefresh={handleRefresh}>
+        {content}
+      </MobileLayout>
     ) : (
       <Layout title="Activities">{content}</Layout>
     );
@@ -109,7 +132,9 @@ export function ActivitiesPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-xl md:text-2xl font-bold">Recent Activities</h1>
-          <p className="text-sm md:text-base text-muted-foreground">Track all interactions with your contacts</p>
+          <p className="text-sm md:text-base text-muted-foreground">
+            Track all interactions with your contacts
+          </p>
         </div>
         {isMobile ? (
           <TouchButton className="w-full sm:w-auto" onClick={handleAddActivity}>
@@ -134,10 +159,10 @@ export function ActivitiesPage() {
         />
       ) : (
         <div className="space-y-3">
-          {activities.map((activity) => {
+          {activities.map(activity => {
             const Icon = activityIcons[activity.type];
             const isCompleted = Boolean(activity.completed_at);
-            
+
             if (isMobile) {
               return (
                 <MobileListItem
@@ -169,7 +194,7 @@ export function ActivitiesPage() {
                 />
               );
             }
-            
+
             return (
               <Card key={activity.id} className={isCompleted ? 'opacity-60' : ''}>
                 <CardContent className="p-4 md:p-6">
@@ -177,7 +202,7 @@ export function ActivitiesPage() {
                     <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
                       <Icon className="h-5 w-5 text-primary" />
                     </div>
-                    
+
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
                         <h3 className="font-semibold truncate">{activity.title}</h3>
@@ -205,7 +230,9 @@ export function ActivitiesPage() {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end" className="bg-background z-50">
                               {!isCompleted && (
-                                <DropdownMenuItem onClick={() => handleCompleteActivity(activity.id)}>
+                                <DropdownMenuItem
+                                  onClick={() => handleCompleteActivity(activity.id)}
+                                >
                                   <CheckCircle className="h-4 w-4 mr-2" />
                                   Mark Complete
                                 </DropdownMenuItem>
@@ -214,7 +241,7 @@ export function ActivitiesPage() {
                                 <Edit className="h-4 w-4 mr-2" />
                                 Edit
                               </DropdownMenuItem>
-                              <DropdownMenuItem 
+                              <DropdownMenuItem
                                 onClick={() => handleDeleteClick(activity.id)}
                                 className="text-destructive"
                               >
@@ -225,15 +252,13 @@ export function ActivitiesPage() {
                           </DropdownMenu>
                         </div>
                       </div>
-                      
+
                       {activity.description && (
                         <p className="text-sm text-muted-foreground mb-2">{activity.description}</p>
                       )}
-                      
+
                       {activity.contacts && (
-                        <p className="text-sm font-medium">
-                          Contact: {activity.contacts.name}
-                        </p>
+                        <p className="text-sm font-medium">Contact: {activity.contacts.name}</p>
                       )}
                     </div>
                   </div>
@@ -269,9 +294,5 @@ export function ActivitiesPage() {
     );
   }
 
-  return (
-    <Layout title="Activities">
-      {content}
-    </Layout>
-  );
+  return <Layout title="Activities">{content}</Layout>;
 }

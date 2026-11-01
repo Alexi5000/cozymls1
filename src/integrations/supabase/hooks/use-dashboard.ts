@@ -10,20 +10,20 @@ export function useDashboardStats() {
     queryFn: async () => {
       if (!user?.id) throw new Error('User not authenticated');
 
-      const { data, error } = await supabase
-        .rpc('get_dashboard_stats');
-      
-      
+      const { data, error } = await supabase.rpc('get_dashboard_stats');
+
       if (error) throw error;
-      
-      return data?.[0] || {
-        total_contacts: 0,
-        active_deals: 0,
-        total_revenue: 0,
-        monthly_growth: 0
-      };
+
+      return (
+        data?.[0] || {
+          total_contacts: 0,
+          active_deals: 0,
+          total_revenue: 0,
+          monthly_growth: 0,
+        }
+      );
     },
-    enabled: !!user?.id
+    enabled: !!user?.id,
   });
 }
 
@@ -40,11 +40,11 @@ export function useRecentActivities() {
         .is('completed_at', null)
         .order('due_date', { ascending: true })
         .limit(5);
-      
+
       if (error) throw error;
       return data;
     },
-    enabled: !!user?.id
+    enabled: !!user?.id,
   });
 }
 
@@ -61,10 +61,10 @@ export function useRecentDeals() {
         .not('stage', 'in', '("closed-won","closed-lost")')
         .order('created_at', { ascending: false })
         .limit(5);
-      
+
       if (error) throw error;
       return data;
     },
-    enabled: !!user?.id
+    enabled: !!user?.id,
   });
 }

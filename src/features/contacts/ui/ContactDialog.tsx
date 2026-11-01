@@ -12,23 +12,14 @@ import {
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Textarea } from '@/shared/ui/textarea';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/shared/ui/form';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/shared/ui/select';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/shared/ui/form';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select';
 import { useAuth } from '@/shared/hooks/use-auth';
-import { useContact, useCreateContact, useUpdateContact } from '@/integrations/supabase/hooks/use-contacts';
+import {
+  useContact,
+  useCreateContact,
+  useUpdateContact,
+} from '@/integrations/supabase/hooks/use-contacts';
 import { contactFormSchema, type ContactFormData, type ContactFormInput } from '../lib/validation';
 import { logger } from '@/shared/lib/logger';
 import { Loader2 } from 'lucide-react';
@@ -85,24 +76,24 @@ export function ContactDialog({ contactId, isOpen, onClose }: ContactDialogProps
   }, [isOpen, form]);
 
   const onSubmit = async (data: ContactFormData) => {
-    logger.form('ContactDialog', 'Submitting contact form', { 
-      isEditing, 
+    logger.form('ContactDialog', 'Submitting contact form', {
+      isEditing,
       contactId,
-      hasUser: !!user 
+      hasUser: !!user,
     });
 
     try {
       if (isEditing && contactId) {
-        await updateContact.mutateAsync({ 
-          id: contactId, 
-          updates: data 
+        await updateContact.mutateAsync({
+          id: contactId,
+          updates: data,
         });
       } else {
         if (!user?.id) {
           logger.error('ContactDialog', 'User not authenticated');
           return;
         }
-        await createContact.mutateAsync({ 
+        await createContact.mutateAsync({
           name: data.name,
           email: data.email,
           phone: data.phone,
@@ -110,7 +101,7 @@ export function ContactDialog({ contactId, isOpen, onClose }: ContactDialogProps
           status: data.status,
           tags: data.tags,
           notes: data.notes,
-          created_by: user.id 
+          created_by: user.id,
         });
       }
       logger.info('ContactDialog', 'Contact saved successfully', { isEditing });
@@ -126,8 +117,8 @@ export function ContactDialog({ contactId, isOpen, onClose }: ContactDialogProps
         <DialogHeader>
           <DialogTitle>{isEditing ? 'Edit Contact' : 'Add New Contact'}</DialogTitle>
           <DialogDescription>
-            {isEditing 
-              ? 'Update contact information below.' 
+            {isEditing
+              ? 'Update contact information below.'
               : 'Fill in the details to create a new contact.'}
           </DialogDescription>
         </DialogHeader>
@@ -229,10 +220,10 @@ export function ContactDialog({ contactId, isOpen, onClose }: ContactDialogProps
                   <FormItem>
                     <FormLabel>Notes</FormLabel>
                     <FormControl>
-                      <Textarea 
-                        placeholder="Add any additional notes..." 
+                      <Textarea
+                        placeholder="Add any additional notes..."
                         className="min-h-[100px]"
-                        {...field} 
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />

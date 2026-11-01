@@ -9,24 +9,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/shared/ui/dialog';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/shared/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/shared/ui/form';
 import { Input } from '@/shared/ui/input';
 import { Button } from '@/shared/ui/button';
 import { Textarea } from '@/shared/ui/textarea';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/shared/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Badge } from '@/shared/ui/badge';
 import { Separator } from '@/shared/ui/separator';
@@ -107,7 +94,7 @@ export function ReportBuilder({ children, onReportGenerated }: ReportBuilderProp
     };
 
     createReport.mutate(reportData, {
-      onSuccess: (newReport) => {
+      onSuccess: newReport => {
         onReportGenerated?.(newReport.id);
         form.reset();
         setSelectedTemplate(null);
@@ -151,35 +138,33 @@ export function ReportBuilder({ children, onReportGenerated }: ReportBuilderProp
                     No templates available
                   </p>
                 ) : (
-                  templates.map((template) => (
-                  <Card
-                    key={template.id}
-                    className={`cursor-pointer transition-all hover:shadow-md ${
-                      selectedTemplate?.id === template.id
-                        ? 'ring-2 ring-primary bg-primary/5'
-                        : 'hover:bg-gray-50'
-                    }`}
-                    onClick={() => {
-                      form.setValue('templateId', template.id);
-                      handleTemplateSelect(template.id);
-                    }}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-start justify-between mb-2">
-                        <h4 className="font-medium text-sm">{template.name}</h4>
-                        <Badge variant="secondary" className="text-xs">
-                          {template.category}
-                        </Badge>
-                      </div>
-                      <p className="text-xs text-muted-foreground mb-3">
-                        {template.description}
-                      </p>
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <BarChart3 className="h-3 w-3" />
-                        {template.chart_type || 'table'}
-                      </div>
-                    </CardContent>
-                  </Card>
+                  templates.map(template => (
+                    <Card
+                      key={template.id}
+                      className={`cursor-pointer transition-all hover:shadow-md ${
+                        selectedTemplate?.id === template.id
+                          ? 'ring-2 ring-primary bg-primary/5'
+                          : 'hover:bg-gray-50'
+                      }`}
+                      onClick={() => {
+                        form.setValue('templateId', template.id);
+                        handleTemplateSelect(template.id);
+                      }}
+                    >
+                      <CardContent className="p-4">
+                        <div className="flex items-start justify-between mb-2">
+                          <h4 className="font-medium text-sm">{template.name}</h4>
+                          <Badge variant="secondary" className="text-xs">
+                            {template.category}
+                          </Badge>
+                        </div>
+                        <p className="text-xs text-muted-foreground mb-3">{template.description}</p>
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <BarChart3 className="h-3 w-3" />
+                          {template.chart_type || 'table'}
+                        </div>
+                      </CardContent>
+                    </Card>
                   ))
                 )}
               </CardContent>
@@ -220,9 +205,9 @@ export function ReportBuilder({ children, onReportGenerated }: ReportBuilderProp
                           <FormItem className="md:col-span-2">
                             <FormLabel>Description (Optional)</FormLabel>
                             <FormControl>
-                              <Textarea 
+                              <Textarea
                                 placeholder="Brief description of this report..."
-                                {...field} 
+                                {...field}
                               />
                             </FormControl>
                             <FormMessage />
@@ -331,7 +316,7 @@ export function ReportBuilder({ children, onReportGenerated }: ReportBuilderProp
                         <div>
                           <p className="text-sm font-medium mb-2">Fields:</p>
                           <div className="flex flex-wrap gap-2">
-                            {selectedTemplate.fields.map((field) => (
+                            {selectedTemplate.fields.map(field => (
                               <Badge key={field.id} variant="outline" className="text-xs">
                                 {field.label}
                               </Badge>
@@ -347,8 +332,8 @@ export function ReportBuilder({ children, onReportGenerated }: ReportBuilderProp
                   <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                     Cancel
                   </Button>
-                  <Button 
-                    type="submit" 
+                  <Button
+                    type="submit"
                     disabled={createReport.isPending || !selectedTemplate || !user}
                   >
                     {createReport.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

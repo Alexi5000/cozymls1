@@ -1,4 +1,3 @@
-
 # Build Prompt: AI Property Description Generator
 
 Paste this as a single prompt into Lovable to scaffold the feature. Roadmap item: `34702d4b`.

@@ -8,7 +8,7 @@
   height: 100%;
   overflow: hidden;
   pointer-events: none;
-  
+
   /* 🎭 Gentler fade for more visible area (70% visible) */
   mask-image: radial-gradient(
     ellipse 120% 150% at top right,

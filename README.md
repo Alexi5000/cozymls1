@@ -97,6 +97,7 @@ Learn more about our architecture in [docs/architecture/ARCHITECTURE.md](docs/ar
 ## 🛠️ Technology Stack
 
 ### Frontend
+
 - **React 18.3** - UI library with hooks and modern patterns
 - **TypeScript 5.9** - Type-safe JavaScript
 - **Vite 7** - Fast build tool and dev server
@@ -109,6 +110,7 @@ Learn more about our architecture in [docs/architecture/ARCHITECTURE.md](docs/ar
 - **Lucide React** - Icon library
 
 ### Backend
+
 - **Lovable Cloud** - Integrated backend platform
 - **PostgreSQL** - Relational database
 - **Row Level Security** - Database-level security policies
@@ -116,6 +118,7 @@ Learn more about our architecture in [docs/architecture/ARCHITECTURE.md](docs/ar
 - **Edge Functions** - Serverless backend logic
 
 ### Development Tools
+
 - **ESLint** - Code linting
 - **Prettier** - Code formatting
 - **Vitest** - Fast unit test framework
@@ -188,6 +191,7 @@ Haven Estate Suite can be deployed via:
 ## 🔒 Security
 
 We take security seriously. Please read our [Security Policy](SECURITY.md) for:
+
 - Reporting vulnerabilities
 - Security best practices
 - RLS policy guidelines
@@ -218,10 +222,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Built by [Alex Cinovoj](https://github.com/Alexi5000), Founder & CTO of TechTide AI**
 
-*Close more deals. Manage less chaos.*
+_Close more deals. Manage less chaos._
 
 </div>
 
 [^1]: National Association of REALTORS, "NAR Introduces New MLS Policy to Expand Choice for Consumers", press release, 2025-03-25. https://www.nar.realtor/press-releases/nar-introduces-new-mls-policy-to-expand-choice-for-consumers
+
 [^2]: HousingWire, "Zillow will begin banning noncompliant listings on June 30", 2025-05-20. https://www.housingwire.com/articles/zillow-ban-noncompliant-listings-june-30-clear-cooperation-office-exclusives
+
 [^3]: National Association of REALTORS, "Judge Rejects Compass's Request to Block Zillow's Private Listing Rule", 2026-02-06. https://www.nar.realtor/news/real-estate-news/law-and-ethics/judge-rejects-compasss-request-to-block-zillows-private-listing-rule

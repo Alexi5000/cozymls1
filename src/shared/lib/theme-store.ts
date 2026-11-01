@@ -17,8 +17,8 @@ export const useThemeStore = create<ThemeState>()(
       theme: 'light',
       autoRefresh: true,
       notifications: true,
-      
-      setTheme: (theme) => {
+
+      setTheme: theme => {
         set({ theme });
         // Apply theme to document
         if (theme === 'dark') {
@@ -27,18 +27,18 @@ export const useThemeStore = create<ThemeState>()(
           document.documentElement.classList.remove('dark');
         }
       },
-      
+
       toggleTheme: () => {
         const newTheme = get().theme === 'light' ? 'dark' : 'light';
         get().setTheme(newTheme);
       },
-      
-      setAutoRefresh: (value) => set({ autoRefresh: value }),
-      setNotifications: (value) => set({ notifications: value }),
+
+      setAutoRefresh: value => set({ autoRefresh: value }),
+      setNotifications: value => set({ notifications: value }),
     }),
     {
       name: 'cozymls-theme',
-      onRehydrateStorage: () => (state) => {
+      onRehydrateStorage: () => state => {
         // Apply theme on initial load
         if (state?.theme === 'dark') {
           document.documentElement.classList.add('dark');

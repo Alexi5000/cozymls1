@@ -45,6 +45,7 @@ netlify deploy --prod --dir=dist
 ### Environment Variables
 
 Configure in hosting platform:
+
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_PUBLISHABLE_KEY`
 - `VITE_SUPABASE_PROJECT_ID`

@@ -8,15 +8,7 @@ import { useIsMobile } from '@/shared/hooks/use-mobile';
 import { useAuth } from '@/shared/hooks/use-auth';
 import { useReports, useReportTemplates, useDeleteReport } from '@/integrations/supabase/hooks';
 import { ReportBuilder, ReportCard, ReportViewer } from '@/widgets/reports';
-import { 
-  BarChart3, 
-  Plus,
-  Search,
-  FileText,
-  Calendar,
-  Download,
-  Loader2
-} from 'lucide-react';
+import { BarChart3, Plus, Search, FileText, Calendar, Download, Loader2 } from 'lucide-react';
 
 export function ReportsPage() {
   const isMobile = useIsMobile();
@@ -24,15 +16,16 @@ export function ReportsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [viewingReportId, setViewingReportId] = useState<string | null>(null);
-  
+
   const { data: reports = [], isLoading: reportsLoading } = useReports(user?.id);
   const { data: templates = [] } = useReportTemplates();
   const deleteReport = useDeleteReport();
-  
+
   const filteredReports = reports.filter(report => {
     const template = templates.find(t => t.id === report.template_id);
-    const matchesSearch = report.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         report.description?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch =
+      report.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      report.description?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || template?.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
@@ -40,8 +33,8 @@ export function ReportsPage() {
   const analytics = {
     totalReports: reports.length,
     templatesUsed: new Set(reports.map(r => r.template_id)).size,
-    recentReports: reports.filter(r => 
-      new Date(r.created_at) >= new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+    recentReports: reports.filter(
+      r => new Date(r.created_at) >= new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
     ).length,
   };
 
@@ -68,137 +61,158 @@ export function ReportsPage() {
         </div>
       ) : (
         <>
-          <div className={`grid gap-3 ${isMobile ? 'grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-4'}`}>
-        <Card className={isMobile ? "mobile-shadow" : ""}>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className={isMobile ? "mobile-subtitle" : "text-sm font-medium"}>Total Reports</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className={isMobile ? "mobile-title" : "text-2xl font-bold"}>{analytics.totalReports}</div>
-            <p className={isMobile ? "mobile-caption" : "text-xs text-muted-foreground"}>All generated reports</p>
-          </CardContent>
-        </Card>
+          <div
+            className={`grid gap-3 ${isMobile ? 'grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-4'}`}
+          >
+            <Card className={isMobile ? 'mobile-shadow' : ''}>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className={isMobile ? 'mobile-subtitle' : 'text-sm font-medium'}>
+                  Total Reports
+                </CardTitle>
+                <FileText className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className={isMobile ? 'mobile-title' : 'text-2xl font-bold'}>
+                  {analytics.totalReports}
+                </div>
+                <p className={isMobile ? 'mobile-caption' : 'text-xs text-muted-foreground'}>
+                  All generated reports
+                </p>
+              </CardContent>
+            </Card>
 
-        <Card className={isMobile ? "mobile-shadow" : ""}>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className={isMobile ? "mobile-subtitle" : "text-sm font-medium"}>Templates Used</CardTitle>
-            <BarChart3 className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className={isMobile ? "mobile-title" : "text-2xl font-bold"}>{analytics.templatesUsed}</div>
-            <p className={isMobile ? "mobile-caption" : "text-xs text-muted-foreground"}>Active templates</p>
-          </CardContent>
-        </Card>
+            <Card className={isMobile ? 'mobile-shadow' : ''}>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className={isMobile ? 'mobile-subtitle' : 'text-sm font-medium'}>
+                  Templates Used
+                </CardTitle>
+                <BarChart3 className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className={isMobile ? 'mobile-title' : 'text-2xl font-bold'}>
+                  {analytics.templatesUsed}
+                </div>
+                <p className={isMobile ? 'mobile-caption' : 'text-xs text-muted-foreground'}>
+                  Active templates
+                </p>
+              </CardContent>
+            </Card>
 
-        <Card className={isMobile ? "mobile-shadow" : ""}>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className={isMobile ? "mobile-subtitle" : "text-sm font-medium"}>Recent Reports</CardTitle>
-            <Calendar className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className={isMobile ? "mobile-title" : "text-2xl font-bold"}>{analytics.recentReports}</div>
-            <p className={isMobile ? "mobile-caption" : "text-xs text-muted-foreground"}>This week</p>
-          </CardContent>
-        </Card>
+            <Card className={isMobile ? 'mobile-shadow' : ''}>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className={isMobile ? 'mobile-subtitle' : 'text-sm font-medium'}>
+                  Recent Reports
+                </CardTitle>
+                <Calendar className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className={isMobile ? 'mobile-title' : 'text-2xl font-bold'}>
+                  {analytics.recentReports}
+                </div>
+                <p className={isMobile ? 'mobile-caption' : 'text-xs text-muted-foreground'}>
+                  This week
+                </p>
+              </CardContent>
+            </Card>
 
-        <Card className={isMobile ? "mobile-shadow" : ""}>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className={isMobile ? "mobile-subtitle" : "text-sm font-medium"}>Downloads</CardTitle>
-            <Download className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className={isMobile ? "mobile-title" : "text-2xl font-bold"}>24</div>
-            <p className={isMobile ? "mobile-caption" : "text-xs text-muted-foreground"}>Total downloads</p>
-          </CardContent>
-          </Card>
-        </div>
-
-        {/* Controls */}
-        <Card>
-        <CardHeader>
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <CardTitle>Reports Dashboard</CardTitle>
-              <p className="text-muted-foreground text-sm">
-                Create, manage, and analyze your business reports
-              </p>
-            </div>
-            <ReportBuilder onReportGenerated={handleReportGenerated}>
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
-                Create Report
-              </Button>
-            </ReportBuilder>
+            <Card className={isMobile ? 'mobile-shadow' : ''}>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className={isMobile ? 'mobile-subtitle' : 'text-sm font-medium'}>
+                  Downloads
+                </CardTitle>
+                <Download className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className={isMobile ? 'mobile-title' : 'text-2xl font-bold'}>24</div>
+                <p className={isMobile ? 'mobile-caption' : 'text-xs text-muted-foreground'}>
+                  Total downloads
+                </p>
+              </CardContent>
+            </Card>
           </div>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-              <Input
-                placeholder="Search reports..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-            <div className="flex gap-2 flex-wrap">
-              {categories.map((category) => (
-                <Button
-                  key={category}
-                  variant={selectedCategory === category ? 'default' : 'outline-solid'}
-                  size="sm"
-                  onClick={() => setSelectedCategory(category)}
-                  className="capitalize"
-                >
-                  {category}
-                </Button>
+
+          {/* Controls */}
+          <Card>
+            <CardHeader>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                  <CardTitle>Reports Dashboard</CardTitle>
+                  <p className="text-muted-foreground text-sm">
+                    Create, manage, and analyze your business reports
+                  </p>
+                </div>
+                <ReportBuilder onReportGenerated={handleReportGenerated}>
+                  <Button>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Create Report
+                  </Button>
+                </ReportBuilder>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <Input
+                    placeholder="Search reports..."
+                    value={searchTerm}
+                    onChange={e => setSearchTerm(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+                <div className="flex gap-2 flex-wrap">
+                  {categories.map(category => (
+                    <Button
+                      key={category}
+                      variant={selectedCategory === category ? 'default' : 'outline-solid'}
+                      size="sm"
+                      onClick={() => setSelectedCategory(category)}
+                      className="capitalize"
+                    >
+                      {category}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Reports Grid */}
+          {filteredReports.length > 0 ? (
+            <div
+              className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'md:grid-cols-2 lg:grid-cols-3'}`}
+            >
+              {filteredReports.map(report => (
+                <ReportCard
+                  key={report.id}
+                  report={report}
+                  onView={setViewingReportId}
+                  onDelete={handleDeleteReport}
+                />
               ))}
             </div>
-          </div>
-        </CardContent>
-        </Card>
+          ) : (
+            <Card>
+              <CardContent className="text-center py-12">
+                <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">No Reports Found</h3>
+                <p className="text-muted-foreground mb-4">
+                  {searchTerm || selectedCategory !== 'all'
+                    ? 'No reports match your current filters.'
+                    : 'Get started by creating your first report.'}
+                </p>
+                <ReportBuilder onReportGenerated={handleReportGenerated}>
+                  <Button>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Create Your First Report
+                  </Button>
+                </ReportBuilder>
+              </CardContent>
+            </Card>
+          )}
 
-        {/* Reports Grid */}
-        {filteredReports.length > 0 ? (
-        <div className={`grid gap-4 ${
-          isMobile ? 'grid-cols-1' : 'md:grid-cols-2 lg:grid-cols-3'
-        }`}>
-          {filteredReports.map((report) => (
-            <ReportCard
-              key={report.id}
-              report={report}
-              onView={setViewingReportId}
-              onDelete={handleDeleteReport}
-            />
-          ))}
-          </div>
-        ) : (
-          <Card>
-          <CardContent className="text-center py-12">
-            <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No Reports Found</h3>
-            <p className="text-muted-foreground mb-4">
-              {searchTerm || selectedCategory !== 'all' 
-                ? 'No reports match your current filters.' 
-                : 'Get started by creating your first report.'}
-            </p>
-            <ReportBuilder onReportGenerated={handleReportGenerated}>
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
-                Create Your First Report
-              </Button>
-            </ReportBuilder>
-          </CardContent>
-        </Card>
-        )}
-
-        {/* Report Viewer Modal */}
-        <ReportViewer
-          reportId={viewingReportId}
-          onClose={() => setViewingReportId(null)}
-        />
+          {/* Report Viewer Modal */}
+          <ReportViewer reportId={viewingReportId} onClose={() => setViewingReportId(null)} />
         </>
       )}
     </div>
@@ -212,9 +226,5 @@ export function ReportsPage() {
     );
   }
 
-  return (
-    <Layout title="Reports">
-      {content}
-    </Layout>
-  );
+  return <Layout title="Reports">{content}</Layout>;
 }

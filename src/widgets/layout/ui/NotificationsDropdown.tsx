@@ -27,7 +27,7 @@ const mockNotifications: Notification[] = [
     message: 'New viewing for 123 Grafton Street at 2:00 PM today',
     time: '10 min ago',
     isRead: false,
-    icon: <Calendar className="h-4 w-4 text-blue-500" />
+    icon: <Calendar className="h-4 w-4 text-blue-500" />,
   },
   {
     id: '2',
@@ -36,7 +36,7 @@ const mockNotifications: Notification[] = [
     message: 'Property in Ballsbridge reduced by €50,000',
     time: '1 hour ago',
     isRead: false,
-    icon: <DollarSign className="h-4 w-4 text-green-500" />
+    icon: <DollarSign className="h-4 w-4 text-green-500" />,
   },
   {
     id: '3',
@@ -45,7 +45,7 @@ const mockNotifications: Notification[] = [
     message: 'Sarah Murphy is interested in 2-bed apartments in Dublin 4',
     time: '2 hours ago',
     isRead: false,
-    icon: <User className="h-4 w-4 text-purple-500" />
+    icon: <User className="h-4 w-4 text-purple-500" />,
   },
   {
     id: '4',
@@ -54,7 +54,7 @@ const mockNotifications: Notification[] = [
     message: 'Weekly Dublin property market analysis is now available',
     time: '4 hours ago',
     isRead: true,
-    icon: <Bell className="h-4 w-4 text-gray-500" />
+    icon: <Bell className="h-4 w-4 text-gray-500" />,
   },
   {
     id: '5',
@@ -63,8 +63,8 @@ const mockNotifications: Notification[] = [
     message: 'Property valuation at 45 Pembroke Road at 10:00 AM',
     time: '6 hours ago',
     isRead: true,
-    icon: <Clock className="h-4 w-4 text-orange-500" />
-  }
+    icon: <Clock className="h-4 w-4 text-orange-500" />,
+  },
 ];
 
 export function NotificationsDropdown({ onClose }: NotificationsDropdownProps) {
@@ -92,9 +92,9 @@ export function NotificationsDropdown({ onClose }: NotificationsDropdownProps) {
           )}
         </div>
         {unreadCount > 0 && (
-          <Button 
-            variant="ghost" 
-            size="sm" 
+          <Button
+            variant="ghost"
+            size="sm"
             className="text-xs text-muted-foreground hover:text-foreground w-fit p-0 h-auto"
             onClick={handleMarkAllRead}
           >
@@ -102,26 +102,26 @@ export function NotificationsDropdown({ onClose }: NotificationsDropdownProps) {
           </Button>
         )}
       </CardHeader>
-      
+
       <CardContent className="p-0">
         <div className="max-h-80 overflow-y-auto">
           {mockNotifications.map((notification, index) => (
             <div key={notification.id}>
-              <div 
+              <div
                 className={`p-4 hover:bg-muted/50 cursor-pointer transition-colors ${
                   !notification.isRead ? 'bg-blue-50/50' : ''
                 }`}
                 onClick={() => handleNotificationClick(notification)}
               >
                 <div className="flex items-start gap-3">
-                  <div className="shrink-0 mt-1">
-                    {notification.icon}
-                  </div>
+                  <div className="shrink-0 mt-1">{notification.icon}</div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1">
-                      <h4 className={`text-sm font-medium truncate ${
-                        !notification.isRead ? 'text-foreground' : 'text-muted-foreground'
-                      }`}>
+                      <h4
+                        className={`text-sm font-medium truncate ${
+                          !notification.isRead ? 'text-foreground' : 'text-muted-foreground'
+                        }`}
+                      >
                         {notification.title}
                       </h4>
                       {!notification.isRead && (
@@ -131,9 +131,7 @@ export function NotificationsDropdown({ onClose }: NotificationsDropdownProps) {
                     <p className="text-xs text-muted-foreground mb-1 line-clamp-2">
                       {notification.message}
                     </p>
-                    <span className="text-xs text-muted-foreground">
-                      {notification.time}
-                    </span>
+                    <span className="text-xs text-muted-foreground">{notification.time}</span>
                   </div>
                 </div>
               </div>
@@ -141,10 +139,10 @@ export function NotificationsDropdown({ onClose }: NotificationsDropdownProps) {
             </div>
           ))}
         </div>
-        
+
         <div className="p-4 border-t">
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             className="w-full text-sm"
             onClick={() => {
               // View all notifications

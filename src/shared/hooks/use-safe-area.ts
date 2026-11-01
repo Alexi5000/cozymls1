@@ -19,7 +19,7 @@ export function useSafeArea() {
     const updateSafeArea = () => {
       // Get CSS environment variables for safe area insets
       const computedStyle = getComputedStyle(document.documentElement);
-      
+
       setSafeAreaInsets({
         top: parseInt(computedStyle.getPropertyValue('env(safe-area-inset-top)') || '0'),
         right: parseInt(computedStyle.getPropertyValue('env(safe-area-inset-right)') || '0'),
@@ -29,7 +29,7 @@ export function useSafeArea() {
     };
 
     updateSafeArea();
-    
+
     // Listen for orientation changes
     window.addEventListener('orientationchange', updateSafeArea);
     window.addEventListener('resize', updateSafeArea);
@@ -42,7 +42,7 @@ export function useSafeArea() {
 
   const applySafeArea = (element: 'top' | 'bottom' | 'left' | 'right' | 'all') => {
     const { top, right, bottom, left } = safeAreaInsets;
-    
+
     switch (element) {
       case 'top':
         return { paddingTop: `${top}px` };

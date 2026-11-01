@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Button, ButtonProps } from "./button";
-import { useTouch } from "@/shared/hooks/use-touch";
-import { cn } from "@/shared/lib/utils";
+import * as React from 'react';
+import { Button, ButtonProps } from './button';
+import { useTouch } from '@/shared/hooks/use-touch';
+import { cn } from '@/shared/lib/utils';
 
 interface TouchButtonProps extends ButtonProps {
   onLongPress?: () => void;
@@ -10,15 +10,18 @@ interface TouchButtonProps extends ButtonProps {
 }
 
 export const TouchButton = React.forwardRef<HTMLButtonElement, TouchButtonProps>(
-  ({ 
-    className, 
-    onLongPress, 
-    longPressDelay = 500, 
-    enableHaptic = false,
-    onClick,
-    children,
-    ...props 
-  }, ref) => {
+  (
+    {
+      className,
+      onLongPress,
+      longPressDelay = 500,
+      enableHaptic = false,
+      onClick,
+      children,
+      ...props
+    },
+    ref
+  ) => {
     const handleTap = React.useCallback(() => {
       if (enableHaptic && 'vibrate' in navigator) {
         navigator.vibrate(10); // Short haptic feedback
@@ -33,23 +36,26 @@ export const TouchButton = React.forwardRef<HTMLButtonElement, TouchButtonProps>
       onLongPress?.();
     }, [onLongPress, enableHaptic]);
 
-    const { touchHandlers, isPressed } = useTouch({
-      onTap: handleTap,
-      onLongPress: onLongPress ? handleLongPress : undefined,
-    }, { longPressDelay });
+    const { touchHandlers, isPressed } = useTouch(
+      {
+        onTap: handleTap,
+        onLongPress: onLongPress ? handleLongPress : undefined,
+      },
+      { longPressDelay }
+    );
 
     return (
       <Button
         ref={ref}
         className={cn(
           // Enhanced touch targets - minimum 44px
-          "min-h-[44px] min-w-[44px]",
+          'min-h-[44px] min-w-[44px]',
           // Active state styling
-          isPressed && "scale-95 opacity-90",
+          isPressed && 'scale-95 opacity-90',
           // Smooth transitions
-          "transition-all duration-150 ease-out",
+          'transition-all duration-150 ease-out',
           // Better touch feedback
-          "active:scale-95 active:opacity-90",
+          'active:scale-95 active:opacity-90',
           className
         )}
         {...touchHandlers}
@@ -61,4 +67,4 @@ export const TouchButton = React.forwardRef<HTMLButtonElement, TouchButtonProps>
   }
 );
 
-TouchButton.displayName = "TouchButton";
+TouchButton.displayName = 'TouchButton';

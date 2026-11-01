@@ -13,7 +13,7 @@ export const mockContactsLite: Contact[] = [
     lastContact: new Date('2024-01-20'),
     notes: 'Looking for luxury properties with sea views',
     createdAt: new Date('2023-12-01'),
-    updatedAt: new Date('2024-01-25')
+    updatedAt: new Date('2024-01-25'),
   },
   {
     id: '2',
@@ -26,7 +26,7 @@ export const mockContactsLite: Contact[] = [
     lastContact: new Date('2024-01-18'),
     notes: 'First-time buyer, needs guidance on property investment',
     createdAt: new Date('2023-11-15'),
-    updatedAt: new Date('2024-01-20')
+    updatedAt: new Date('2024-01-20'),
   },
   {
     id: '3',
@@ -39,7 +39,7 @@ export const mockContactsLite: Contact[] = [
     lastContact: new Date('2024-01-15'),
     notes: 'Relocating from London for work, cash buyer',
     createdAt: new Date('2024-01-01'),
-    updatedAt: new Date('2024-01-18')
+    updatedAt: new Date('2024-01-18'),
   },
   {
     id: '4',
@@ -51,7 +51,7 @@ export const mockContactsLite: Contact[] = [
     lastContact: new Date('2024-01-22'),
     notes: 'Downsizing after retirement, prefers coastal areas',
     createdAt: new Date('2023-10-20'),
-    updatedAt: new Date('2024-01-22')
+    updatedAt: new Date('2024-01-22'),
   },
   {
     id: '5',
@@ -64,6 +64,6 @@ export const mockContactsLite: Contact[] = [
     lastContact: new Date('2024-01-16'),
     notes: 'Growing family, needs more space near good schools',
     createdAt: new Date('2023-12-10'),
-    updatedAt: new Date('2024-01-19')
-  }
+    updatedAt: new Date('2024-01-19'),
+  },
 ];

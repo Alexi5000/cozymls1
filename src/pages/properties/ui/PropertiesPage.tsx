@@ -2,7 +2,12 @@ import React, { useState, useCallback, useMemo, Suspense } from 'react';
 import { Layout } from '@/widgets/layout';
 import { MobileLayout } from '@/widgets/mobile';
 import { useProperties } from '@/integrations/supabase/hooks';
-import { PropertiesHeader, PropertiesFilters, PropertiesStats, PropertiesGrid } from '@/widgets/properties';
+import {
+  PropertiesHeader,
+  PropertiesFilters,
+  PropertiesStats,
+  PropertiesGrid,
+} from '@/widgets/properties';
 import { PropertiesGridSkeleton } from '@/shared/ui/property-skeleton';
 import { DataPagination } from '@/shared/ui/data-pagination';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
@@ -12,9 +17,9 @@ export function PropertiesPage() {
   const [, setIsRefreshing] = useState(false);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
-  
+
   const { data: propertiesData, isLoading, refetch } = useProperties({ page, pageSize });
-  
+
   const handleRefresh = useCallback(async () => {
     setIsRefreshing(true);
     try {
@@ -49,12 +54,10 @@ export function PropertiesPage() {
         <PropertiesHeader />
         {!isMobile && <PropertiesFilters />}
         <PropertiesStats properties={properties} />
-        <Suspense 
-          fallback={<PropertiesGridSkeleton count={6} mobile={isMobile} />}
-        >
+        <Suspense fallback={<PropertiesGridSkeleton count={6} mobile={isMobile} />}>
           <PropertiesGrid properties={properties} />
         </Suspense>
-        
+
         {totalCount > 0 && (
           <DataPagination
             page={page}
@@ -79,9 +82,5 @@ export function PropertiesPage() {
     );
   }
 
-  return (
-    <Layout title="Properties">
-      {content}
-    </Layout>
-  );
+  return <Layout title="Properties">{content}</Layout>;
 }

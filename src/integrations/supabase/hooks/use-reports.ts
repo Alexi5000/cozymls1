@@ -52,11 +52,8 @@ export function useReports(userId?: string) {
     queryKey: ['reports', userId],
     queryFn: async () => {
       logger.database('useReports', 'Fetching reports', { userId });
-      
-      let query = supabase
-        .from('reports')
-        .select('*')
-        .order('created_at', { ascending: false });
+
+      let query = supabase.from('reports').select('*').order('created_at', { ascending: false });
 
       if (userId) {
         query = query.eq('generated_by', userId);
@@ -80,9 +77,9 @@ export function useReport(reportId?: string) {
     queryKey: ['report', reportId],
     queryFn: async () => {
       if (!reportId) return null;
-      
+
       logger.database('useReport', 'Fetching report', { reportId });
-      
+
       const { data, error } = await supabase
         .from('reports')
         .select('*')
@@ -107,7 +104,7 @@ export function useCreateReport() {
   return useMutation({
     mutationFn: async (report: Omit<Report, 'id' | 'created_at' | 'updated_at'>) => {
       logger.database('useCreateReport', 'Creating report', { report });
-      
+
       const { data, error } = await supabase
         .from('reports')
         .insert(report as never)
@@ -145,7 +142,7 @@ export function useUpdateReport() {
   return useMutation({
     mutationFn: async ({ id, updates }: { id: string; updates: Partial<Report> }) => {
       logger.database('useUpdateReport', 'Updating report', { id, updates });
-      
+
       const { data, error } = await supabase
         .from('reports')
         .update(updates as never)
@@ -185,11 +182,8 @@ export function useDeleteReport() {
   return useMutation({
     mutationFn: async (id: string) => {
       logger.database('useDeleteReport', 'Deleting report', { id });
-      
-      const { error } = await supabase
-        .from('reports')
-        .delete()
-        .eq('id', id);
+
+      const { error } = await supabase.from('reports').delete().eq('id', id);
 
       if (error) {
         logger.error('useDeleteReport', 'Failed to delete report', { error });
@@ -219,11 +213,8 @@ export function useReportTemplates() {
     queryKey: ['report-templates'],
     queryFn: async () => {
       logger.database('useReportTemplates', 'Fetching report templates');
-      
-      const { data, error } = await supabase
-        .from('report_templates')
-        .select('*')
-        .order('name');
+
+      const { data, error } = await supabase.from('report_templates').select('*').order('name');
 
       if (error) {
         logger.error('useReportTemplates', 'Failed to fetch templates', { error });
@@ -240,9 +231,9 @@ export function useReportTemplate(templateId?: string) {
     queryKey: ['report-template', templateId],
     queryFn: async () => {
       if (!templateId) return null;
-      
+
       logger.database('useReportTemplate', 'Fetching template', { templateId });
-      
+
       const { data, error } = await supabase
         .from('report_templates')
         .select('*')

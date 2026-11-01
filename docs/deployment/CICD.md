@@ -37,6 +37,7 @@ All workflows will start automatically on your next push!
 **Triggers:** Every push and pull request
 
 **What it does:**
+
 - ✅ Runs ESLint to check code quality
 - ✅ Runs TypeScript type checking
 - ✅ Builds the project to verify it compiles
@@ -51,6 +52,7 @@ All workflows will start automatically on your next push!
 **Triggers:** Push to `main` branch only
 
 **What it does:**
+
 - ✅ Builds production-optimized bundle
 - ✅ Uploads build artifacts (kept for 30 days)
 - ✅ Provides deployment notifications
@@ -66,12 +68,14 @@ All workflows will start automatically on your next push!
 **Triggers:** Pull requests opened, updated, or reopened
 
 **What it does:**
+
 - ✅ Validates PR title follows [Conventional Commits](https://www.conventionalcommits.org/)
 - ✅ Compares bundle size between base and PR branch
 - ✅ Runs code quality checks (lint, type check)
 - ✅ Warns about console.log statements
 
 **PR Title Format:**
+
 ```
 feat: add user profile page
 fix(auth): resolve login redirect bug
@@ -83,12 +87,14 @@ refactor: simplify property card component
 
 ### 🔒 Security Workflow (`.github/workflows/security.yml`)
 
-**Triggers:** 
+**Triggers:**
+
 - Weekly schedule (Monday 9 AM UTC)
 - Push to `main`
 - Manual trigger
 
 **What it does:**
+
 - ✅ Scans for dependency vulnerabilities with npm audit
 - ✅ Runs CodeQL static analysis for security issues
 - ✅ Checks for exposed secrets in code
@@ -100,12 +106,14 @@ refactor: simplify property card component
 
 ### ⚡ Performance Workflow (`.github/workflows/performance.yml`)
 
-**Triggers:** 
+**Triggers:**
+
 - Push to `main`
 - Pull requests
 - Manual trigger
 
 **What it does:**
+
 - ✅ Analyzes bundle size and composition
 - ✅ Lists largest files in the build
 - ✅ Warns if bundle exceeds 5MB threshold
@@ -118,6 +126,7 @@ refactor: simplify property card component
 **Triggers:** Manual only
 
 **What it does:**
+
 - ✅ Bumps version (patch/minor/major)
 - ✅ Generates changelog from commit history
 - ✅ Creates Git tag
@@ -169,11 +178,13 @@ perf: optimize image loading
 ### Pull Request Workflow
 
 1. **Create feature branch:**
+
    ```bash
    git checkout -b feat/add-property-filters
    ```
 
 2. **Make changes and commit:**
+
    ```bash
    git add .
    git commit -m "feat: add property filters"
@@ -251,6 +262,7 @@ If PR shows large bundle size increase:
 ### GitHub Actions Dashboard
 
 View all workflow runs:
+
 - Repository → Actions tab
 - Filter by workflow, branch, or status
 - Download logs and artifacts
@@ -274,6 +286,7 @@ Replace `USERNAME` and `REPO` with your details.
 ### Modify Workflows
 
 Edit `.github/workflows/*.yml` files to:
+
 - Change trigger conditions
 - Add/remove jobs
 - Configure notifications
@@ -282,6 +295,7 @@ Edit `.github/workflows/*.yml` files to:
 ### Add More Checks
 
 Examples:
+
 - Unit tests with Vitest
 - E2E tests with Playwright
 - Lighthouse CI for performance
@@ -291,6 +305,7 @@ Examples:
 ### Notifications
 
 Add Slack/Discord/Email notifications:
+
 - Use GitHub Actions marketplace actions
 - Configure in workflow files
 - Set up webhooks in your messaging platform
@@ -310,6 +325,7 @@ Add Slack/Discord/Email notifications:
 ## 🆘 Support
 
 If you encounter issues:
+
 1. Check this guide first
 2. Review workflow logs in Actions tab
 3. Search GitHub Actions marketplace for solutions

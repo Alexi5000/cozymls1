@@ -1,6 +1,6 @@
 /**
  * Application Configuration Constants
- * 
+ *
  * Centralized configuration to eliminate magic numbers and ensure consistency.
  * All hardcoded values should be defined here and imported where needed.
  */

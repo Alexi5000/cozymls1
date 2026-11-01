@@ -50,6 +50,7 @@ Include the following information:
 ##### Environment Variables
 
 Never expose these in client-side code:
+
 - Database credentials
 - API secret keys
 - Authentication secrets
@@ -65,6 +66,7 @@ Use Lovable Cloud's secure secret management for sensitive data.
 - Review policies during code review
 
 Example RLS policy:
+
 ```sql
 -- Users can only view their own data
 CREATE POLICY "Users can view own data"
@@ -102,6 +104,7 @@ USING (auth.uid() = user_id);
 - Implement proper access controls
 
 Example storage policy:
+
 ```sql
 -- Users can only access their own files
 CREATE POLICY "Users access own files"
@@ -140,29 +143,30 @@ When reviewing code, check for:
 #### SQL Injection Prevention
 
 ✅ **SAFE** - Using Supabase client (parameterized queries):
+
 ```typescript
-const { data } = await supabase
-  .from('properties')
-  .select()
-  .eq('id', propertyId);
+const { data } = await supabase.from('properties').select().eq('id', propertyId);
 ```
 
 ❌ **UNSAFE** - String concatenation:
+
 ```typescript
 // Never do this!
 await supabase.rpc('raw_query', {
-  query: `SELECT * FROM properties WHERE id = '${propertyId}'`
+  query: `SELECT * FROM properties WHERE id = '${propertyId}'`,
 });
 ```
 
 #### XSS Prevention
 
 ✅ **SAFE** - React automatically escapes:
+
 ```tsx
 <div>{userInput}</div>
 ```
 
 ❌ **UNSAFE** - dangerouslySetInnerHTML:
+
 ```tsx
 // Avoid unless absolutely necessary and sanitized
 <div dangerouslySetInnerHTML={{ __html: userInput }} />
@@ -171,6 +175,7 @@ await supabase.rpc('raw_query', {
 #### Authentication Bypass
 
 ✅ **SAFE** - Protected routes:
+
 ```typescript
 // Use protected route wrapper
 <ProtectedRoute>
@@ -179,6 +184,7 @@ await supabase.rpc('raw_query', {
 ```
 
 ❌ **UNSAFE** - Client-side only checks:
+
 ```typescript
 // Not enough - backend must verify too
 if (user) {

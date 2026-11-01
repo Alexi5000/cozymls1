@@ -100,14 +100,19 @@ class ReportStore {
   }
 
   // Generate Report
-  generateReport(templateId: string, config: ReportConfig, name: string, description?: string): Report {
+  generateReport(
+    templateId: string,
+    config: ReportConfig,
+    name: string,
+    description?: string
+  ): Report {
     const template = this.getTemplate(templateId);
     if (!template) {
       throw new Error(`Template with id ${templateId} not found`);
     }
 
     let data = this.getReportData(templateId);
-    
+
     // Apply filters
     if (config.filters.length > 0) {
       data = data.filter(row => {
@@ -123,7 +128,9 @@ class ReportStore {
             case 'less':
               return Number(value) < Number(filter.value);
             case 'between':
-              return Number(value) >= Number(filter.value[0]) && Number(value) <= Number(filter.value[1]);
+              return (
+                Number(value) >= Number(filter.value[0]) && Number(value) <= Number(filter.value[1])
+              );
             default:
               return true;
           }
@@ -155,15 +162,18 @@ class ReportStore {
   getReportAnalytics() {
     const totalReports = this.reports.length;
     const templatesUsed = new Set(this.reports.map(r => r.templateId)).size;
-    const recentReports = this.reports.filter(r => 
-      r.createdAt >= new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+    const recentReports = this.reports.filter(
+      r => r.createdAt >= new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
     ).length;
 
-    const reportsByCategory = this.templates.reduce((acc, template) => {
-      const count = this.reports.filter(r => r.templateId === template.id).length;
-      acc[template.category] = (acc[template.category] || 0) + count;
-      return acc;
-    }, {} as Record<string, number>);
+    const reportsByCategory = this.templates.reduce(
+      (acc, template) => {
+        const count = this.reports.filter(r => r.templateId === template.id).length;
+        acc[template.category] = (acc[template.category] || 0) + count;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
 
     return {
       totalReports,

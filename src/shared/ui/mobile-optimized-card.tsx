@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "./card";
-import { cn } from "@/shared/lib/utils";
-import { useTouch } from "@/shared/hooks/use-touch";
+import * as React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from './card';
+import { cn } from '@/shared/lib/utils';
+import { useTouch } from '@/shared/hooks/use-touch';
 
 interface MobileOptimizedCardProps extends React.HTMLAttributes<HTMLDivElement> {
   title?: string;
@@ -17,18 +17,21 @@ interface MobileOptimizedCardProps extends React.HTMLAttributes<HTMLDivElement> 
 }
 
 export const MobileOptimizedCard = React.forwardRef<HTMLDivElement, MobileOptimizedCardProps>(
-  ({ 
-    className, 
-    title,
-    subtitle,
-    onTap, 
-    onLongPress, 
-    enableHaptic = false,
-    swipeActions,
-    variant = 'default',
-    children, 
-    ...props 
-  }, ref) => {
+  (
+    {
+      className,
+      title,
+      subtitle,
+      onTap,
+      onLongPress,
+      enableHaptic = false,
+      swipeActions,
+      variant = 'default',
+      children,
+      ...props
+    },
+    ref
+  ) => {
     const handleTap = React.useCallback(() => {
       if (enableHaptic && 'vibrate' in navigator) {
         navigator.vibrate(10);
@@ -66,48 +69,37 @@ export const MobileOptimizedCard = React.forwardRef<HTMLDivElement, MobileOptimi
         ref={ref}
         className={cn(
           // Base mobile card styling
-          "mobile-card mobile-tap-highlight-none transition-all duration-150",
+          'mobile-card mobile-tap-highlight-none transition-all duration-150',
           getVariantClasses(),
           // Touch feedback
-          isPressed && "mobile-press opacity-90",
+          isPressed && 'mobile-press opacity-90',
           // Cursor pointer if interactive
-          (onTap || onLongPress) && "cursor-pointer",
+          (onTap || onLongPress) && 'cursor-pointer',
           className
         )}
         {...touchHandlers}
         {...props}
       >
         {(title || subtitle) && (
-          <CardHeader className={cn(
-            variant === 'compact' ? 'pb-2' : 'pb-3'
-          )}>
+          <CardHeader className={cn(variant === 'compact' ? 'pb-2' : 'pb-3')}>
             {title && (
-              <CardTitle className={cn(
-                "mobile-title",
-                variant === 'compact' && 'text-base'
-              )}>
+              <CardTitle className={cn('mobile-title', variant === 'compact' && 'text-base')}>
                 {title}
               </CardTitle>
             )}
-            {subtitle && (
-              <p className="mobile-subtitle">{subtitle}</p>
-            )}
+            {subtitle && <p className="mobile-subtitle">{subtitle}</p>}
           </CardHeader>
         )}
-        
-        <CardContent className={cn(
-          variant === 'compact' ? 'pt-0 p-3' : 'pt-0'
-        )}>
+
+        <CardContent className={cn(variant === 'compact' ? 'pt-0 p-3' : 'pt-0')}>
           {children}
         </CardContent>
-        
+
         {/* Swipe indicator */}
-        {swipeActions && (
-          <div className="swipe-indicator" />
-        )}
+        {swipeActions && <div className="swipe-indicator" />}
       </Card>
     );
   }
 );
 
-MobileOptimizedCard.displayName = "MobileOptimizedCard";
+MobileOptimizedCard.displayName = 'MobileOptimizedCard';

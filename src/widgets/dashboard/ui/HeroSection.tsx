@@ -23,10 +23,7 @@ interface HeroSectionProps {
   };
 }
 
-export function HeroSection({ 
-  userName = "Dawn", 
-  stats 
-}: HeroSectionProps) {
+export function HeroSection({ userName = 'Dawn', stats }: HeroSectionProps) {
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
   const prefersReducedMotion = useReducedMotion();
@@ -47,22 +44,28 @@ export function HeroSection({
           vertical: LASER_FLOW_CONFIG.VERTICAL_BEAM_OFFSET,
         },
         container: {
-          top: isMobile ? LASER_FLOW_CONFIG.CONTAINER_TOP_MOBILE : LASER_FLOW_CONFIG.CONTAINER_TOP_DESKTOP,
-          right: isMobile ? LASER_FLOW_CONFIG.CONTAINER_RIGHT_MOBILE : LASER_FLOW_CONFIG.CONTAINER_RIGHT_DESKTOP,
-          width: isMobile ? LASER_FLOW_CONFIG.CONTAINER_WIDTH_MOBILE : LASER_FLOW_CONFIG.CONTAINER_WIDTH_DESKTOP,
+          top: isMobile
+            ? LASER_FLOW_CONFIG.CONTAINER_TOP_MOBILE
+            : LASER_FLOW_CONFIG.CONTAINER_TOP_DESKTOP,
+          right: isMobile
+            ? LASER_FLOW_CONFIG.CONTAINER_RIGHT_MOBILE
+            : LASER_FLOW_CONFIG.CONTAINER_RIGHT_DESKTOP,
+          width: isMobile
+            ? LASER_FLOW_CONFIG.CONTAINER_WIDTH_MOBILE
+            : LASER_FLOW_CONFIG.CONTAINER_WIDTH_DESKTOP,
           height: LASER_FLOW_CONFIG.CONTAINER_HEIGHT,
         },
         size: {
           vertical: LASER_FLOW_CONFIG.VERTICAL_SIZING,
           horizontal: LASER_FLOW_CONFIG.HORIZONTAL_SIZING,
-        }
+        },
       });
     }
   }, [prefersReducedMotion, isMobile]);
 
   const achievements = [
-    { label: "Top Performer", icon: Sparkles },
-    { label: "Rising Star", icon: TrendingUp },
+    { label: 'Top Performer', icon: Sparkles },
+    { label: 'Rising Star', icon: TrendingUp },
   ];
 
   return (
@@ -72,12 +75,18 @@ export function HeroSection({
         {/* 🎨 LaserFlow Overlay - Positioned over top-right cards */}
         {!prefersReducedMotion && (
           <Suspense fallback={null}>
-            <div 
+            <div
               className="absolute rounded-2xl overflow-hidden pointer-events-none"
-              style={{ 
-                top: isMobile ? LASER_FLOW_CONFIG.CONTAINER_TOP_MOBILE : LASER_FLOW_CONFIG.CONTAINER_TOP_DESKTOP,
-                right: isMobile ? LASER_FLOW_CONFIG.CONTAINER_RIGHT_MOBILE : LASER_FLOW_CONFIG.CONTAINER_RIGHT_DESKTOP,
-                width: isMobile ? LASER_FLOW_CONFIG.CONTAINER_WIDTH_MOBILE : LASER_FLOW_CONFIG.CONTAINER_WIDTH_DESKTOP,
+              style={{
+                top: isMobile
+                  ? LASER_FLOW_CONFIG.CONTAINER_TOP_MOBILE
+                  : LASER_FLOW_CONFIG.CONTAINER_TOP_DESKTOP,
+                right: isMobile
+                  ? LASER_FLOW_CONFIG.CONTAINER_RIGHT_MOBILE
+                  : LASER_FLOW_CONFIG.CONTAINER_RIGHT_DESKTOP,
+                width: isMobile
+                  ? LASER_FLOW_CONFIG.CONTAINER_WIDTH_MOBILE
+                  : LASER_FLOW_CONFIG.CONTAINER_WIDTH_DESKTOP,
                 height: LASER_FLOW_CONFIG.CONTAINER_HEIGHT,
                 opacity: LASER_FLOW_CONFIG.HERO_OPACITY,
                 zIndex: LASER_FLOW_CONFIG.HERO_Z_INDEX,
@@ -106,16 +115,18 @@ export function HeroSection({
           </Suspense>
         )}
 
-        <div className={`relative z-10 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <div
+          className={`relative z-10 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+        >
           {/* Welcome Message */}
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-4">
               <h1 className="text-3xl md:text-5xl font-display font-bold text-foreground">
-                Welcome back, {userName}! 
+                Welcome back, {userName}!
               </h1>
               <div className="text-2xl md:text-3xl">👋</div>
             </div>
-            
+
             <p className="text-lg md:text-xl text-muted-foreground mb-6 max-w-2xl">
               Your real estate empire is thriving. Here's your latest performance snapshot.
             </p>
@@ -123,7 +134,7 @@ export function HeroSection({
             {/* Achievement Badges */}
             <div className="flex flex-wrap gap-3 mb-8">
               {achievements.map((achievement, index) => (
-                <Badge 
+                <Badge
                   key={achievement.label}
                   className="bg-muted text-foreground border-border hover:bg-muted/80 px-4 py-2 text-sm font-medium animate-scale-in"
                   style={{ animationDelay: `${index * 200}ms` }}
@@ -138,53 +149,51 @@ export function HeroSection({
           {/* Quick Stats Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {[
-              { 
-                label: "Active Properties", 
-                value: stats.activeProperties.toLocaleString(), 
-                icon: Home, 
+              {
+                label: 'Active Properties',
+                value: stats.activeProperties.toLocaleString(),
+                icon: Home,
                 change: `+${stats.newListings} new`,
-                color: "from-blue-400 to-blue-600"
+                color: 'from-blue-400 to-blue-600',
               },
-              { 
-                label: "Pending Sales", 
-                value: stats.pendingSales.toString(), 
-                icon: TrendingUp, 
-                change: "+15% this week",
-                color: "from-emerald-400 to-emerald-600"
+              {
+                label: 'Pending Sales',
+                value: stats.pendingSales.toString(),
+                icon: TrendingUp,
+                change: '+15% this week',
+                color: 'from-emerald-400 to-emerald-600',
               },
-              { 
-                label: "Monthly Revenue", 
-                value: `$${(stats.monthlyRevenue / 1000000).toFixed(1)}M`, 
-                icon: DollarSign, 
-                change: "+22% growth",
-                color: "from-amber-400 to-amber-600"
+              {
+                label: 'Monthly Revenue',
+                value: `$${(stats.monthlyRevenue / 1000000).toFixed(1)}M`,
+                icon: DollarSign,
+                change: '+22% growth',
+                color: 'from-amber-400 to-amber-600',
               },
-              { 
-                label: "Active Agents", 
-                value: "12", 
-                icon: Users, 
-                change: "2 new agents",
-                color: "from-purple-400 to-purple-600"
-              }
+              {
+                label: 'Active Agents',
+                value: '12',
+                icon: Users,
+                change: '2 new agents',
+                color: 'from-purple-400 to-purple-600',
+              },
             ].map((stat, index) => (
-              <Card 
+              <Card
                 key={stat.label}
                 className="border-border hover:bg-muted/50 transition-all duration-300 hover-lift animate-slide-up"
                 style={{ animationDelay: `${index * 150}ms` }}
               >
                 <CardContent className="p-4 text-center">
-                  <div className={`w-12 h-12 rounded-lg bg-linear-to-br ${stat.color} mx-auto mb-3 flex items-center justify-center shadow-glow`}>
+                  <div
+                    className={`w-12 h-12 rounded-lg bg-linear-to-br ${stat.color} mx-auto mb-3 flex items-center justify-center shadow-glow`}
+                  >
                     <stat.icon className="w-6 h-6 text-white" />
                   </div>
                   <div className="text-2xl md:text-3xl font-bold text-foreground mb-1 font-display">
                     {stat.value}
                   </div>
-                  <div className="text-xs text-muted-foreground mb-1">
-                    {stat.label}
-                  </div>
-                  <div className="text-xs text-muted-foreground font-medium">
-                    {stat.change}
-                  </div>
+                  <div className="text-xs text-muted-foreground mb-1">{stat.label}</div>
+                  <div className="text-xs text-muted-foreground font-medium">{stat.change}</div>
                 </CardContent>
               </Card>
             ))}
@@ -198,8 +207,8 @@ export function HeroSection({
                 <ArrowUpRight className="w-4 h-4 ml-2" />
               </Button>
             </AddPropertyDialog>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               className="border-border text-foreground hover:bg-muted px-6 py-3"
               onClick={() => navigate('/reports')}
             >

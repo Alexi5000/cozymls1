@@ -12,18 +12,13 @@ interface PropertiesGridProps {
 export const PropertiesGrid = memo(function PropertiesGrid({ properties }: PropertiesGridProps) {
   const isMobile = useIsMobile();
 
-  const cards = useMemo(() => 
-    properties.map((property) => (
-      <PropertyCardDb key={property.id} property={property} />
-    )), [properties]
+  const cards = useMemo(
+    () => properties.map(property => <PropertyCardDb key={property.id} property={property} />),
+    [properties]
   );
-  
+
   if (isMobile) {
-    return (
-      <div className="space-y-4 animate-slide-up">
-        {cards}
-      </div>
-    );
+    return <div className="space-y-4 animate-slide-up">{cards}</div>;
   }
 
   return (

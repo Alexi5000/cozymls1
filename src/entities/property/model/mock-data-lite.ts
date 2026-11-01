@@ -21,10 +21,17 @@ export const mockPropertiesLite: Property[] = [
     daysOnMarket: 30,
     description: 'Modern apartment with Dublin Bay views and premium finishes.',
     features: ['Modern Kitchen', 'DART Access', 'City Centre Location'],
-    images: ['https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800&h=600&fit=crop&auto=format&q=80'],
-    agent: { id: 'user1', name: 'Dawn O\'Sullivan', phone: '+353 1 456 7890', email: 'dawn@dublinestate.ie' },
+    images: [
+      'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800&h=600&fit=crop&auto=format&q=80',
+    ],
+    agent: {
+      id: 'user1',
+      name: "Dawn O'Sullivan",
+      phone: '+353 1 456 7890',
+      email: 'dawn@dublinestate.ie',
+    },
     createdAt: new Date('2024-01-01'),
-    updatedAt: new Date('2024-01-20')
+    updatedAt: new Date('2024-01-20'),
   },
   {
     id: '2',
@@ -45,10 +52,17 @@ export const mockPropertiesLite: Property[] = [
     daysOnMarket: 25,
     description: 'Victorian period home with original features and contemporary updates.',
     features: ['Period Features', 'Private Garden', 'Original Sash Windows'],
-    images: ['https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop&auto=format&q=80'],
-    agent: { id: 'user2', name: 'Cian Murphy', phone: '+353 87 123 4567', email: 'cian@dublinestate.ie' },
+    images: [
+      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop&auto=format&q=80',
+    ],
+    agent: {
+      id: 'user2',
+      name: 'Cian Murphy',
+      phone: '+353 87 123 4567',
+      email: 'cian@dublinestate.ie',
+    },
     createdAt: new Date('2023-12-15'),
-    updatedAt: new Date('2024-01-15')
+    updatedAt: new Date('2024-01-15'),
   },
   {
     id: '3',
@@ -69,10 +83,17 @@ export const mockPropertiesLite: Property[] = [
     daysOnMarket: 40,
     description: 'Contemporary townhouse with open-plan living and designer kitchen.',
     features: ['Modern Kitchen', 'Rear Garden', 'Central Heating'],
-    images: ['https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800&h=600&fit=crop&auto=format&q=80'],
-    agent: { id: 'user3', name: 'Aoife Kelly', phone: '+353 1 234 5678', email: 'aoife@dublinestate.ie' },
+    images: [
+      'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800&h=600&fit=crop&auto=format&q=80',
+    ],
+    agent: {
+      id: 'user3',
+      name: 'Aoife Kelly',
+      phone: '+353 1 234 5678',
+      email: 'aoife@dublinestate.ie',
+    },
     createdAt: new Date('2023-12-01'),
-    updatedAt: new Date('2024-01-10')
+    updatedAt: new Date('2024-01-10'),
   },
   {
     id: '4',
@@ -93,10 +114,17 @@ export const mockPropertiesLite: Property[] = [
     daysOnMarket: 15,
     description: 'Luxurious family home with sea views and premium finishes.',
     features: ['Sea Views', 'Modern Kitchen', 'Home Office'],
-    images: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop&auto=format&q=80'],
-    agent: { id: 'user4', name: 'Padraig O\'Brien', phone: '+353 86 567 8901', email: 'padraig@dublinestate.ie' },
+    images: [
+      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop&auto=format&q=80',
+    ],
+    agent: {
+      id: 'user4',
+      name: "Padraig O'Brien",
+      phone: '+353 86 567 8901',
+      email: 'padraig@dublinestate.ie',
+    },
     createdAt: new Date('2024-01-05'),
-    updatedAt: new Date('2024-01-25')
+    updatedAt: new Date('2024-01-25'),
   },
   {
     id: '5',
@@ -117,9 +145,16 @@ export const mockPropertiesLite: Property[] = [
     daysOnMarket: 45,
     description: 'Charming coastal apartment with stunning bay views.',
     features: ['Dublin Bay Views', 'DART Access', 'Balcony'],
-    images: ['https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&h=600&fit=crop&auto=format&q=80'],
-    agent: { id: 'user5', name: 'Niamh Ryan', phone: '+353 1 345 6789', email: 'niamh@dublinestate.ie' },
+    images: [
+      'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&h=600&fit=crop&auto=format&q=80',
+    ],
+    agent: {
+      id: 'user5',
+      name: 'Niamh Ryan',
+      phone: '+353 1 345 6789',
+      email: 'niamh@dublinestate.ie',
+    },
     createdAt: new Date('2023-12-01'),
-    updatedAt: new Date('2024-01-30')
-  }
+    updatedAt: new Date('2024-01-30'),
+  },
 ];

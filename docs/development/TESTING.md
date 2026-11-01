@@ -56,6 +56,7 @@ npm install -D @playwright/test
 ### What to Test
 
 ✅ **DO** test:
+
 - Pure functions and utilities
 - Custom hooks
 - Business logic
@@ -63,6 +64,7 @@ npm install -D @playwright/test
 - Validation logic
 
 ❌ **DON'T** test:
+
 - Third-party libraries
 - Implementation details
 - Simple pass-through components
@@ -128,30 +130,34 @@ describe('useDebounce', () => {
   });
 
   it('updates value after delay', async () => {
-    const { result, rerender } = renderHook(
-      ({ value }) => useDebounce(value, 500),
-      { initialProps: { value: 'initial' } }
-    );
+    const { result, rerender } = renderHook(({ value }) => useDebounce(value, 500), {
+      initialProps: { value: 'initial' },
+    });
 
     rerender({ value: 'updated' });
 
-    await waitFor(() => {
-      expect(result.current).toBe('updated');
-    }, { timeout: 600 });
+    await waitFor(
+      () => {
+        expect(result.current).toBe('updated');
+      },
+      { timeout: 600 }
+    );
   });
 
   it('cancels previous timeout on value change', async () => {
-    const { result, rerender } = renderHook(
-      ({ value }) => useDebounce(value, 500),
-      { initialProps: { value: 'first' } }
-    );
+    const { result, rerender } = renderHook(({ value }) => useDebounce(value, 500), {
+      initialProps: { value: 'first' },
+    });
 
     rerender({ value: 'second' });
     rerender({ value: 'third' });
 
-    await waitFor(() => {
-      expect(result.current).toBe('third');
-    }, { timeout: 600 });
+    await waitFor(
+      () => {
+        expect(result.current).toBe('third');
+      },
+      { timeout: 600 }
+    );
   });
 });
 ```
@@ -161,6 +167,7 @@ describe('useDebounce', () => {
 ### What to Test
 
 ✅ **DO** test:
+
 - Component renders correctly
 - User interactions
 - Conditional rendering
@@ -168,6 +175,7 @@ describe('useDebounce', () => {
 - Accessibility
 
 ❌ **DON'T** test:
+
 - Styling details
 - Component internals
 - Third-party component behavior
@@ -190,10 +198,10 @@ describe('Button', () => {
   it('calls onClick when clicked', async () => {
     const handleClick = vi.fn();
     const user = userEvent.setup();
-    
+
     render(<Button onClick={handleClick}>Click me</Button>);
     await user.click(screen.getByText('Click me'));
-    
+
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
@@ -236,7 +244,7 @@ const mockProperty: Property = {
 describe('PropertyCard', () => {
   it('renders property information correctly', () => {
     render(<PropertyCard property={mockProperty} />);
-    
+
     expect(screen.getByText('Modern Downtown Loft')).toBeInTheDocument();
     expect(screen.getByText('$450,000')).toBeInTheDocument();
     expect(screen.getByText('2 bd')).toBeInTheDocument();
@@ -246,10 +254,10 @@ describe('PropertyCard', () => {
   it('calls onSelect when clicked', async () => {
     const handleSelect = vi.fn();
     const user = userEvent.setup();
-    
+
     render(<PropertyCard property={mockProperty} onSelect={handleSelect} />);
     await user.click(screen.getByText('Modern Downtown Loft'));
-    
+
     expect(handleSelect).toHaveBeenCalledWith('1');
   });
 
@@ -261,7 +269,7 @@ describe('PropertyCard', () => {
   it('shows placeholder when no image available', () => {
     const propertyWithoutImage = { ...mockProperty, images: [] };
     render(<PropertyCard property={propertyWithoutImage} />);
-    
+
     expect(screen.getByTestId('property-placeholder')).toBeInTheDocument();
   });
 });
@@ -272,6 +280,7 @@ describe('PropertyCard', () => {
 ### What to Test
 
 ✅ **DO** test:
+
 - Multiple components working together
 - Data flow between components
 - API integration (with mocking)
@@ -355,6 +364,7 @@ describe('useProperties', () => {
 ### What to Test
 
 ✅ **DO** test:
+
 - Critical user journeys
 - Authentication flows
 - Form submissions
@@ -589,6 +599,7 @@ it('has no accessibility violations', async () => {
 ## Visual Regression Testing (Future)
 
 Consider adding visual regression testing with:
+
 - **Chromatic** - For Storybook components
 - **Percy** - For full-page snapshots
 - **Playwright** - Built-in screenshot comparison

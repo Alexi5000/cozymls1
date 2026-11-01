@@ -10,7 +10,7 @@ export const mockActivities: Activity[] = [
     priority: 'high',
     dueDate: new Date('2024-02-20'),
     createdAt: new Date('2024-02-15'),
-    updatedAt: new Date('2024-02-15')
+    updatedAt: new Date('2024-02-15'),
   },
   {
     id: '2',
@@ -21,7 +21,7 @@ export const mockActivities: Activity[] = [
     priority: 'medium',
     dueDate: new Date('2024-02-18'),
     createdAt: new Date('2024-02-10'),
-    updatedAt: new Date('2024-02-10')
+    updatedAt: new Date('2024-02-10'),
   },
   {
     id: '3',
@@ -32,6 +32,6 @@ export const mockActivities: Activity[] = [
     priority: 'low',
     dueDate: new Date('2024-02-22'),
     createdAt: new Date('2024-02-05'),
-    updatedAt: new Date('2024-02-05')
-  }
+    updatedAt: new Date('2024-02-05'),
+  },
 ];

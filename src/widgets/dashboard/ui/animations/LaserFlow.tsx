@@ -301,7 +301,7 @@ export const LaserFlow = ({
   decay = 1.1,
   falloffStart = 1.2,
   fogFallSpeed = 0.6,
-  color = '#FF79C6'
+  color = '#FF79C6',
 }: LaserFlowProps) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -351,12 +351,15 @@ export const LaserFlow = ({
       premultipliedAlpha: false,
       preserveDrawingBuffer: false,
       failIfMajorPerformanceCaveat: false,
-      logarithmicDepthBuffer: false
+      logarithmicDepthBuffer: false,
     });
     logger.ui('LaserFlow', '🎨 Renderer transparency enabled', { alpha: true });
     rendererRef.current = renderer;
 
-    baseDprRef.current = Math.min(dpr ?? (window.devicePixelRatio || 1), LASERFLOW_PERF_CONFIG.MAX_DPR);
+    baseDprRef.current = Math.min(
+      dpr ?? (window.devicePixelRatio || 1),
+      LASERFLOW_PERF_CONFIG.MAX_DPR
+    );
     currentDprRef.current = baseDprRef.current;
 
     renderer.setPixelRatio(currentDprRef.current);
@@ -373,7 +376,10 @@ export const LaserFlow = ({
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
     const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array([-1, -1, 0, 3, -1, 0, -1, 3, 0]), 3));
+    geometry.setAttribute(
+      'position',
+      new THREE.BufferAttribute(new Float32Array([-1, -1, 0, 3, -1, 0, -1, 3, 0]), 3)
+    );
 
     const uniforms = {
       iTime: { value: 0 },
@@ -397,7 +403,7 @@ export const LaserFlow = ({
       uFalloffStart: { value: falloffStart },
       uFogFallSpeed: { value: fogFallSpeed },
       uColor: { value: new THREE.Vector3(1, 1, 1) },
-      uFade: { value: hasFadedRef.current ? 1 : 0 }
+      uFade: { value: hasFadedRef.current ? 1 : 0 },
     };
     uniformsRef.current = uniforms;
 
@@ -408,7 +414,7 @@ export const LaserFlow = ({
       transparent: true,
       depthTest: false,
       depthWrite: false,
-      blending: THREE.AdditiveBlending
+      blending: THREE.AdditiveBlending,
     });
 
     const mesh = new THREE.Mesh(geometry, material);
@@ -430,7 +436,7 @@ export const LaserFlow = ({
       renderer.setSize(w, h, false);
       uniforms.iResolution.value.set(w * pr, h * pr, pr);
       rectRef.current = canvas.getBoundingClientRect();
-      
+
       if (w === 0 || h === 0) {
         logger.warn('LaserFlow', '⚠️ Container has zero dimensions', { width: w, height: h });
       } else {
@@ -511,19 +517,25 @@ export const LaserFlow = ({
 
       if (avgFps < LASERFLOW_PERF_CONFIG.FPS_LOWER_THRESHOLD) {
         next = clamp(
-          currentDprRef.current * LASERFLOW_PERF_CONFIG.DPR_DECREASE_FACTOR, 
-          LASERFLOW_PERF_CONFIG.DPR_FLOOR, 
+          currentDprRef.current * LASERFLOW_PERF_CONFIG.DPR_DECREASE_FACTOR,
+          LASERFLOW_PERF_CONFIG.DPR_FLOOR,
           base
         );
-      } else if (avgFps > LASERFLOW_PERF_CONFIG.FPS_UPPER_THRESHOLD && currentDprRef.current < base) {
+      } else if (
+        avgFps > LASERFLOW_PERF_CONFIG.FPS_UPPER_THRESHOLD &&
+        currentDprRef.current < base
+      ) {
         next = clamp(
-          currentDprRef.current * LASERFLOW_PERF_CONFIG.DPR_INCREASE_FACTOR, 
-          LASERFLOW_PERF_CONFIG.DPR_FLOOR, 
+          currentDprRef.current * LASERFLOW_PERF_CONFIG.DPR_INCREASE_FACTOR,
+          LASERFLOW_PERF_CONFIG.DPR_FLOOR,
           base
         );
       }
 
-      if (Math.abs(next - currentDprRef.current) > 0.01 && now - lastDprChangeRef > LASERFLOW_PERF_CONFIG.DPR_CHANGE_COOLDOWN_MS) {
+      if (
+        Math.abs(next - currentDprRef.current) > 0.01 &&
+        now - lastDprChangeRef > LASERFLOW_PERF_CONFIG.DPR_CHANGE_COOLDOWN_MS
+      ) {
         currentDprRef.current = next;
         lastDprChangeRef = now;
         setSizeNow();
@@ -543,13 +555,18 @@ export const LaserFlow = ({
       prevTime = t;
 
       const dtMs = dt * 1000;
-      emaDtRef.current = emaDtRef.current * LASERFLOW_PERF_CONFIG.EMA_WEIGHT + dtMs * (1 - LASERFLOW_PERF_CONFIG.EMA_WEIGHT);
+      emaDtRef.current =
+        emaDtRef.current * LASERFLOW_PERF_CONFIG.EMA_WEIGHT +
+        dtMs * (1 - LASERFLOW_PERF_CONFIG.EMA_WEIGHT);
       const instFps = 1000 / Math.max(1, emaDtRef.current);
       fpsSamplesRef.current.push(instFps);
 
       uniforms.iTime.value = t;
 
-      const cdt = Math.min(LASERFLOW_PERF_CONFIG.MAX_FRAME_TIME_S, Math.max(LASERFLOW_PERF_CONFIG.MIN_FRAME_TIME_S, dt));
+      const cdt = Math.min(
+        LASERFLOW_PERF_CONFIG.MAX_FRAME_TIME_S,
+        Math.max(LASERFLOW_PERF_CONFIG.MIN_FRAME_TIME_S, dt)
+      );
       uniforms.uFlowTime.value += cdt;
       uniforms.uFogTime.value += cdt;
 
@@ -589,7 +606,7 @@ export const LaserFlow = ({
       renderer.dispose();
       if (mount.contains(canvas)) mount.removeChild(canvas);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dpr, prefersReducedMotion]);
 
   useEffect(() => {
@@ -631,12 +648,17 @@ export const LaserFlow = ({
     decay,
     falloffStart,
     fogFallSpeed,
-    color
+    color,
   ]);
 
   // 🎭 Show static fallback if reduced motion
   if (prefersReducedMotion) {
-    return <div className={`laser-flow-container laser-flow-reduced-motion ${className || ''}`} style={style} />;
+    return (
+      <div
+        className={`laser-flow-container laser-flow-reduced-motion ${className || ''}`}
+        style={style}
+      />
+    );
   }
 
   return <div ref={mountRef} className={`laser-flow-container ${className || ''}`} style={style} />;

@@ -5,14 +5,21 @@
 export function brokeredPreviewStorage() {
   if (typeof window === 'undefined') return undefined;
   const host = location.hostname;
-  const PREVIEW_ZONES = ['lovableproject.com', 'lovableproject-dev.com', 'lovable.app', 'gpt-eng.com', 'gptengineer.run'];
-  const onPreviewZone = PREVIEW_ZONES.some((z) => host === z || host.endsWith('.' + z));
+  const PREVIEW_ZONES = [
+    'lovableproject.com',
+    'lovableproject-dev.com',
+    'lovable.app',
+    'gpt-eng.com',
+    'gptengineer.run',
+  ];
+  const onPreviewZone = PREVIEW_ZONES.some(z => host === z || host.endsWith('.' + z));
   // Read the id only from non-user-controlled host positions, so a user-named
   // preview--<name> host can't smuggle another project's id.
   const UUID = '[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}';
   const projectId = onPreviewZone
-    ? (host.match(new RegExp('^(?:id-preview(?:-[a-z0-9]+)?|project)--(' + UUID + ')(?:-dev)?(?=\\.|$)', 'i'))?.[1]
-        ?? host.match(new RegExp('^(' + UUID + ')(?=[.-])', 'i'))?.[1])
+    ? (host.match(
+        new RegExp('^(?:id-preview(?:-[a-z0-9]+)?|project)--(' + UUID + ')(?:-dev)?(?=\\.|$)', 'i')
+      )?.[1] ?? host.match(new RegExp('^(' + UUID + ')(?=[.-])', 'i'))?.[1])
     : undefined;
   const framed = window.parent && window.parent !== window;
   if (!projectId || !framed) return localStorage;
@@ -23,16 +30,25 @@ export function brokeredPreviewStorage() {
   const EDITOR = dev
     ? /^https:\/\/([a-z0-9-]+\.)*(lovable\.dev|gptengineer\.app)$|^http:\/\/localhost:3000$/
     : /^https:\/\/([a-z0-9-]+\.)*(lovable\.dev|gptengineer\.app)$/;
-  const ancestor = (location.ancestorOrigins && location.ancestorOrigins[0]) || (document.referrer ? new URL(document.referrer).origin : '');
-  const editorOrigins = ancestor && EDITOR.test(ancestor)
-    ? [ancestor]
-    : (dev ? ['https://lovable.dev', 'http://localhost:3000'] : ['https://lovable.dev']);
+  const ancestor =
+    (location.ancestorOrigins && location.ancestorOrigins[0]) ||
+    (document.referrer ? new URL(document.referrer).origin : '');
+  const editorOrigins =
+    ancestor && EDITOR.test(ancestor)
+      ? [ancestor]
+      : dev
+        ? ['https://lovable.dev', 'http://localhost:3000']
+        : ['https://lovable.dev'];
   const RESULT = 'lovable-preview-auth:result';
   const TIMEOUT = 2000;
   const newId = () => Math.random().toString(36).slice(2) + Date.now().toString(36);
 
-  const request = (type: string, key: string, value?: string): Promise<{ ok: boolean; value?: string | null } | null> =>
-    new Promise((resolve) => {
+  const request = (
+    type: string,
+    key: string,
+    value?: string
+  ): Promise<{ ok: boolean; value?: string | null } | null> =>
+    new Promise(resolve => {
       const requestId = newId();
       let done = false;
       const finish = (r: { ok: boolean; value?: string | null } | null) => {
@@ -59,7 +75,13 @@ export function brokeredPreviewStorage() {
   let firstGet = true;
   const RETRY_DELAY = 250;
   // Blocked third-party storage throws here; seeding must not break broker reads.
-  const readLocal = (key: string) => { try { return localStorage.getItem(key); } catch { return undefined; } };
+  const readLocal = (key: string) => {
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      return undefined;
+    }
+  };
 
   return {
     getItem: async (key: string) => {
@@ -67,7 +89,7 @@ export function brokeredPreviewStorage() {
       const local = readLocal(key);
       let res = await request('lovable-preview-auth:get', key, local ?? undefined);
       if (!res && firstGet) {
-        await new Promise((r) => setTimeout(r, RETRY_DELAY));
+        await new Promise(r => setTimeout(r, RETRY_DELAY));
         res = await request('lovable-preview-auth:get', key, local ?? undefined);
       }
       firstGet = false;
@@ -80,7 +102,11 @@ export function brokeredPreviewStorage() {
         }
         // Seed this origin so a new tab, whose editor holds no session, stays signed in.
         if (local === null && readLocal(key) === null) {
-          try { localStorage.setItem(key, res.value); } catch { /* storage full: still return the editor's session */ }
+          try {
+            localStorage.setItem(key, res.value);
+          } catch {
+            /* storage full: still return the editor's session */
+          }
         }
         return res.value;
       }
@@ -88,7 +114,7 @@ export function brokeredPreviewStorage() {
     },
     setItem: (key: string, value: string) => {
       localStorage.setItem(key, value);
-      return request('lovable-preview-auth:set', key, value).then((res) => {
+      return request('lovable-preview-auth:set', key, value).then(res => {
         if (res && res.ok && typeof res.value === 'string' && localStorage.getItem(key) === value) {
           if (res.value === '') localStorage.removeItem(key);
           else localStorage.setItem(key, res.value);

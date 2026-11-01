@@ -16,12 +16,16 @@ function entry(target: Element, isIntersecting: boolean): IntersectionObserverEn
 describe('browser observer contracts', () => {
   it('preserves scroll visibility callbacks, thresholds, margins and cleanup', () => {
     let observer: MockIntersectionObserver;
-    vi.spyOn(globalThis, 'IntersectionObserver').mockImplementation(function(callback, options) {
+    vi.spyOn(globalThis, 'IntersectionObserver').mockImplementation(function (callback, options) {
       observer = new MockIntersectionObserver(callback, options);
       return observer;
     });
     function Animated() {
-      const { elementRef, isVisible } = useScrollAnimation({ threshold: 0.6, rootMargin: '20px', triggerOnce: false });
+      const { elementRef, isVisible } = useScrollAnimation({
+        threshold: 0.6,
+        rootMargin: '20px',
+        triggerOnce: false,
+      });
       return <div ref={elementRef} data-testid="animated" data-visible={isVisible} />;
     }
     const view = render(<Animated />);
@@ -39,7 +43,7 @@ describe('browser observer contracts', () => {
 
   it('retains lazy viewport class behavior and caller options', () => {
     let observer: MockIntersectionObserver;
-    vi.spyOn(globalThis, 'IntersectionObserver').mockImplementation(function(callback, options) {
+    vi.spyOn(globalThis, 'IntersectionObserver').mockImplementation(function (callback, options) {
       observer = new MockIntersectionObserver(callback, options);
       return observer;
     });
@@ -95,9 +99,15 @@ describe('browser observer contracts', () => {
       return null;
     }
     render(<Monitored />);
-    expect(window.gtag).toHaveBeenCalledWith('event', 'component_render', expect.objectContaining({
-      custom_component_name: 'Report', custom_render_count: 1,
-      custom_render_time: expect.any(Number), custom_timestamp: expect.any(Number),
-    }));
+    expect(window.gtag).toHaveBeenCalledWith(
+      'event',
+      'component_render',
+      expect.objectContaining({
+        custom_component_name: 'Report',
+        custom_render_count: 1,
+        custom_render_time: expect.any(Number),
+        custom_timestamp: expect.any(Number),
+      })
+    );
   });
 });

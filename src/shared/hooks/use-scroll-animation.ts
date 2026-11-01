@@ -7,11 +7,7 @@ interface UseScrollAnimationOptions {
 }
 
 export function useScrollAnimation(options: UseScrollAnimationOptions = {}) {
-  const {
-    threshold = 0.1,
-    rootMargin = '0px',
-    triggerOnce = true
-  } = options;
+  const { threshold = 0.1, rootMargin = '0px', triggerOnce = true } = options;
 
   const elementRef = useRef<HTMLDivElement>(null);
   // For performance optimization, start visible to avoid layout shift
@@ -48,7 +44,7 @@ export function useScrollAnimation(options: UseScrollAnimationOptions = {}) {
 
   return {
     elementRef,
-    isVisible: triggerOnce ? (hasTriggered || isVisible) : isVisible,
+    isVisible: triggerOnce ? hasTriggered || isVisible : isVisible,
   };
 }
 

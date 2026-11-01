@@ -12,7 +12,7 @@ interface EmptyStateProps {
 
 /**
  * Reusable Empty State Component
- * 
+ *
  * Displays when no data is available, with optional call-to-action.
  */
 export function EmptyState({
@@ -29,14 +29,8 @@ export function EmptyState({
           <Icon className="w-8 h-8 text-muted-foreground" />
         </div>
         <h3 className="text-lg font-semibold mb-2">{title}</h3>
-        <p className="text-muted-foreground text-center mb-6 max-w-sm">
-          {description}
-        </p>
-        {actionLabel && onAction && (
-          <Button onClick={onAction}>
-            {actionLabel}
-          </Button>
-        )}
+        <p className="text-muted-foreground text-center mb-6 max-w-sm">{description}</p>
+        {actionLabel && onAction && <Button onClick={onAction}>{actionLabel}</Button>}
       </CardContent>
     </Card>
   );

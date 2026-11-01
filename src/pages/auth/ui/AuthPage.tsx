@@ -19,7 +19,8 @@ const signInSchema = z.object({
 const signUpSchema = z.object({
   name: z.string().optional(),
   email: z.string().email('Invalid email address'),
-  password: z.string()
+  password: z
+    .string()
     .min(8, 'Password must be at least 8 characters')
     .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
     .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
@@ -102,7 +103,7 @@ export function AuthPage() {
               <TabsTrigger value="signin">Sign In</TabsTrigger>
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="signin">
               <Form {...signInForm}>
                 <form onSubmit={signInForm.handleSubmit(handleSignIn)} className="space-y-4">
@@ -113,11 +114,7 @@ export function AuthPage() {
                       <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input
-                            type="email"
-                            placeholder="name@example.com"
-                            {...field}
-                          />
+                          <Input type="email" placeholder="name@example.com" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -142,7 +139,7 @@ export function AuthPage() {
                 </form>
               </Form>
             </TabsContent>
-            
+
             <TabsContent value="signup">
               <Form {...signUpForm}>
                 <form onSubmit={signUpForm.handleSubmit(handleSignUp)} className="space-y-4">
@@ -153,11 +150,7 @@ export function AuthPage() {
                       <FormItem>
                         <FormLabel>Name (Optional)</FormLabel>
                         <FormControl>
-                          <Input
-                            type="text"
-                            placeholder="John Doe"
-                            {...field}
-                          />
+                          <Input type="text" placeholder="John Doe" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -170,11 +163,7 @@ export function AuthPage() {
                       <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input
-                            type="email"
-                            placeholder="name@example.com"
-                            {...field}
-                          />
+                          <Input type="email" placeholder="name@example.com" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

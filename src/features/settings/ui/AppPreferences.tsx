@@ -6,15 +6,14 @@ import { Separator } from '@/shared/ui/separator';
 import { Moon, Sun, Bell, RefreshCw } from 'lucide-react';
 
 export function AppPreferences() {
-  const { theme, autoRefresh, notifications, toggleTheme, setAutoRefresh, setNotifications } = useThemeStore();
+  const { theme, autoRefresh, notifications, toggleTheme, setAutoRefresh, setNotifications } =
+    useThemeStore();
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>Application Preferences</CardTitle>
-        <CardDescription>
-          Customize your app experience and behavior
-        </CardDescription>
+        <CardDescription>Customize your app experience and behavior</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="flex items-center justify-between">
@@ -26,16 +25,10 @@ export function AppPreferences() {
             )}
             <div className="space-y-0.5">
               <Label htmlFor="theme-toggle">Dark Mode</Label>
-              <p className="text-sm text-muted-foreground">
-                Switch between light and dark themes
-              </p>
+              <p className="text-sm text-muted-foreground">Switch between light and dark themes</p>
             </div>
           </div>
-          <Switch
-            id="theme-toggle"
-            checked={theme === 'dark'}
-            onCheckedChange={toggleTheme}
-          />
+          <Switch id="theme-toggle" checked={theme === 'dark'} onCheckedChange={toggleTheme} />
         </div>
 
         <Separator />
@@ -69,11 +62,7 @@ export function AppPreferences() {
               </p>
             </div>
           </div>
-          <Switch
-            id="autorefresh-toggle"
-            checked={autoRefresh}
-            onCheckedChange={setAutoRefresh}
-          />
+          <Switch id="autorefresh-toggle" checked={autoRefresh} onCheckedChange={setAutoRefresh} />
         </div>
       </CardContent>
     </Card>

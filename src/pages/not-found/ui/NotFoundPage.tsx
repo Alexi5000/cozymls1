@@ -12,11 +12,11 @@ export function NotFoundPage() {
             <h1 className="text-4xl font-bold text-gray-900">404</h1>
             <h2 className="text-xl font-semibold text-gray-700">Page Not Found</h2>
             <p className="text-gray-600 max-w-md">
-              Sorry, we couldn't find the page you're looking for. 
-              Please check the URL or navigate back to the dashboard.
+              Sorry, we couldn't find the page you're looking for. Please check the URL or navigate
+              back to the dashboard.
             </p>
           </div>
-          
+
           <Link to="/">
             <Button className="flex items-center gap-2">
               <Home className="h-4 w-4" />
