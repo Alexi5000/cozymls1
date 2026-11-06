@@ -1,6 +1,6 @@
 /**
  * Structured Logger with Emoji Indicators
- * 
+ *
  * Provides consistent, categorized logging across the application.
  * Logs are only active in development unless explicitly enabled.
  */
@@ -117,10 +117,7 @@ export const logger = {
 /**
  * Performance measurement utility
  */
-export function measurePerformance<T>(
-  operation: string,
-  fn: () => T | Promise<T>
-): T | Promise<T> {
+export function measurePerformance<T>(operation: string, fn: () => T | Promise<T>): T | Promise<T> {
   const start = performance.now();
   const result = fn();
 

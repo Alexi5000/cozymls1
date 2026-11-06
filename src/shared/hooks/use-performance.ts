@@ -19,11 +19,7 @@ interface NavigatorWithCapabilities extends Navigator {
 
 declare global {
   interface Window {
-    gtag?: (
-      command: string,
-      action: string,
-      parameters: Record<string, unknown>
-    ) => void;
+    gtag?: (command: string, action: string, parameters: Record<string, unknown>) => void;
   }
 }
 
@@ -62,10 +58,7 @@ export function usePerformanceMonitor(componentName: string) {
   });
 
   const measureFunction = useCallback(
-    <TArgs extends unknown[], TResult>(
-      fn: (...args: TArgs) => TResult,
-      functionName: string
-    ) => {
+    <TArgs extends unknown[], TResult>(fn: (...args: TArgs) => TResult, functionName: string) => {
       return (...args: TArgs): TResult => {
         const start = performance.now();
         const result = fn(...args);
@@ -84,9 +77,7 @@ export function usePerformanceMonitor(componentName: string) {
   return { measureFunction, renderCount: renderCount.current };
 }
 
-export function useIntersectionObserver(
-  options: IntersectionObserverInit = {}
-) {
+export function useIntersectionObserver(options: IntersectionObserverInit = {}) {
   const elementRef = useRef<HTMLElement>(null);
   const observerRef = useRef<IntersectionObserver>();
 
@@ -95,8 +86,8 @@ export function useIntersectionObserver(
     if (!element) return;
 
     observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             element.classList.add('in-viewport');
           }
@@ -162,8 +153,7 @@ export const performanceUtils = {
   },
 
   getDeviceCapabilities: () => {
-    const navigatorWithCapabilities =
-      window.navigator as NavigatorWithCapabilities;
+    const navigatorWithCapabilities = window.navigator as NavigatorWithCapabilities;
 
     return {
       hardwareConcurrency: navigatorWithCapabilities.hardwareConcurrency || 4,

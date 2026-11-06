@@ -11,21 +11,8 @@ import {
 } from '@/shared/ui/dialog';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/shared/ui/form';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/shared/ui/select';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/shared/ui/form';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select';
 import { useAuth } from '@/shared/hooks/use-auth';
 import { useDeal, useCreateDeal, useUpdateDeal } from '@/integrations/supabase/hooks/use-deals';
 import { useContacts } from '@/integrations/supabase/hooks/use-contacts';
@@ -96,7 +83,7 @@ export function DealDialog({ dealId, isOpen, onClose }: DealDialogProps) {
           logger.error('DealDialog', 'User not authenticated');
           return;
         }
-        await createDeal.mutateAsync({ 
+        await createDeal.mutateAsync({
           title: data.title,
           contact_id: data.contact_id,
           property_id: data.property_id || undefined,
@@ -104,7 +91,7 @@ export function DealDialog({ dealId, isOpen, onClose }: DealDialogProps) {
           stage: data.stage,
           probability: data.probability,
           expected_close_date: data.expected_close_date,
-          agent_id: user.id 
+          agent_id: user.id,
         });
       }
       logger.info('DealDialog', 'Deal saved successfully', { isEditing });
@@ -120,7 +107,9 @@ export function DealDialog({ dealId, isOpen, onClose }: DealDialogProps) {
         <DialogHeader>
           <DialogTitle>{isEditing ? 'Edit Deal' : 'Add New Deal'}</DialogTitle>
           <DialogDescription>
-            {isEditing ? 'Update deal information below.' : 'Fill in the details to create a new deal.'}
+            {isEditing
+              ? 'Update deal information below.'
+              : 'Fill in the details to create a new deal.'}
           </DialogDescription>
         </DialogHeader>
 
@@ -159,7 +148,7 @@ export function DealDialog({ dealId, isOpen, onClose }: DealDialogProps) {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {contacts?.data?.map((contact) => (
+                          {contacts?.data?.map(contact => (
                             <SelectItem key={contact.id} value={contact.id}>
                               {contact.name}
                             </SelectItem>
@@ -177,8 +166,8 @@ export function DealDialog({ dealId, isOpen, onClose }: DealDialogProps) {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Property</FormLabel>
-                      <Select 
-                        onValueChange={field.onChange} 
+                      <Select
+                        onValueChange={field.onChange}
                         defaultValue={field.value || undefined}
                       >
                         <FormControl>
@@ -187,7 +176,7 @@ export function DealDialog({ dealId, isOpen, onClose }: DealDialogProps) {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {properties?.data?.map((property) => (
+                          {properties?.data?.map(property => (
                             <SelectItem key={property.id} value={property.id}>
                               {property.address}
                             </SelectItem>
@@ -208,11 +197,11 @@ export function DealDialog({ dealId, isOpen, onClose }: DealDialogProps) {
                     <FormItem>
                       <FormLabel>Value *</FormLabel>
                       <FormControl>
-                        <Input 
-                          type="number" 
-                          placeholder="0.00" 
+                        <Input
+                          type="number"
+                          placeholder="0.00"
                           {...field}
-                          onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                          onChange={e => field.onChange(parseFloat(e.target.value) || 0)}
                         />
                       </FormControl>
                       <FormMessage />
@@ -227,13 +216,13 @@ export function DealDialog({ dealId, isOpen, onClose }: DealDialogProps) {
                     <FormItem>
                       <FormLabel>Probability (%) *</FormLabel>
                       <FormControl>
-                        <Input 
-                          type="number" 
-                          min="0" 
-                          max="100" 
-                          placeholder="25" 
+                        <Input
+                          type="number"
+                          min="0"
+                          max="100"
+                          placeholder="25"
                           {...field}
-                          onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                          onChange={e => field.onChange(parseInt(e.target.value) || 0)}
                         />
                       </FormControl>
                       <FormMessage />

@@ -9,7 +9,12 @@ import { Skeleton } from '@/shared/ui/skeleton';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog';
 import { DataPagination } from '@/shared/ui/data-pagination';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/shared/ui/dropdown-menu';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/shared/ui/dropdown-menu';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
 import { useContacts, useDeleteContact } from '@/integrations/supabase/hooks/use-contacts';
 import { ContactDialog } from '@/features/contacts';
@@ -22,12 +27,12 @@ export function ContactsPage() {
   const [pageSize, setPageSize] = useState(20);
   const { data: contactsData, isLoading, refetch } = useContacts({ page, pageSize });
   const deleteContact = useDeleteContact();
-  
+
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingContactId, setEditingContactId] = useState<string | undefined>();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [contactToDelete, setContactToDelete] = useState<string | null>(null);
-  
+
   const statusColors = {
     lead: 'bg-yellow-100 text-yellow-800',
     prospect: 'bg-blue-100 text-blue-800',
@@ -64,7 +69,7 @@ export function ContactsPage() {
 
   const handleDeleteConfirm = async () => {
     if (!contactToDelete) return;
-    
+
     logger.warn('ContactsPage', 'Deleting contact', { contactId: contactToDelete });
     await deleteContact.mutateAsync(contactToDelete);
     setDeleteDialogOpen(false);
@@ -78,7 +83,9 @@ export function ContactsPage() {
           <Skeleton className="h-8 w-32" />
           <Skeleton className="h-10 w-32" />
         </div>
-        <div className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
+        <div
+          className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}
+        >
           {[...Array(6)].map((_, i) => (
             <Skeleton key={i} className="h-64 w-full" />
           ))}
@@ -87,7 +94,9 @@ export function ContactsPage() {
     );
 
     return isMobile ? (
-      <MobileLayout title="Contacts" onRefresh={handleRefresh}>{content}</MobileLayout>
+      <MobileLayout title="Contacts" onRefresh={handleRefresh}>
+        {content}
+      </MobileLayout>
     ) : (
       <Layout title="Contacts">{content}</Layout>
     );
@@ -112,12 +121,15 @@ export function ContactsPage() {
           onAction={handleAddContact}
         />
       ) : (
-        <div className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
-          {contacts.map((contact) => {
+        <div
+          className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}
+        >
+          {contacts.map(contact => {
             const ContactCard = isMobile ? MobileOptimizedCard : Card;
             return (
-              <ContactCard key={contact.id} 
-                className={isMobile ? "" : "hover:shadow-lg transition-shadow"}
+              <ContactCard
+                key={contact.id}
+                className={isMobile ? '' : 'hover:shadow-lg transition-shadow'}
                 {...(isMobile && { enableHaptic: true })}
               >
                 <CardHeader>
@@ -132,9 +144,7 @@ export function ContactsPage() {
                       )}
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge className={statusColors[contact.status]}>
-                        {contact.status}
-                      </Badge>
+                      <Badge className={statusColors[contact.status]}>{contact.status}</Badge>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
@@ -146,7 +156,7 @@ export function ContactsPage() {
                             <Edit className="h-4 w-4 mr-2" />
                             Edit
                           </DropdownMenuItem>
-                          <DropdownMenuItem 
+                          <DropdownMenuItem
                             onClick={() => handleDeleteClick(contact.id)}
                             className="text-destructive"
                           >
@@ -168,23 +178,23 @@ export function ContactsPage() {
                       <Phone className="h-4 w-4" />
                       <span>{contact.phone}</span>
                     </div>
-                    
+
                     {contact.tags && contact.tags.length > 0 && (
                       <div className="flex flex-wrap gap-1 mt-3">
-                        {contact.tags.map((tag) => (
+                        {contact.tags.map(tag => (
                           <Badge key={tag} variant="outline" className="text-xs">
                             {tag}
                           </Badge>
                         ))}
                       </div>
                     )}
-                    
+
                     {contact.notes && (
                       <p className="text-sm text-muted-foreground mt-3 p-2 bg-muted rounded line-clamp-2">
                         {contact.notes}
                       </p>
                     )}
-                    
+
                     <p className="text-xs text-muted-foreground mt-3">
                       Last contact: {new Date(contact.last_contact).toLocaleDateString()}
                     </p>
@@ -204,7 +214,7 @@ export function ContactsPage() {
             totalItems={totalCount}
             totalPages={contactsData?.totalPages || 1}
             onPageChange={setPage}
-            onPageSizeChange={(newSize) => {
+            onPageSizeChange={newSize => {
               setPageSize(newSize);
               setPage(1);
             }}
@@ -239,9 +249,5 @@ export function ContactsPage() {
     );
   }
 
-  return (
-    <Layout title="Contacts">
-      {content}
-    </Layout>
-  );
+  return <Layout title="Contacts">{content}</Layout>;
 }

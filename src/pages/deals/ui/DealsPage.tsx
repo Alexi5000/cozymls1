@@ -9,7 +9,12 @@ import { MobileOptimizedCard } from '@/shared/ui/mobile-optimized-card';
 import { Skeleton } from '@/shared/ui/skeleton';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/shared/ui/dropdown-menu';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/shared/ui/dropdown-menu';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
 import { useDeals, useDeleteDeal } from '@/integrations/supabase/hooks/use-deals';
 import { DealDialog } from '@/features/deals';
@@ -20,7 +25,7 @@ export function DealsPage() {
   const isMobile = useIsMobile();
   const { data: deals, isLoading, refetch } = useDeals();
   const deleteDeal = useDeleteDeal();
-  
+
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingDealId, setEditingDealId] = useState<string | undefined>();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -62,7 +67,7 @@ export function DealsPage() {
 
   const handleDeleteConfirm = async () => {
     if (!dealToDelete) return;
-    
+
     logger.warn('DealsPage', 'Deleting deal', { dealId: dealToDelete });
     await deleteDeal.mutateAsync(dealToDelete);
     setDeleteDialogOpen(false);
@@ -76,7 +81,9 @@ export function DealsPage() {
           <Skeleton className="h-8 w-32" />
           <Skeleton className="h-10 w-32" />
         </div>
-        <div className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
+        <div
+          className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}
+        >
           {[...Array(6)].map((_, i) => (
             <Skeleton key={i} className="h-64 w-full" />
           ))}
@@ -85,7 +92,9 @@ export function DealsPage() {
     );
 
     return isMobile ? (
-      <MobileLayout title="Deals" onRefresh={handleRefresh}>{content}</MobileLayout>
+      <MobileLayout title="Deals" onRefresh={handleRefresh}>
+        {content}
+      </MobileLayout>
     ) : (
       <Layout title="Deals">{content}</Layout>
     );
@@ -110,12 +119,15 @@ export function DealsPage() {
           onAction={handleAddDeal}
         />
       ) : (
-        <div className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
-          {deals.map((deal) => {
+        <div
+          className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}
+        >
+          {deals.map(deal => {
             const DealCard = isMobile ? MobileOptimizedCard : Card;
             return (
-              <DealCard key={deal.id} 
-                className={isMobile ? "" : "hover:shadow-lg transition-shadow"}
+              <DealCard
+                key={deal.id}
+                className={isMobile ? '' : 'hover:shadow-lg transition-shadow'}
                 {...(isMobile && { enableHaptic: true })}
               >
                 <CardHeader>
@@ -141,7 +153,7 @@ export function DealsPage() {
                             <Edit className="h-4 w-4 mr-2" />
                             Edit
                           </DropdownMenuItem>
-                          <DropdownMenuItem 
+                          <DropdownMenuItem
                             onClick={() => handleDeleteClick(deal.id)}
                             className="text-destructive"
                           >
@@ -161,7 +173,7 @@ export function DealsPage() {
                         ${Number(deal.value).toLocaleString()}
                       </span>
                     </div>
-                    
+
                     <div>
                       <div className="flex justify-between items-center mb-2">
                         <span className="text-sm text-muted-foreground">Probability</span>
@@ -169,10 +181,12 @@ export function DealsPage() {
                       </div>
                       <Progress value={deal.probability} className="h-2" />
                     </div>
-                    
+
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Calendar className="h-4 w-4" />
-                      <span>Expected: {new Date(deal.expected_close_date).toLocaleDateString()}</span>
+                      <span>
+                        Expected: {new Date(deal.expected_close_date).toLocaleDateString()}
+                      </span>
                     </div>
                   </div>
                 </CardContent>
@@ -182,11 +196,7 @@ export function DealsPage() {
         </div>
       )}
 
-      <DealDialog
-        dealId={editingDealId}
-        isOpen={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-      />
+      <DealDialog dealId={editingDealId} isOpen={dialogOpen} onClose={() => setDialogOpen(false)} />
 
       <DeleteConfirmDialog
         title="Delete Deal"
@@ -207,9 +217,5 @@ export function DealsPage() {
     );
   }
 
-  return (
-    <Layout title="Deals">
-      {content}
-    </Layout>
-  );
+  return <Layout title="Deals">{content}</Layout>;
 }

@@ -9,24 +9,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/shared/ui/dialog';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/shared/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/shared/ui/form';
 import { Input } from '@/shared/ui/input';
 import { Button } from '@/shared/ui/button';
 import { Textarea } from '@/shared/ui/textarea';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/shared/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select';
 import { useToast } from '@/shared/hooks/use-toast';
 import { useCreateProperty } from '@/integrations/supabase/hooks';
 import { useAuth } from '@/shared/hooks/use-auth';
@@ -59,7 +46,7 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
   const { toast } = useToast();
   const createProperty = useCreateProperty();
   const { user } = useAuth();
-  
+
   const form = useForm<PropertyForm>({
     resolver: zodResolver(propertySchema),
     defaultValues: {
@@ -82,9 +69,9 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
   const onSubmit = async (data: PropertyForm) => {
     if (!user?.id) {
       toast({
-        title: "Error",
-        description: "You must be logged in to add properties.",
-        variant: "destructive",
+        title: 'Error',
+        description: 'You must be logged in to add properties.',
+        variant: 'destructive',
       });
       return;
     }
@@ -129,7 +116,7 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
         <DialogHeader>
           <DialogTitle>Add New Property</DialogTitle>
         </DialogHeader>
-        
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -146,7 +133,7 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="address"
@@ -160,7 +147,7 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="city"
@@ -174,7 +161,7 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="state"
@@ -188,7 +175,7 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="zip_code"
@@ -202,7 +189,7 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="price"
@@ -210,18 +197,18 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
                   <FormItem>
                     <FormLabel>Price ($)</FormLabel>
                     <FormControl>
-                      <Input 
-                        type="number" 
-                        placeholder="500000" 
+                      <Input
+                        type="number"
+                        placeholder="500000"
                         {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        onChange={e => field.onChange(Number(e.target.value))}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="property_type"
@@ -247,7 +234,7 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="bedrooms"
@@ -255,18 +242,18 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
                   <FormItem>
                     <FormLabel>Bedrooms</FormLabel>
                     <FormControl>
-                      <Input 
-                        type="number" 
-                        placeholder="3" 
+                      <Input
+                        type="number"
+                        placeholder="3"
                         {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        onChange={e => field.onChange(Number(e.target.value))}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="bathrooms"
@@ -274,19 +261,19 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
                   <FormItem>
                     <FormLabel>Bathrooms</FormLabel>
                     <FormControl>
-                      <Input 
-                        type="number" 
+                      <Input
+                        type="number"
                         step="0.5"
-                        placeholder="2" 
+                        placeholder="2"
                         {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        onChange={e => field.onChange(Number(e.target.value))}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="square_feet"
@@ -294,18 +281,18 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
                   <FormItem>
                     <FormLabel>Square Feet</FormLabel>
                     <FormControl>
-                      <Input 
-                        type="number" 
-                        placeholder="2000" 
+                      <Input
+                        type="number"
+                        placeholder="2000"
                         {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        onChange={e => field.onChange(Number(e.target.value))}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="lot_size"
@@ -313,18 +300,18 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
                   <FormItem>
                     <FormLabel>Lot Size (sq ft)</FormLabel>
                     <FormControl>
-                      <Input 
-                        type="number" 
-                        placeholder="8000" 
+                      <Input
+                        type="number"
+                        placeholder="8000"
                         {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        onChange={e => field.onChange(Number(e.target.value))}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="year_built"
@@ -332,11 +319,11 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
                   <FormItem>
                     <FormLabel>Year Built</FormLabel>
                     <FormControl>
-                      <Input 
-                        type="number" 
-                        placeholder="2020" 
+                      <Input
+                        type="number"
+                        placeholder="2020"
                         {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        onChange={e => field.onChange(Number(e.target.value))}
                       />
                     </FormControl>
                     <FormMessage />
@@ -344,7 +331,7 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
                 )}
               />
             </div>
-            
+
             <FormField
               control={form.control}
               name="description"
@@ -352,17 +339,17 @@ export function AddPropertyDialog({ children }: AddPropertyDialogProps) {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea 
+                    <Textarea
                       placeholder="Beautiful property with modern amenities..."
                       className="min-h-[100px]"
-                      {...field} 
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
+
             <div className="flex justify-end gap-3">
               <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                 Cancel

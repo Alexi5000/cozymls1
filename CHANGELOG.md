@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - Comprehensive project documentation
 - CI/CD pipeline with automated workflows
 - Security policy and guidelines
@@ -17,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2025-01-15
 
 ### Added
+
 - Initial release of Haven Estate Suite
 - Real estate CRM with property management
 - Contact and client management system
@@ -70,6 +72,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Collapsible sections
 
 ### Security
+
 - Row-level security policies on all tables
 - Email confirmation for user signups
 - Secure authentication flows
@@ -80,6 +83,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Environment variable management
 
 ### Performance
+
 - Code splitting for optimal bundle size
 - Lazy loading of components
 - Image optimization
@@ -89,6 +93,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Virtualized lists for large datasets
 
 ### Documentation
+
 - Comprehensive README
 - API documentation
 - Architecture documentation

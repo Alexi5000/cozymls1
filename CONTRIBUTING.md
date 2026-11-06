@@ -52,6 +52,7 @@ Use descriptive branch names following this convention:
 - `chore/description` - Maintenance tasks
 
 Examples:
+
 - `feature/add-property-filters`
 - `fix/login-validation-error`
 - `docs/update-api-reference`
@@ -59,6 +60,7 @@ Examples:
 ### Workflow Steps
 
 1. **Create a new branch** from `main`:
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
@@ -68,6 +70,7 @@ Examples:
 3. **Commit your changes** using [Conventional Commits](#commit-guidelines)
 
 4. **Push to your fork**:
+
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -140,21 +143,26 @@ feat(properties): add advanced search filters
 
 ```markdown
 ## Description
+
 Brief description of changes
 
 ## Type of Change
+
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Breaking change
 - [ ] Documentation update
 
 ## Testing
+
 How has this been tested?
 
 ## Screenshots (if applicable)
+
 Add screenshots for UI changes
 
 ## Checklist
+
 - [ ] Code follows project style guidelines
 - [ ] Self-review completed
 - [ ] Comments added for complex code
@@ -199,7 +207,8 @@ For detailed standards, see [docs/development/CODING_STANDARDS.md](docs/developm
 ### Code Formatting
 
 - Use Prettier for code formatting
-- Run `npm run format` before committing
+- Run `npm run format` before committing (CI runs `npm run format:check`)
+- To skip the one-time reformat commit in `git blame`, run `git config blame.ignoreRevsFile .git-blame-ignore-revs`
 - Configure your editor to format on save
 
 ### Import Order

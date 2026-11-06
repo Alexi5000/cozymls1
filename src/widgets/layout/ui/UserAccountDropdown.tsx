@@ -5,7 +5,16 @@ import { Button } from '@/shared/ui/button';
 import { Separator } from '@/shared/ui/separator';
 import { Avatar, AvatarFallback } from '@/shared/ui/avatar';
 import { Badge } from '@/shared/ui/badge';
-import { User, Settings, Bell, CreditCard, HelpCircle, LogOut, Shield, Activity } from 'lucide-react';
+import {
+  User,
+  Settings,
+  Bell,
+  CreditCard,
+  HelpCircle,
+  LogOut,
+  Shield,
+  Activity,
+} from 'lucide-react';
 
 interface UserAccountDropdownProps {
   onClose: () => void;
@@ -24,7 +33,7 @@ export function UserAccountDropdown({ onClose }: UserAccountDropdownProps) {
       .join('')
       .toUpperCase()
       .slice(0, 2),
-    accountType: 'Agent'
+    accountType: 'Agent',
   };
 
   const handleNavigation = (page: string) => {
@@ -59,7 +68,7 @@ export function UserAccountDropdown({ onClose }: UserAccountDropdownProps) {
           </div>
         </div>
       </CardHeader>
-      
+
       <CardContent className="p-0">
         {/* Quick Stats */}
         <div className="p-4 bg-muted/30">
@@ -78,9 +87,9 @@ export function UserAccountDropdown({ onClose }: UserAccountDropdownProps) {
             </div>
           </div>
         </div>
-        
+
         <Separator />
-        
+
         {/* Navigation Menu */}
         <div className="p-2">
           <Button
@@ -91,7 +100,7 @@ export function UserAccountDropdown({ onClose }: UserAccountDropdownProps) {
             <User className="h-4 w-4 mr-3" />
             My Profile
           </Button>
-          
+
           <Button
             variant="ghost"
             className="w-full justify-start text-sm"
@@ -100,7 +109,7 @@ export function UserAccountDropdown({ onClose }: UserAccountDropdownProps) {
             <Activity className="h-4 w-4 mr-3" />
             Recent Activity
           </Button>
-          
+
           <Button
             variant="ghost"
             className="w-full justify-start text-sm"
@@ -109,7 +118,7 @@ export function UserAccountDropdown({ onClose }: UserAccountDropdownProps) {
             <CreditCard className="h-4 w-4 mr-3" />
             Billing & Subscription
           </Button>
-          
+
           <Button
             variant="ghost"
             className="w-full justify-start text-sm"
@@ -118,7 +127,7 @@ export function UserAccountDropdown({ onClose }: UserAccountDropdownProps) {
             <Bell className="h-4 w-4 mr-3" />
             Notification Settings
           </Button>
-          
+
           <Button
             variant="ghost"
             className="w-full justify-start text-sm"
@@ -127,7 +136,7 @@ export function UserAccountDropdown({ onClose }: UserAccountDropdownProps) {
             <Shield className="h-4 w-4 mr-3" />
             Privacy & Security
           </Button>
-          
+
           <Button
             variant="ghost"
             className="w-full justify-start text-sm"
@@ -136,9 +145,9 @@ export function UserAccountDropdown({ onClose }: UserAccountDropdownProps) {
             <Settings className="h-4 w-4 mr-3" />
             Account Settings
           </Button>
-          
+
           <Separator className="my-2" />
-          
+
           <Button
             variant="ghost"
             className="w-full justify-start text-sm"
@@ -147,9 +156,9 @@ export function UserAccountDropdown({ onClose }: UserAccountDropdownProps) {
             <HelpCircle className="h-4 w-4 mr-3" />
             Help & Support
           </Button>
-          
+
           <Separator className="my-2" />
-          
+
           <Button
             variant="ghost"
             className="w-full justify-start text-sm text-destructive hover:text-destructive hover:bg-destructive/10"

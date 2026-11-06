@@ -13,7 +13,7 @@ export function StatsCard({ title, value, change, icon: Icon, trend = 'neutral' 
   const trendColor = {
     up: 'text-green-600',
     down: 'text-red-600',
-    neutral: 'text-muted-foreground'
+    neutral: 'text-muted-foreground',
   };
 
   return (

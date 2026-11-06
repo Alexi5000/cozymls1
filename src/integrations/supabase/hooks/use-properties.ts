@@ -29,7 +29,7 @@ export interface PropertiesQueryParams {
 
 export function useProperties(params?: PropertiesQueryParams) {
   const { page = 1, pageSize = 20 } = params || {};
-  
+
   return useQuery({
     queryKey: ['properties', page, pageSize],
     queryFn: async () => {
@@ -47,9 +47,9 @@ export function useProperties(params?: PropertiesQueryParams) {
         .select('*')
         .order('created_at', { ascending: false })
         .range(from, to);
-      
+
       if (error) throw error;
-      
+
       return {
         data: data || [],
         totalCount: count || 0,
@@ -57,7 +57,7 @@ export function useProperties(params?: PropertiesQueryParams) {
         pageSize,
         totalPages: Math.ceil((count || 0) / pageSize),
       };
-    }
+    },
   });
 }
 
@@ -65,16 +65,12 @@ export function useProperty(id: string) {
   return useQuery({
     queryKey: ['property', id],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('properties')
-        .select('*')
-        .eq('id', id)
-        .single();
-      
+      const { data, error } = await supabase.from('properties').select('*').eq('id', id).single();
+
       if (error) throw error;
       return data;
     },
-    enabled: !!id
+    enabled: !!id,
   });
 }
 
@@ -84,12 +80,8 @@ export function useCreateProperty() {
 
   return useMutation({
     mutationFn: async (property: PropertyInsert) => {
-      const { data, error } = await supabase
-        .from('properties')
-        .insert(property)
-        .select()
-        .single();
-      
+      const { data, error } = await supabase.from('properties').insert(property).select().single();
+
       if (error) throw error;
       return data;
     },
@@ -97,16 +89,16 @@ export function useCreateProperty() {
       queryClient.invalidateQueries({ queryKey: ['properties'] });
       toast({
         title: 'Success',
-        description: 'Property created successfully'
+        description: 'Property created successfully',
       });
     },
     onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to create property',
-        variant: 'destructive'
+        variant: 'destructive',
       });
-    }
+    },
   });
 }
 
@@ -122,25 +114,25 @@ export function useUpdateProperty() {
         .eq('id', id)
         .select()
         .single();
-      
+
       if (error) throw error;
       return data;
     },
-    onSuccess: (data) => {
+    onSuccess: data => {
       queryClient.invalidateQueries({ queryKey: ['properties'] });
       queryClient.invalidateQueries({ queryKey: ['property', data.id] });
       toast({
         title: 'Success',
-        description: 'Property updated successfully'
+        description: 'Property updated successfully',
       });
     },
     onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to update property',
-        variant: 'destructive'
+        variant: 'destructive',
       });
-    }
+    },
   });
 }
 
@@ -150,26 +142,23 @@ export function useDeleteProperty() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
-        .from('properties')
-        .delete()
-        .eq('id', id);
-      
+      const { error } = await supabase.from('properties').delete().eq('id', id);
+
       if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['properties'] });
       toast({
         title: 'Success',
-        description: 'Property deleted successfully'
+        description: 'Property deleted successfully',
       });
     },
     onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to delete property',
-        variant: 'destructive'
+        variant: 'destructive',
       });
-    }
+    },
   });
 }

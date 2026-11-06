@@ -56,14 +56,14 @@ export function DashboardPage() {
       <HeroSection userName="Dawn" stats={heroStats} />
 
       {/* Main Content with Scroll Animation */}
-      <div 
+      <div
         ref={contentRef}
         className={`space-y-8 transition-all duration-200 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
         }`}
       >
         {/* Enhanced Stats Grid */}
-        <ResponsiveGrid 
+        <ResponsiveGrid
           cols={{ mobile: 2, tablet: 2, desktop: 4 }}
           gap={{ mobile: 3, tablet: 4, desktop: 6 }}
         >
@@ -83,7 +83,7 @@ export function DashboardPage() {
           />
           <StatsCard
             title="Total Revenue"
-            value={`$${((Number(stats?.total_revenue || 0)) / 1000).toFixed(1)}K`}
+            value={`$${(Number(stats?.total_revenue || 0) / 1000).toFixed(1)}K`}
             change={`${Number(stats?.monthly_growth || 0).toFixed(1)}% growth`}
             icon={DollarSign}
             trend={Number(stats?.monthly_growth || 0) >= 0 ? 'up' : 'down'}
@@ -129,9 +129,5 @@ export function DashboardPage() {
     );
   }
 
-  return (
-    <Layout title="Dashboard">
-      {content}
-    </Layout>
-  );
+  return <Layout title="Dashboard">{content}</Layout>;
 }

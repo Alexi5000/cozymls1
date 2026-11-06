@@ -18,11 +18,11 @@ export function MobileHeader({ title, showSearch = true, onMenuClick }: MobileHe
 
   return (
     <>
-      <header 
+      <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-30",
-          "bg-card/95 backdrop-blur-xs border-b border-border",
-          "flex items-center justify-between px-4 h-14"
+          'fixed top-0 left-0 right-0 z-30',
+          'bg-card/95 backdrop-blur-xs border-b border-border',
+          'flex items-center justify-between px-4 h-14'
         )}
         style={applySafeArea('top')}
       >
@@ -37,12 +37,10 @@ export function MobileHeader({ title, showSearch = true, onMenuClick }: MobileHe
               <Menu className="h-5 w-5" />
             </TouchButton>
           )}
-          
-          <h1 className="text-lg font-semibold text-foreground truncate">
-            {title}
-          </h1>
+
+          <h1 className="text-lg font-semibold text-foreground truncate">{title}</h1>
         </div>
-        
+
         <div className="flex items-center gap-2">
           {showSearch && (
             <TouchButton
@@ -54,7 +52,7 @@ export function MobileHeader({ title, showSearch = true, onMenuClick }: MobileHe
               <Search className="h-5 w-5" />
             </TouchButton>
           )}
-          
+
           <TouchButton
             variant="ghost"
             size="icon"
@@ -64,12 +62,8 @@ export function MobileHeader({ title, showSearch = true, onMenuClick }: MobileHe
             {/* Notification badge */}
             <div className="absolute -top-1 -right-1 w-3 h-3 bg-destructive rounded-full" />
           </TouchButton>
-          
-          <TouchButton
-            variant="ghost"
-            size="icon"
-            className="ml-1"
-          >
+
+          <TouchButton variant="ghost" size="icon" className="ml-1">
             <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
               <User className="h-4 w-4 text-primary-foreground" />
             </div>
@@ -90,11 +84,11 @@ export function MobileHeader({ title, showSearch = true, onMenuClick }: MobileHe
             className="mobile-input"
             autoFocus
           />
-          
+
           <div className="space-y-2">
             <h3 className="text-sm font-medium text-muted-foreground">Recent Searches</h3>
             <div className="space-y-1">
-              {['Downtown properties', 'John Smith', 'Luxury listings'].map((search) => (
+              {['Downtown properties', 'John Smith', 'Luxury listings'].map(search => (
                 <TouchButton
                   key={search}
                   variant="ghost"

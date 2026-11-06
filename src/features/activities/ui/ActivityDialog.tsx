@@ -12,26 +12,21 @@ import {
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Textarea } from '@/shared/ui/textarea';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/shared/ui/form';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/shared/ui/select';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/shared/ui/form';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select';
 import { useAuth } from '@/shared/hooks/use-auth';
-import { useActivity, useCreateActivity, useUpdateActivity } from '@/integrations/supabase/hooks/use-activities';
+import {
+  useActivity,
+  useCreateActivity,
+  useUpdateActivity,
+} from '@/integrations/supabase/hooks/use-activities';
 import { useContacts } from '@/integrations/supabase/hooks/use-contacts';
 import { useDeals } from '@/integrations/supabase/hooks/use-deals';
-import { activityFormSchema, type ActivityFormData, type ActivityFormInput } from '../lib/validation';
+import {
+  activityFormSchema,
+  type ActivityFormData,
+  type ActivityFormInput,
+} from '../lib/validation';
 import { logger } from '@/shared/lib/logger';
 import { Loader2 } from 'lucide-react';
 
@@ -97,7 +92,7 @@ export function ActivityDialog({ activityId, isOpen, onClose }: ActivityDialogPr
           logger.error('ActivityDialog', 'User not authenticated');
           return;
         }
-        await createActivity.mutateAsync({ 
+        await createActivity.mutateAsync({
           type: data.type,
           title: data.title,
           description: data.description,
@@ -105,7 +100,7 @@ export function ActivityDialog({ activityId, isOpen, onClose }: ActivityDialogPr
           deal_id: data.deal_id || undefined,
           priority: data.priority,
           due_date: data.due_date || undefined,
-          assigned_to: user.id 
+          assigned_to: user.id,
         });
       }
       logger.info('ActivityDialog', 'Activity saved successfully', { isEditing });
@@ -121,7 +116,9 @@ export function ActivityDialog({ activityId, isOpen, onClose }: ActivityDialogPr
         <DialogHeader>
           <DialogTitle>{isEditing ? 'Edit Activity' : 'Add New Activity'}</DialogTitle>
           <DialogDescription>
-            {isEditing ? 'Update activity information below.' : 'Fill in the details to create a new activity.'}
+            {isEditing
+              ? 'Update activity information below.'
+              : 'Fill in the details to create a new activity.'}
           </DialogDescription>
         </DialogHeader>
 
@@ -203,11 +200,7 @@ export function ActivityDialog({ activityId, isOpen, onClose }: ActivityDialogPr
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Textarea 
-                        placeholder="Add details..." 
-                        className="min-h-[100px]"
-                        {...field} 
-                      />
+                      <Textarea placeholder="Add details..." className="min-h-[100px]" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -221,8 +214,8 @@ export function ActivityDialog({ activityId, isOpen, onClose }: ActivityDialogPr
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Contact</FormLabel>
-                      <Select 
-                        onValueChange={field.onChange} 
+                      <Select
+                        onValueChange={field.onChange}
                         defaultValue={field.value || undefined}
                       >
                         <FormControl>
@@ -231,7 +224,7 @@ export function ActivityDialog({ activityId, isOpen, onClose }: ActivityDialogPr
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {contacts?.data?.map((contact) => (
+                          {contacts?.data?.map(contact => (
                             <SelectItem key={contact.id} value={contact.id}>
                               {contact.name}
                             </SelectItem>
@@ -249,8 +242,8 @@ export function ActivityDialog({ activityId, isOpen, onClose }: ActivityDialogPr
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Deal</FormLabel>
-                      <Select 
-                        onValueChange={field.onChange} 
+                      <Select
+                        onValueChange={field.onChange}
                         defaultValue={field.value || undefined}
                       >
                         <FormControl>
@@ -259,7 +252,7 @@ export function ActivityDialog({ activityId, isOpen, onClose }: ActivityDialogPr
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {deals?.map((deal) => (
+                          {deals?.map(deal => (
                             <SelectItem key={deal.id} value={deal.id}>
                               {deal.title}
                             </SelectItem>
@@ -279,11 +272,7 @@ export function ActivityDialog({ activityId, isOpen, onClose }: ActivityDialogPr
                   <FormItem>
                     <FormLabel>Due Date</FormLabel>
                     <FormControl>
-                      <Input 
-                        type="datetime-local" 
-                        {...field}
-                        value={field.value || ''}
-                      />
+                      <Input type="datetime-local" {...field} value={field.value || ''} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

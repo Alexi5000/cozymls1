@@ -45,9 +45,7 @@ export function ProfileSettings() {
     <Card>
       <CardHeader>
         <CardTitle>Profile Information</CardTitle>
-        <CardDescription>
-          Update your personal information and contact details
-        </CardDescription>
+        <CardDescription>Update your personal information and contact details</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>

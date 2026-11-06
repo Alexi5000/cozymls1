@@ -44,17 +44,16 @@ export function Header({ title }: HeaderProps) {
     <>
       {/* Backdrop overlay */}
       {(showNotifications || showSettings || showUserMenu) && (
-        <div 
-          className="fixed inset-0 z-40 bg-black/20" 
-          onClick={closeAllDropdowns}
-        />
+        <div className="fixed inset-0 z-40 bg-black/20" onClick={closeAllDropdowns} />
       )}
-      
+
       <header className="relative h-14 md:h-16 border-b border-gray-200 bg-white px-4 md:px-6 lg:px-8 flex items-center justify-between shadow-xs z-50">
         <div className="flex items-center gap-4 min-w-0">
-          <h1 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 truncate">{title}</h1>
+          <h1 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 truncate">
+            {title}
+          </h1>
         </div>
-        
+
         <div className="flex items-center gap-2 md:gap-4">
           {/* Search - Hidden on small mobile, shown on tablet+ */}
           <div className="relative hidden sm:block">
@@ -64,52 +63,52 @@ export function Header({ title }: HeaderProps) {
               className="pl-10 w-40 md:w-60 lg:w-80 bg-gray-50 border-gray-200 focus:bg-white text-sm"
             />
           </div>
-          
+
           {/* Search button for mobile */}
-          <Button variant="ghost" size="icon" className="sm:hidden text-gray-500 hover:text-gray-700">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="sm:hidden text-gray-500 hover:text-gray-700"
+          >
             <Search className="h-5 w-5" />
           </Button>
-          
+
           {/* Action Buttons */}
           <div className="flex items-center gap-1 md:gap-2">
             {/* Notifications */}
             <div className="relative">
-              <Button 
-                variant="ghost" 
-                size="icon" 
+              <Button
+                variant="ghost"
+                size="icon"
                 className="text-gray-500 hover:text-gray-700 h-8 w-8 md:h-10 md:w-10 relative"
                 onClick={toggleNotifications}
               >
                 <Bell className="h-4 w-4 md:h-5 md:w-5" />
-                <Badge 
-                  variant="destructive" 
+                <Badge
+                  variant="destructive"
                   className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
                 >
                   3
                 </Badge>
               </Button>
-              
-              {showNotifications && (
-                <NotificationsDropdown onClose={closeAllDropdowns} />
-              )}
+
+              {showNotifications && <NotificationsDropdown onClose={closeAllDropdowns} />}
             </div>
-            
+
             {/* Settings */}
             <div className="relative hidden md:block">
-              <Button 
-                variant="ghost" 
-                size="icon" 
+              <Button
+                variant="ghost"
+                size="icon"
                 className="text-gray-500 hover:text-gray-700"
                 onClick={toggleSettings}
               >
                 <Settings className="h-5 w-5" />
               </Button>
-              
-              {showSettings && (
-                <SettingsDropdown onClose={closeAllDropdowns} />
-              )}
+
+              {showSettings && <SettingsDropdown onClose={closeAllDropdowns} />}
             </div>
-            
+
             {/* User Account */}
             <div className="relative">
               <button
@@ -118,10 +117,8 @@ export function Header({ title }: HeaderProps) {
               >
                 <User className="h-4 w-4 md:h-5 md:w-5 text-white" />
               </button>
-              
-              {showUserMenu && (
-                <UserAccountDropdown onClose={closeAllDropdowns} />
-              )}
+
+              {showUserMenu && <UserAccountDropdown onClose={closeAllDropdowns} />}
             </div>
           </div>
         </div>

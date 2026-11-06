@@ -8,7 +8,11 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string, name?: string) => Promise<{ error: AuthError | Error | null }>;
+  signUp: (
+    email: string,
+    password: string,
+    name?: string
+  ) => Promise<{ error: AuthError | Error | null }>;
   signIn: (email: string, password: string) => Promise<{ error: AuthError | Error | null }>;
   signOut: () => Promise<void>;
 }
@@ -23,13 +27,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     // Set up auth state listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        setLoading(false);
-      }
-    );
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
 
     // Check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -44,38 +48,38 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signUp = async (email: string, password: string, name?: string) => {
     try {
       const redirectUrl = `${window.location.origin}/`;
-      
+
       const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           emailRedirectTo: redirectUrl,
           data: {
-            name: name || email.split('@')[0]
-          }
-        }
+            name: name || email.split('@')[0],
+          },
+        },
       });
-      
+
       if (error) {
         toast({
           title: 'Sign up failed',
           description: error.message,
-          variant: 'destructive'
+          variant: 'destructive',
         });
       } else {
         toast({
           title: 'Success!',
-          description: 'Your account has been created.'
+          description: 'Your account has been created.',
         });
       }
-      
+
       return { error: error instanceof Error ? error : new Error(String(error)) };
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
       toast({
         title: 'Error',
         description: message,
-        variant: 'destructive'
+        variant: 'destructive',
       });
       return { error: error instanceof Error ? error : new Error(String(error)) };
     }
@@ -85,24 +89,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email,
-        password
+        password,
       });
-      
+
       if (error) {
         toast({
           title: 'Sign in failed',
           description: error.message,
-          variant: 'destructive'
+          variant: 'destructive',
         });
       }
-      
+
       return { error: error instanceof Error ? error : new Error(String(error)) };
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
       toast({
         title: 'Error',
         description: message,
-        variant: 'destructive'
+        variant: 'destructive',
       });
       return { error: error instanceof Error ? error : new Error(String(error)) };
     }
@@ -113,14 +117,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await supabase.auth.signOut();
       toast({
         title: 'Signed out',
-        description: 'You have been signed out successfully.'
+        description: 'You have been signed out successfully.',
       });
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
       toast({
         title: 'Error',
         description: message,
-        variant: 'destructive'
+        variant: 'destructive',
       });
     }
   };

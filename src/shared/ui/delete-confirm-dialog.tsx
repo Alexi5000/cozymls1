@@ -21,7 +21,7 @@ interface DeleteConfirmDialogProps {
 
 /**
  * Reusable Delete Confirmation Dialog
- * 
+ *
  * Provides a safe, consistent way to confirm destructive actions
  * across the application with loading states.
  */

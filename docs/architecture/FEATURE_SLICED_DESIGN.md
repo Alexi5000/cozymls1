@@ -63,12 +63,14 @@ import { mockProperties, type Property } from '@/entities/property';
 **Purpose**: Application initialization and global providers
 
 **Contains**:
+
 - App entry point
 - Global providers (Theme, Query Client, Router)
 - Error boundaries
 - Global styles
 
 **Example**:
+
 ```typescript
 // src/app/App.tsx
 export function App() {
@@ -90,6 +92,7 @@ export function App() {
 ```
 
 **Import rules**:
+
 - Can import from: All layers (pages, widgets, entities, shared)
 
 ---
@@ -99,6 +102,7 @@ export function App() {
 **Purpose**: Route-level pages that compose widgets and entities
 
 **Structure**:
+
 ```
 pages/
 ├── dashboard/
@@ -116,6 +120,7 @@ pages/
 ```
 
 **Example**:
+
 ```typescript
 // src/pages/dashboard/ui/DashboardPage.tsx
 import { HeroSection, StatsCard, DealsOverview } from '@/widgets/dashboard';
@@ -137,10 +142,12 @@ export function DashboardPage() {
 ```
 
 **Import rules**:
+
 - Can import from: widgets, entities, shared
 - Cannot import from: other pages
 
 **Best practices**:
+
 - Keep pages thin - they should mainly compose widgets
 - Handle routing logic
 - Pass data from queries to widgets
@@ -153,6 +160,7 @@ export function DashboardPage() {
 **Purpose**: Complex, composite UI blocks that combine multiple entities
 
 **Structure**:
+
 ```
 widgets/
 ├── dashboard/
@@ -176,6 +184,7 @@ widgets/
 ```
 
 **Example**:
+
 ```typescript
 // src/widgets/properties/ui/PropertiesGrid.tsx
 import { PropertyCard } from './PropertyCard';
@@ -184,7 +193,7 @@ import { Skeleton } from '@/shared/ui/skeleton';
 
 export function PropertiesGrid({ properties, loading }: Props) {
   if (loading) return <Skeleton />;
-  
+
   return (
     <div className="grid grid-cols-3 gap-4">
       {properties.map(property => (
@@ -196,10 +205,12 @@ export function PropertiesGrid({ properties, loading }: Props) {
 ```
 
 **Import rules**:
+
 - Can import from: entities, shared
 - Cannot import from: pages, other widgets
 
 **Best practices**:
+
 - Widgets should be reusable across pages
 - Can use entities but should be agnostic to data source
 - Handle UI interactions but not business logic
@@ -212,6 +223,7 @@ export function PropertiesGrid({ properties, loading }: Props) {
 **Purpose**: Business domain models and their mock data
 
 **Structure**:
+
 ```
 entities/
 ├── property/
@@ -233,6 +245,7 @@ entities/
 ```
 
 **Example**:
+
 ```typescript
 // src/entities/property/model/types.ts
 export interface Property {
@@ -268,10 +281,12 @@ export type { Property, PropertyStatus } from './model/types';
 ```
 
 **Import rules**:
+
 - Can import from: shared
 - Cannot import from: pages, widgets, other entities
 
 **Best practices**:
+
 - Define domain models as TypeScript interfaces/types
 - Store mock data for development
 - No UI components at this layer
@@ -285,6 +300,7 @@ export type { Property, PropertyStatus } from './model/types';
 **Purpose**: Reusable code that doesn't belong to any specific feature
 
 **Structure**:
+
 ```
 shared/
 ├── ui/                 # UI component library
@@ -306,6 +322,7 @@ shared/
 ```
 
 **Example**:
+
 ```typescript
 // src/shared/ui/button.tsx
 export function Button({ children, ...props }: ButtonProps) {
@@ -326,10 +343,12 @@ export function cn(...inputs: ClassValue[]) {
 ```
 
 **Import rules**:
+
 - Can import from: Nothing (no imports to upper layers!)
 - Can import: External libraries only
 
 **Best practices**:
+
 - Highly reusable code only
 - No business logic
 - No domain knowledge
@@ -343,15 +362,17 @@ export function cn(...inputs: ClassValue[]) {
 ### Example 1: Adding a New Feature (Property Favorites)
 
 **Step 1**: Define entity type
+
 ```typescript
 // entities/property/model/types.ts
 export interface Property {
   // ... existing fields
-  isFavorite?: boolean;  // Add new field
+  isFavorite?: boolean; // Add new field
 }
 ```
 
 **Step 2**: Create widget component
+
 ```typescript
 // widgets/properties/ui/FavoriteButton.tsx
 import { Button } from '@/shared/ui/button';
@@ -361,7 +382,7 @@ export function FavoriteButton({ propertyId, isFavorite }: Props) {
   const toggleFavorite = () => {
     // Handle favorite toggle
   };
-  
+
   return (
     <Button onClick={toggleFavorite}>
       <Heart fill={isFavorite ? 'red' : 'none'} />
@@ -371,6 +392,7 @@ export function FavoriteButton({ propertyId, isFavorite }: Props) {
 ```
 
 **Step 3**: Use in page
+
 ```typescript
 // pages/properties/ui/PropertiesPage.tsx
 import { FavoriteButton } from '@/widgets/properties';
@@ -381,9 +403,9 @@ export function PropertiesPage() {
       {properties.map(property => (
         <div key={property.id}>
           <PropertyCard property={property} />
-          <FavoriteButton 
-            propertyId={property.id} 
-            isFavorite={property.isFavorite} 
+          <FavoriteButton
+            propertyId={property.id}
+            isFavorite={property.isFavorite}
           />
         </div>
       ))}
@@ -406,22 +428,22 @@ import { useAuth } from './use-auth';
 export function useRequireAuth() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     if (!loading && !user) {
       navigate('/auth');
     }
   }, [user, loading, navigate]);
-  
+
   return { user, loading };
 }
 
 // Usage in any page
 export function DashboardPage() {
   const { user, loading } = useRequireAuth();
-  
+
   if (loading) return <Spinner />;
-  
+
   return <div>Welcome {user.name}</div>;
 }
 ```
@@ -480,6 +502,7 @@ export function PropertiesGrid({ properties }: Props) {
 ### From Component-Based Structure
 
 **Before**:
+
 ```
 src/
 ├── components/
@@ -491,6 +514,7 @@ src/
 ```
 
 **After**:
+
 ```
 src/
 ├── shared/ui/
@@ -529,12 +553,7 @@ src/
 {
   "FSD Entity": {
     "prefix": "fsd-entity",
-    "body": [
-      "export interface ${1:EntityName} {",
-      "  id: string;",
-      "  $0",
-      "}"
-    ]
+    "body": ["export interface ${1:EntityName} {", "  id: string;", "  $0", "}"]
   }
 }
 ```
@@ -548,6 +567,7 @@ src/
 ## Questions?
 
 For questions about FSD implementation in Haven Estate Suite, see:
+
 - [Architecture Documentation](ARCHITECTURE.md)
 - [Contributing Guidelines](../../CONTRIBUTING.md)
 - [Coding Standards](../development/CODING_STANDARDS.md)

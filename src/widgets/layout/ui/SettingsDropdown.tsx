@@ -13,7 +13,8 @@ interface SettingsDropdownProps {
 
 export function SettingsDropdown({ onClose }: SettingsDropdownProps) {
   const navigate = useNavigate();
-  const { theme, notifications, autoRefresh, toggleTheme, setNotifications, setAutoRefresh } = useThemeStore();
+  const { theme, notifications, autoRefresh, toggleTheme, setNotifications, setAutoRefresh } =
+    useThemeStore();
 
   const handleNavigation = (page: string) => {
     navigate('/settings');
@@ -28,7 +29,7 @@ export function SettingsDropdown({ onClose }: SettingsDropdownProps) {
           Quick Settings
         </CardTitle>
       </CardHeader>
-      
+
       <CardContent className="p-0">
         {/* Quick toggles */}
         <div className="p-4 space-y-4">
@@ -40,14 +41,11 @@ export function SettingsDropdown({ onClose }: SettingsDropdownProps) {
                 <p className="text-xs text-muted-foreground">Receive alerts for new properties</p>
               </div>
             </div>
-            <Switch 
-              checked={notifications}
-              onCheckedChange={setNotifications}
-            />
+            <Switch checked={notifications} onCheckedChange={setNotifications} />
           </div>
-          
+
           <Separator />
-          
+
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Moon className="h-4 w-4 text-muted-foreground" />
@@ -56,14 +54,11 @@ export function SettingsDropdown({ onClose }: SettingsDropdownProps) {
                 <p className="text-xs text-muted-foreground">Switch to dark theme</p>
               </div>
             </div>
-            <Switch 
-              checked={theme === 'dark'}
-              onCheckedChange={toggleTheme}
-            />
+            <Switch checked={theme === 'dark'} onCheckedChange={toggleTheme} />
           </div>
-          
+
           <Separator />
-          
+
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Eye className="h-4 w-4 text-muted-foreground" />
@@ -72,15 +67,12 @@ export function SettingsDropdown({ onClose }: SettingsDropdownProps) {
                 <p className="text-xs text-muted-foreground">Keep property data up to date</p>
               </div>
             </div>
-            <Switch 
-              checked={autoRefresh}
-              onCheckedChange={setAutoRefresh}
-            />
+            <Switch checked={autoRefresh} onCheckedChange={setAutoRefresh} />
           </div>
         </div>
-        
+
         <Separator />
-        
+
         {/* Navigation options */}
         <div className="p-2">
           <Button
@@ -91,9 +83,9 @@ export function SettingsDropdown({ onClose }: SettingsDropdownProps) {
             <User className="h-4 w-4 mr-3" />
             All Settings
           </Button>
-          
+
           <Separator className="my-2" />
-          
+
           <Button
             variant="ghost"
             className="w-full justify-start text-sm"

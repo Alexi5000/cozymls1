@@ -1,5 +1,5 @@
-import * as React from "react";
-import { useIsMobile } from "@/shared/hooks/use-mobile";
+import * as React from 'react';
+import { useIsMobile } from '@/shared/hooks/use-mobile';
 
 interface AdaptiveLayoutProps {
   children: React.ReactNode;
@@ -9,12 +9,8 @@ interface AdaptiveLayoutProps {
 
 export function AdaptiveLayout({ children, mobileChildren, className }: AdaptiveLayoutProps) {
   const isMobile = useIsMobile();
-  
-  return (
-    <div className={className}>
-      {isMobile && mobileChildren ? mobileChildren : children}
-    </div>
-  );
+
+  return <div className={className}>{isMobile && mobileChildren ? mobileChildren : children}</div>;
 }
 
 interface ResponsiveGridProps {
@@ -32,18 +28,14 @@ interface ResponsiveGridProps {
   className?: string;
 }
 
-export function ResponsiveGrid({ 
-  children, 
+export function ResponsiveGrid({
+  children,
   cols = { mobile: 1, tablet: 2, desktop: 3 },
   gap = { mobile: 3, tablet: 4, desktop: 6 },
-  className 
+  className,
 }: ResponsiveGridProps) {
   const gridCols = `grid-cols-${cols.mobile} md:grid-cols-${cols.tablet} lg:grid-cols-${cols.desktop}`;
   const gridGap = `gap-${gap.mobile} md:gap-${gap.tablet} lg:gap-${gap.desktop}`;
-  
-  return (
-    <div className={`grid ${gridCols} ${gridGap} ${className}`}>
-      {children}
-    </div>
-  );
+
+  return <div className={`grid ${gridCols} ${gridGap} ${className}`}>{children}</div>;
 }

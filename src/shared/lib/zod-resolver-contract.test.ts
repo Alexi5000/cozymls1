@@ -14,7 +14,7 @@ describe('zodResolver contract', () => {
     const result = await zodResolver(activityFormSchema)(
       { type: 'call', title: '  Follow up  ' },
       undefined,
-      options,
+      options
     );
     expect(result.errors).toEqual({});
     expect(result.values).toMatchObject({ type: 'call', title: 'Follow up', priority: 'medium' });
@@ -24,7 +24,7 @@ describe('zodResolver contract', () => {
     const bad = await zodResolver(contactFormSchema)(
       { name: '', email: 'not-an-email', phone: '555' },
       undefined,
-      options,
+      options
     );
     expect(bad.errors.name?.message).toBe('Name is required');
     expect(bad.errors.email?.message).toBe('Invalid email address');
@@ -32,14 +32,18 @@ describe('zodResolver contract', () => {
     const ok = await zodResolver(contactFormSchema)(
       { name: 'Ada', email: 'ada@example.com', phone: '555' },
       undefined,
-      options,
+      options
     );
     expect(ok.values).toMatchObject({ status: 'lead' });
   });
 
   it('rejects malformed deal ids and accepts valid ones', async () => {
     const base = { title: 'Deal', value: 100, expected_close_date: '2026-12-01' };
-    const bad = await zodResolver(dealFormSchema)({ ...base, contact_id: 'abc' }, undefined, options);
+    const bad = await zodResolver(dealFormSchema)(
+      { ...base, contact_id: 'abc' },
+      undefined,
+      options
+    );
     expect(bad.errors.contact_id?.message).toBe('Invalid contact selected');
 
     const ok = await zodResolver(dealFormSchema)({ ...base, contact_id: uuid }, undefined, options);

@@ -29,7 +29,7 @@ export interface PaginationControls {
 
 export function usePagination(options: PaginationOptions = {}): PaginationControls {
   const { initialPage = 1, pageSize: initialPageSize = 20 } = options;
-  
+
   const [page, setPageState] = useState(initialPage);
   const [pageSize, setPageSizeState] = useState(initialPageSize);
   const [totalItems, setTotalItems] = useState(0);
@@ -50,10 +50,13 @@ export function usePagination(options: PaginationOptions = {}): PaginationContro
     setPage(page - 1);
   }, [page, setPage]);
 
-  const setPageSize = useCallback((size: number) => {
-    setPageSizeState(size);
-    setPage(1); // Reset to first page when changing page size
-  }, [setPage]);
+  const setPageSize = useCallback(
+    (size: number) => {
+      setPageSizeState(size);
+      setPage(1); // Reset to first page when changing page size
+    },
+    [setPage]
+  );
 
   const canNextPage = page < totalPages;
   const canPreviousPage = page > 1;
@@ -71,7 +74,7 @@ export function usePagination(options: PaginationOptions = {}): PaginationContro
       }
     }
 
-    range.forEach((i) => {
+    range.forEach(i => {
       if (l) {
         if (i - l === 2) {
           rangeWithDots.push(l + 1);

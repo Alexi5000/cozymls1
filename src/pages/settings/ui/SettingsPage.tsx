@@ -9,7 +9,7 @@ import { User, Shield, Settings } from 'lucide-react';
 export function SettingsPage() {
   const isMobile = useIsMobile();
   const [activeTab, setActiveTab] = useState('profile');
-  
+
   const handleRefresh = async () => {
     // Refetch data if needed
   };
@@ -17,7 +17,7 @@ export function SettingsPage() {
   const content = (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className={isMobile ? "w-full grid grid-cols-3" : ""}>
+        <TabsList className={isMobile ? 'w-full grid grid-cols-3' : ''}>
           <TabsTrigger value="profile" className="flex items-center gap-2">
             <User className="h-4 w-4" />
             {!isMobile && <span>Profile</span>}
@@ -55,9 +55,5 @@ export function SettingsPage() {
     );
   }
 
-  return (
-    <Layout title="Settings">
-      {content}
-    </Layout>
-  );
+  return <Layout title="Settings">{content}</Layout>;
 }

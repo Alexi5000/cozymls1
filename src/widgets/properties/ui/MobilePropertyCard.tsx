@@ -12,14 +12,22 @@ interface MobilePropertyCardProps {
   onTap?: () => void;
 }
 
-export const MobilePropertyCard = memo(function MobilePropertyCard({ property, onCall, onEmail, onTap }: MobilePropertyCardProps) {
+export const MobilePropertyCard = memo(function MobilePropertyCard({
+  property,
+  onCall,
+  onEmail,
+  onTap,
+}: MobilePropertyCardProps) {
   // Memoized status colors using semantic tokens
-  const statusColors = useMemo(() => ({
-    active: 'bg-emerald-500/20 text-emerald-700 border-emerald-500/30',
-    pending: 'bg-amber-500/20 text-amber-700 border-amber-500/30',
-    sold: 'bg-blue-500/20 text-blue-700 border-blue-500/30',
-    'off-market': 'bg-muted text-muted-foreground border-border',
-  }), []);
+  const statusColors = useMemo(
+    () => ({
+      active: 'bg-emerald-500/20 text-emerald-700 border-emerald-500/30',
+      pending: 'bg-amber-500/20 text-amber-700 border-amber-500/30',
+      sold: 'bg-blue-500/20 text-blue-700 border-blue-500/30',
+      'off-market': 'bg-muted text-muted-foreground border-border',
+    }),
+    []
+  );
 
   // Memoized price formatter
   const formatPrice = useCallback((price: number) => {
@@ -32,21 +40,17 @@ export const MobilePropertyCard = memo(function MobilePropertyCard({ property, o
 
   // Memoized values for performance
   const formattedPrice = useMemo(() => formatPrice(property.price), [formatPrice, property.price]);
-  const fullAddress = useMemo(() => 
-    `${property.city}, ${property.state} ${property.zipCode}`,
+  const fullAddress = useMemo(
+    () => `${property.city}, ${property.state} ${property.zipCode}`,
     [property.city, property.state, property.zipCode]
   );
-  const formattedSquareFeet = useMemo(() => 
-    property.squareFeet.toLocaleString(),
+  const formattedSquareFeet = useMemo(
+    () => property.squareFeet.toLocaleString(),
     [property.squareFeet]
   );
 
   return (
-    <MobileCard 
-      className="overflow-hidden"
-      onTap={onTap}
-      enableHaptic
-    >
+    <MobileCard className="overflow-hidden" onTap={onTap} enableHaptic>
       {/* Image with Status Badge */}
       <div className="aspect-4/3 bg-muted relative">
         {property.images.length > 0 ? (
@@ -64,14 +68,12 @@ export const MobilePropertyCard = memo(function MobilePropertyCard({ property, o
           {property.status}
         </Badge>
       </div>
-      
+
       {/* Content */}
       <div className="p-4 space-y-3">
         {/* Price and Address */}
         <div>
-          <div className="text-xl font-bold text-foreground mb-1">
-            {formattedPrice}
-          </div>
+          <div className="text-xl font-bold text-foreground mb-1">{formattedPrice}</div>
           <div className="flex items-start gap-1 text-sm text-muted-foreground">
             <MapPin className="h-3 w-3 mt-0.5 shrink-0" />
             <div>
@@ -80,7 +82,7 @@ export const MobilePropertyCard = memo(function MobilePropertyCard({ property, o
             </div>
           </div>
         </div>
-        
+
         {/* Property Details */}
         <div className="flex items-center justify-between py-2 border-y border-border">
           <div className="flex items-center gap-1 text-sm">
@@ -99,28 +101,20 @@ export const MobilePropertyCard = memo(function MobilePropertyCard({ property, o
             <span className="text-muted-foreground">sqft</span>
           </div>
         </div>
-        
+
         {/* Agent and Actions */}
         <div className="flex items-center justify-between">
           <div>
             <div className="text-sm font-medium text-foreground">{property.agent.name}</div>
-            <div className="text-xs text-muted-foreground">{property.daysOnMarket} days on market</div>
+            <div className="text-xs text-muted-foreground">
+              {property.daysOnMarket} days on market
+            </div>
           </div>
           <div className="flex gap-2">
-            <TouchButton
-              size="sm"
-              variant="outline"
-              onClick={onCall}
-              enableHaptic
-            >
+            <TouchButton size="sm" variant="outline" onClick={onCall} enableHaptic>
               <Phone className="h-3 w-3" />
             </TouchButton>
-            <TouchButton
-              size="sm"
-              variant="outline"
-              onClick={onEmail}
-              enableHaptic
-            >
+            <TouchButton size="sm" variant="outline" onClick={onEmail} enableHaptic>
               <Mail className="h-3 w-3" />
             </TouchButton>
           </div>

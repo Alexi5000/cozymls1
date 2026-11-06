@@ -10,7 +10,7 @@ export const mockDeals: Deal[] = [
     probability: 75,
     expectedCloseDate: new Date('2024-03-15'),
     createdAt: new Date('2024-01-15'),
-    updatedAt: new Date('2024-02-15')
+    updatedAt: new Date('2024-02-15'),
   },
   {
     id: '2',
@@ -21,7 +21,7 @@ export const mockDeals: Deal[] = [
     probability: 60,
     expectedCloseDate: new Date('2024-04-01'),
     createdAt: new Date('2024-02-01'),
-    updatedAt: new Date('2024-02-10')
+    updatedAt: new Date('2024-02-10'),
   },
   {
     id: '3',
@@ -32,6 +32,6 @@ export const mockDeals: Deal[] = [
     probability: 40,
     expectedCloseDate: new Date('2024-05-15'),
     createdAt: new Date('2024-01-20'),
-    updatedAt: new Date('2024-02-05')
-  }
+    updatedAt: new Date('2024-02-05'),
+  },
 ];

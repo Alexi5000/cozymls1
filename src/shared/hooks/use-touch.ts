@@ -22,10 +22,7 @@ interface UseTouchOptions {
   longPressDelay?: number;
 }
 
-export function useTouch(
-  handlers: SwipeHandlers = {},
-  options: UseTouchOptions = {}
-) {
+export function useTouch(handlers: SwipeHandlers = {}, options: UseTouchOptions = {}) {
   const { threshold = 50, longPressDelay = 500 } = options;
   const { onSwipeLeft, onSwipeRight, onSwipeUp, onSwipeDown, onTap, onLongPress } = handlers;
   const touchState = useRef<TouchState>({
@@ -35,36 +32,39 @@ export function useTouch(
     currentY: 0,
     isTouch: false,
   });
-  
+
   const longPressTimer = useRef<ReturnType<typeof setTimeout>>();
   const [isPressed, setIsPressed] = useState(false);
 
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    const touch = e.touches[0];
-    touchState.current = {
-      startX: touch.clientX,
-      startY: touch.clientY,
-      currentX: touch.clientX,
-      currentY: touch.clientY,
-      isTouch: true,
-    };
-    
-    setIsPressed(true);
-    
-    if (onLongPress) {
-      longPressTimer.current = setTimeout(() => {
-        onLongPress();
-      }, longPressDelay);
-    }
-  }, [onLongPress, longPressDelay]);
+  const handleTouchStart = useCallback(
+    (e: React.TouchEvent) => {
+      const touch = e.touches[0];
+      touchState.current = {
+        startX: touch.clientX,
+        startY: touch.clientY,
+        currentX: touch.clientX,
+        currentY: touch.clientY,
+        isTouch: true,
+      };
+
+      setIsPressed(true);
+
+      if (onLongPress) {
+        longPressTimer.current = setTimeout(() => {
+          onLongPress();
+        }, longPressDelay);
+      }
+    },
+    [onLongPress, longPressDelay]
+  );
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (!touchState.current.isTouch) return;
-    
+
     const touch = e.touches[0];
     touchState.current.currentX = touch.clientX;
     touchState.current.currentY = touch.clientY;
-    
+
     // Clear long press if moved
     if (longPressTimer.current) {
       clearTimeout(longPressTimer.current);
@@ -74,21 +74,21 @@ export function useTouch(
 
   const handleTouchEnd = useCallback(() => {
     if (!touchState.current.isTouch) return;
-    
+
     const { startX, startY, currentX, currentY } = touchState.current;
     const deltaX = currentX - startX;
     const deltaY = currentY - startY;
     const absDeltaX = Math.abs(deltaX);
     const absDeltaY = Math.abs(deltaY);
-    
+
     setIsPressed(false);
-    
+
     // Clear long press timer
     if (longPressTimer.current) {
       clearTimeout(longPressTimer.current);
       longPressTimer.current = undefined;
     }
-    
+
     // Check for swipe gestures
     if (Math.max(absDeltaX, absDeltaY) > threshold) {
       if (absDeltaX > absDeltaY) {
@@ -110,7 +110,7 @@ export function useTouch(
       // Tap gesture
       onTap?.();
     }
-    
+
     touchState.current.isTouch = false;
   }, [onSwipeLeft, onSwipeRight, onSwipeUp, onSwipeDown, onTap, threshold]);
 

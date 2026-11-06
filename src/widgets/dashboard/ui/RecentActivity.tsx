@@ -23,7 +23,7 @@ const priorityColors = {
 
 const typeColors = {
   call: 'from-blue-500 to-blue-600',
-  email: 'from-emerald-500 to-emerald-600', 
+  email: 'from-emerald-500 to-emerald-600',
   meeting: 'from-purple-500 to-purple-600',
   note: 'from-amber-500 to-amber-600',
   task: 'from-rose-500 to-rose-600',
@@ -32,7 +32,7 @@ const typeColors = {
 export function RecentActivity() {
   const { data: activities, isLoading: activitiesLoading } = useRecentActivities();
   const { data: propertiesData, isLoading: propertiesLoading } = useProperties();
-  
+
   const recentActivities = activities?.slice(0, 6) || [];
   const featuredProperties = propertiesData?.data?.slice(0, 2) || [];
 
@@ -65,13 +65,15 @@ export function RecentActivity() {
               const Icon = activityIcons[activity.type];
               const gradientColor = typeColors[activity.type];
               return (
-                <div 
-                  key={activity.id} 
+                <div
+                  key={activity.id}
                   className="flex items-center gap-4 p-4 rounded-xl hover:bg-gradient-subtle transition-all duration-300 hover-lift group animate-slide-up"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <div className="shrink-0">
-                    <div className={`w-12 h-12 bg-linear-to-br ${gradientColor} rounded-xl flex items-center justify-center shadow-elegant group-hover:animate-glow`}>
+                    <div
+                      className={`w-12 h-12 bg-linear-to-br ${gradientColor} rounded-xl flex items-center justify-center shadow-elegant group-hover:animate-glow`}
+                    >
                       <Icon className="h-6 w-6 text-white" />
                     </div>
                   </div>
@@ -81,11 +83,15 @@ export function RecentActivity() {
                     </p>
                     <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
                       <Calendar className="w-3 h-3" />
-                      {activity.due_date ? new Date(activity.due_date).toLocaleDateString() : 'No due date'}
+                      {activity.due_date
+                        ? new Date(activity.due_date).toLocaleDateString()
+                        : 'No due date'}
                     </p>
                   </div>
                   <div className="flex flex-col items-end gap-2">
-                    <Badge className={`${priorityColors[activity.priority]} font-medium text-xs px-2 py-1`}>
+                    <Badge
+                      className={`${priorityColors[activity.priority]} font-medium text-xs px-2 py-1`}
+                    >
                       {activity.priority}
                     </Badge>
                   </div>
@@ -94,7 +100,7 @@ export function RecentActivity() {
             })}
           </div>
         )}
-        
+
         {/* Featured Properties Section */}
         <div className="mt-8 pt-6 border-t border-border/50">
           <div className="flex items-center justify-between mb-6">
@@ -107,7 +113,7 @@ export function RecentActivity() {
               <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
           </div>
-          
+
           {propertiesLoading ? (
             <div className="grid gap-4 md:grid-cols-2">
               {[...Array(2)].map((_, i) => (
@@ -119,7 +125,7 @@ export function RecentActivity() {
           ) : (
             <div className="grid gap-4 md:grid-cols-2">
               {featuredProperties.map((property, index) => (
-                <div 
+                <div
                   key={property.id}
                   className="animate-slide-up"
                   style={{ animationDelay: `${index * 200}ms` }}
@@ -130,7 +136,7 @@ export function RecentActivity() {
             </div>
           )}
         </div>
-        
+
         {/* Quick Action Bar */}
         <div className="mt-6 pt-4 border-t border-border/50">
           <div className="flex gap-2">

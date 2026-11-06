@@ -57,6 +57,7 @@ Haven Estate Suite follows a modern **JAMstack architecture** with clear separat
 ### Feature-Sliced Design (FSD)
 
 We use **Feature-Sliced Design** for frontend architecture, which provides:
+
 - Clear separation of concerns
 - Predictable file structure
 - Easy navigation and maintenance
@@ -74,6 +75,7 @@ src/
 ```
 
 **Import Rules**:
+
 - Lower layers cannot import from higher layers
 - Each layer can import from layers below it
 - Horizontal imports within the same layer are allowed
@@ -82,15 +84,15 @@ For detailed FSD documentation, see [FEATURE_SLICED_DESIGN.md](FEATURE_SLICED_DE
 
 ### Technology Choices
 
-| Technology | Purpose | Why Chosen |
-|------------|---------|------------|
-| React 18 | UI Library | Modern hooks, concurrent features, large ecosystem |
-| TypeScript | Type Safety | Catch errors early, better IDE support, self-documenting |
-| Vite | Build Tool | Extremely fast HMR, optimized production builds |
-| Tailwind CSS | Styling | Utility-first, consistent design system, small bundle |
-| shadcn/ui | Components | Accessible, customizable, copy-paste approach |
-| React Query | Data Fetching | Caching, optimistic updates, automatic refetching |
-| React Router | Routing | Industry standard, type-safe, nested routes |
+| Technology   | Purpose       | Why Chosen                                               |
+| ------------ | ------------- | -------------------------------------------------------- |
+| React 18     | UI Library    | Modern hooks, concurrent features, large ecosystem       |
+| TypeScript   | Type Safety   | Catch errors early, better IDE support, self-documenting |
+| Vite         | Build Tool    | Extremely fast HMR, optimized production builds          |
+| Tailwind CSS | Styling       | Utility-first, consistent design system, small bundle    |
+| shadcn/ui    | Components    | Accessible, customizable, copy-paste approach            |
+| React Query  | Data Fetching | Caching, optimistic updates, automatic refetching        |
+| React Router | Routing       | Industry standard, type-safe, nested routes              |
 
 ### State Management Strategy
 
@@ -183,6 +185,7 @@ USING (auth.uid() = user_id);
 ```
 
 Key security principles:
+
 - ✅ RLS enabled on all user-data tables
 - ✅ Policies for SELECT, INSERT, UPDATE, DELETE
 - ✅ User ID validation in all policies
@@ -424,7 +427,7 @@ Separate data logic from presentation:
 // Container (smart component)
 export function PropertiesPage() {
   const { data, isLoading } = useProperties();
-  
+
   return <PropertiesGrid properties={data} loading={isLoading} />;
 }
 
@@ -445,9 +448,7 @@ export function useProperties() {
   return useQuery({
     queryKey: ['properties'],
     queryFn: async () => {
-      const { data } = await supabase
-        .from('properties')
-        .select('*');
+      const { data } = await supabase.from('properties').select('*');
       return data;
     },
   });

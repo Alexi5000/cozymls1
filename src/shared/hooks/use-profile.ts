@@ -15,13 +15,9 @@ export function useProfile(userId?: string) {
     queryKey: ['profile', userId],
     queryFn: async () => {
       if (!userId) return null;
-      
+
       logger.database('useProfile', 'Fetching profile', { userId });
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
+      const { data, error } = await supabase.from('profiles').select('*').eq('id', userId).single();
 
       if (error) {
         logger.error('useProfile', 'Failed to fetch profile', { error });
@@ -41,7 +37,7 @@ export function useUpdateProfile() {
   return useMutation({
     mutationFn: async ({ userId, updates }: { userId: string; updates: ProfileUpdate }) => {
       logger.database('useUpdateProfile', 'Updating profile', { userId, updates });
-      
+
       const { data, error } = await supabase
         .from('profiles')
         .update(updates)
@@ -77,23 +73,28 @@ export function useUpdatePassword() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ currentPassword, newPassword }: { 
-      currentPassword: string; 
-      newPassword: string 
+    mutationFn: async ({
+      currentPassword,
+      newPassword,
+    }: {
+      currentPassword: string;
+      newPassword: string;
     }) => {
       logger.database('useUpdatePassword', 'Updating password');
-      
+
       // First, verify current password by attempting to reauthenticate
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (!user?.email) {
         throw new Error('User not authenticated');
       }
 
       const { error: verifyError } = await supabase.auth.signInWithPassword({
         email: user.email,
-        password: currentPassword
+        password: currentPassword,
       });
-      
+
       if (verifyError) {
         throw new Error('Current password is incorrect');
       }

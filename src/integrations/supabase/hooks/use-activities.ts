@@ -21,10 +21,10 @@ export function useActivities() {
         .from('activities')
         .select('*, contacts(*), deals(*)')
         .order('due_date', { ascending: true, nullsFirst: false });
-      
+
       if (error) throw error;
       return data;
-    }
+    },
   });
 }
 
@@ -37,11 +37,11 @@ export function useActivity(id: string) {
         .select('*, contacts(*), deals(*)')
         .eq('id', id)
         .single();
-      
+
       if (error) throw error;
       return data;
     },
-    enabled: !!id
+    enabled: !!id,
   });
 }
 
@@ -51,12 +51,8 @@ export function useCreateActivity() {
 
   return useMutation({
     mutationFn: async (activity: ActivityInsert) => {
-      const { data, error } = await supabase
-        .from('activities')
-        .insert(activity)
-        .select()
-        .single();
-      
+      const { data, error } = await supabase.from('activities').insert(activity).select().single();
+
       if (error) throw error;
       return data;
     },
@@ -64,16 +60,16 @@ export function useCreateActivity() {
       queryClient.invalidateQueries({ queryKey: ['activities'] });
       toast({
         title: 'Success',
-        description: 'Activity created successfully'
+        description: 'Activity created successfully',
       });
     },
     onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to create activity',
-        variant: 'destructive'
+        variant: 'destructive',
       });
-    }
+    },
   });
 }
 
@@ -89,25 +85,25 @@ export function useUpdateActivity() {
         .eq('id', id)
         .select()
         .single();
-      
+
       if (error) throw error;
       return data;
     },
-    onSuccess: (data) => {
+    onSuccess: data => {
       queryClient.invalidateQueries({ queryKey: ['activities'] });
       queryClient.invalidateQueries({ queryKey: ['activity', data.id] });
       toast({
         title: 'Success',
-        description: 'Activity updated successfully'
+        description: 'Activity updated successfully',
       });
     },
     onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to update activity',
-        variant: 'destructive'
+        variant: 'destructive',
       });
-    }
+    },
   });
 }
 
@@ -117,27 +113,24 @@ export function useDeleteActivity() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
-        .from('activities')
-        .delete()
-        .eq('id', id);
-      
+      const { error } = await supabase.from('activities').delete().eq('id', id);
+
       if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['activities'] });
       toast({
         title: 'Success',
-        description: 'Activity deleted successfully'
+        description: 'Activity deleted successfully',
       });
     },
     onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to delete activity',
-        variant: 'destructive'
+        variant: 'destructive',
       });
-    }
+    },
   });
 }
 
@@ -153,24 +146,24 @@ export function useCompleteActivity() {
         .eq('id', id)
         .select()
         .single();
-      
+
       if (error) throw error;
       return data;
     },
-    onSuccess: (data) => {
+    onSuccess: data => {
       queryClient.invalidateQueries({ queryKey: ['activities'] });
       queryClient.invalidateQueries({ queryKey: ['activity', data.id] });
       toast({
         title: 'Success',
-        description: 'Activity marked as complete'
+        description: 'Activity marked as complete',
       });
     },
     onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to complete activity',
-        variant: 'destructive'
+        variant: 'destructive',
       });
-    }
+    },
   });
 }

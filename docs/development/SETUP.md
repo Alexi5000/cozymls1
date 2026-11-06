@@ -51,6 +51,7 @@ bun install
 Environment variables are automatically managed by Lovable Cloud. The `.env` file is auto-generated and should not be edited manually.
 
 The following variables are automatically configured:
+
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_PUBLISHABLE_KEY`
 - `VITE_SUPABASE_PROJECT_ID`
@@ -64,6 +65,7 @@ npm run dev
 ```
 
 The application will be available at:
+
 ```
 http://localhost:8080
 ```
@@ -143,6 +145,7 @@ git checkout -b feature/your-feature-name
 ```
 
 Branch naming conventions:
+
 - `feature/` - New features
 - `fix/` - Bug fixes
 - `docs/` - Documentation
@@ -176,6 +179,7 @@ git commit -m "feat: add property filtering"
 ```
 
 Follow [Conventional Commits](https://www.conventionalcommits.org/):
+
 - `feat:` - New feature
 - `fix:` - Bug fix
 - `docs:` - Documentation
@@ -218,6 +222,7 @@ The project includes `.vscode/settings.json` with optimal settings:
 ### Other Editors
 
 For other editors, ensure you have:
+
 - ESLint plugin
 - Prettier plugin
 - EditorConfig support
@@ -290,6 +295,7 @@ Environment variables are auto-managed by Lovable Cloud. If you experience issue
 ### Viewing Data
 
 Access the backend dashboard to view and manage data:
+
 - Properties, contacts, deals, activities
 - User management
 - Database tables and schema
@@ -312,10 +318,7 @@ See [Database Schema Documentation](../architecture/DATABASE_SCHEMA.md) for deta
 // Example: Testing a query in a component
 import { supabase } from '@/integrations/supabase/client';
 
-const { data, error } = await supabase
-  .from('properties')
-  .select('*')
-  .eq('status', 'active');
+const { data, error } = await supabase.from('properties').select('*').eq('status', 'active');
 
 console.log(data, error);
 ```
@@ -325,11 +328,13 @@ console.log(data, error);
 ### Adding a New Page
 
 1. Create page directory:
+
 ```bash
 mkdir -p src/pages/my-page/ui
 ```
 
 2. Create page component:
+
 ```typescript
 // src/pages/my-page/ui/MyPage.tsx
 export function MyPage() {
@@ -338,12 +343,14 @@ export function MyPage() {
 ```
 
 3. Create index:
+
 ```typescript
 // src/pages/my-page/index.ts
 export { MyPage } from './ui/MyPage';
 ```
 
 4. Add route:
+
 ```typescript
 // src/app/App.tsx
 <Route path="/my-page" element={<MyPage />} />
@@ -354,6 +361,7 @@ export { MyPage } from './ui/MyPage';
 1. Create in appropriate layer (see [FSD Guide](../architecture/FEATURE_SLICED_DESIGN.md))
 
 2. Follow naming conventions:
+
 ```typescript
 // PascalCase for components
 export function MyComponent() {}
@@ -363,6 +371,7 @@ const myVariable = 'value';
 ```
 
 3. Export through index:
+
 ```typescript
 // index.ts
 export { MyComponent } from './MyComponent';
@@ -398,7 +407,7 @@ const { data, isLoading } = useQuery({
 
 // Mutation
 const { mutate } = useMutation({
-  mutationFn: async (property) => {
+  mutationFn: async property => {
     await supabase.from('properties').insert(property);
   },
   onSuccess: () => {
@@ -427,6 +436,7 @@ build: {
 HMR is enabled by default. Changes should reflect instantly without full page reload.
 
 If HMR isn't working:
+
 ```bash
 # Restart dev server
 npm run dev

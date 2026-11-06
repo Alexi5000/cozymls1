@@ -32,9 +32,7 @@ export function AllTheProviders({ children }: AllTheProvidersProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        {children}
-      </BrowserRouter>
+      <BrowserRouter>{children}</BrowserRouter>
     </QueryClientProvider>
   );
 }
@@ -42,10 +40,7 @@ export function AllTheProviders({ children }: AllTheProvidersProps) {
 /**
  * Custom render function with providers
  */
-export function renderWithProviders(
-  ui: ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'>
-) {
+export function renderWithProviders(ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) {
   return render(ui, { wrapper: AllTheProviders, ...options });
 }
 

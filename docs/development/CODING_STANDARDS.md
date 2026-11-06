@@ -15,6 +15,7 @@ This document outlines the coding standards and best practices for Haven Estate 
 ### Type Safety
 
 ✅ **DO**: Use proper types
+
 ```typescript
 interface Property {
   id: string;
@@ -28,8 +29,10 @@ function getProperty(id: string): Property {
 ```
 
 ❌ **DON'T**: Use `any`
+
 ```typescript
-function getProperty(id: any): any {  // Avoid!
+function getProperty(id: any): any {
+  // Avoid!
   // Implementation
 }
 ```
@@ -37,6 +40,7 @@ function getProperty(id: any): any {  // Avoid!
 ### Type Definitions
 
 ✅ **DO**: Define types for all props and return values
+
 ```typescript
 interface ButtonProps {
   children: React.ReactNode;
@@ -50,6 +54,7 @@ export function Button({ children, onClick, variant = 'primary' }: ButtonProps) 
 ```
 
 ✅ **DO**: Use `type` for unions, `interface` for objects
+
 ```typescript
 // Type for unions
 type Status = 'active' | 'pending' | 'sold';
@@ -64,17 +69,19 @@ interface Property {
 ### Nullable Values
 
 ✅ **DO**: Be explicit about nullable values
+
 ```typescript
 interface User {
   name: string;
-  email?: string;  // Optional
-  age: number | null;  // Can be null
+  email?: string; // Optional
+  age: number | null; // Can be null
 }
 ```
 
 ### Generics
 
 ✅ **DO**: Use generics for reusable components
+
 ```typescript
 interface DataTableProps<T> {
   data: T[];
@@ -110,23 +117,23 @@ interface PropertyCardProps {
 export function PropertyCard({ property, onSelect }: PropertyCardProps) {
   // 3a. Hooks
   const [isExpanded, setIsExpanded] = useState(false);
-  
+
   // 3b. Derived state
   const formattedPrice = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
   }).format(property.price);
-  
+
   // 3c. Event handlers
   const handleClick = () => {
     onSelect?.(property.id);
   };
-  
+
   // 3d. Effects
   useEffect(() => {
     // Side effects
   }, []);
-  
+
   // 3e. Render
   return (
     <div onClick={handleClick}>
@@ -140,6 +147,7 @@ export function PropertyCard({ property, onSelect }: PropertyCardProps) {
 ### Hooks Rules
 
 ✅ **DO**: Extract reusable logic into custom hooks
+
 ```typescript
 // src/shared/hooks/use-properties.ts
 export function useProperties(status?: PropertyStatus) {
@@ -159,15 +167,17 @@ const { data, isLoading } = useProperties('active');
 ```
 
 ✅ **DO**: Follow Rules of Hooks
+
 - Only call hooks at the top level
 - Only call hooks from React functions
 - Use ESLint plugin to enforce rules
 
 ❌ **DON'T**: Call hooks conditionally
+
 ```typescript
 // Bad
 if (condition) {
-  const [state, setState] = useState();  // Violates rules!
+  const [state, setState] = useState(); // Violates rules!
 }
 
 // Good
@@ -180,6 +190,7 @@ if (condition) {
 ### Props Handling
 
 ✅ **DO**: Destructure props
+
 ```typescript
 export function Button({ children, onClick, variant }: ButtonProps) {
   // ...
@@ -187,6 +198,7 @@ export function Button({ children, onClick, variant }: ButtonProps) {
 ```
 
 ✅ **DO**: Use optional chaining for optional callbacks
+
 ```typescript
 const handleClick = () => {
   onSelect?.(property.id);
@@ -194,6 +206,7 @@ const handleClick = () => {
 ```
 
 ✅ **DO**: Provide default values
+
 ```typescript
 export function Button({ variant = 'primary', ...props }: ButtonProps) {
   // ...
@@ -203,6 +216,7 @@ export function Button({ variant = 'primary', ...props }: ButtonProps) {
 ### Component Composition
 
 ✅ **DO**: Prefer composition over prop drilling
+
 ```typescript
 // Good
 <Card>
@@ -221,6 +235,7 @@ export function Button({ variant = 'primary', ...props }: ButtonProps) {
 ### Conditional Rendering
 
 ✅ **DO**: Use clear conditional rendering
+
 ```typescript
 // Simple conditions
 {isLoading && <Spinner />}
@@ -314,6 +329,7 @@ import { Button } from '../../../shared/ui/button';
 ### Tailwind CSS
 
 ✅ **DO**: Use design tokens from `index.css`
+
 ```typescript
 // Use semantic colors
 <div className="bg-primary text-primary-foreground">
@@ -326,6 +342,7 @@ import { Button } from '../../../shared/ui/button';
 ```
 
 ❌ **DON'T**: Use arbitrary values excessively
+
 ```typescript
 // Avoid
 <div className="p-[13px] text-[#ff0000]">
@@ -341,27 +358,24 @@ Use `class-variance-authority` for variant styling:
 ```typescript
 import { cva } from 'class-variance-authority';
 
-const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-md',
-  {
-    variants: {
-      variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-        destructive: 'bg-destructive text-destructive-foreground',
-        outline: 'border border-input hover:bg-accent',
-      },
-      size: {
-        default: 'h-10 px-4 py-2',
-        sm: 'h-9 px-3',
-        lg: 'h-11 px-8',
-      },
+const buttonVariants = cva('inline-flex items-center justify-center rounded-md', {
+  variants: {
+    variant: {
+      default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+      destructive: 'bg-destructive text-destructive-foreground',
+      outline: 'border border-input hover:bg-accent',
     },
-    defaultVariants: {
-      variant: 'default',
-      size: 'default',
+    size: {
+      default: 'h-10 px-4 py-2',
+      sm: 'h-9 px-3',
+      lg: 'h-11 px-8',
     },
-  }
-);
+  },
+  defaultVariants: {
+    variant: 'default',
+    size: 'default',
+  },
+});
 ```
 
 ### Utility Function
@@ -383,22 +397,19 @@ import { cn } from '@/shared/lib/utils';
 ### Memoization
 
 ✅ **DO**: Memoize expensive computations
+
 ```typescript
-const expensiveValue = useMemo(
-  () => computeExpensiveValue(data),
-  [data]
-);
+const expensiveValue = useMemo(() => computeExpensiveValue(data), [data]);
 ```
 
 ✅ **DO**: Memoize callback functions passed as props
+
 ```typescript
-const handleClick = useCallback(
-  () => onSelect(property.id),
-  [property.id, onSelect]
-);
+const handleClick = useCallback(() => onSelect(property.id), [property.id, onSelect]);
 ```
 
 ✅ **DO**: Memoize components that receive same props
+
 ```typescript
 export const PropertyCard = React.memo(function PropertyCard({ property }) {
   return <div>{/* render */}</div>;
@@ -408,22 +419,24 @@ export const PropertyCard = React.memo(function PropertyCard({ property }) {
 ### Code Splitting
 
 ✅ **DO**: Lazy load route components
+
 ```typescript
 const DashboardPage = lazy(() => import('@/pages/dashboard'));
 
-<Route 
-  path="/dashboard" 
+<Route
+  path="/dashboard"
   element={
     <Suspense fallback={<Spinner />}>
       <DashboardPage />
     </Suspense>
-  } 
+  }
 />
 ```
 
 ### List Rendering
 
 ✅ **DO**: Use stable keys
+
 ```typescript
 // Good - stable ID
 {properties.map(property => (
@@ -441,6 +454,7 @@ const DashboardPage = lazy(() => import('@/pages/dashboard'));
 ### API Calls
 
 ✅ **DO**: Handle errors gracefully
+
 ```typescript
 const { data, error, isLoading } = useQuery({
   queryKey: ['properties'],
@@ -455,6 +469,7 @@ return <PropertiesGrid properties={data} />;
 ### Form Validation
 
 ✅ **DO**: Validate user input
+
 ```typescript
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -475,6 +490,7 @@ const form = useForm({
 ### Semantic HTML
 
 ✅ **DO**: Use semantic elements
+
 ```typescript
 // Good
 <button onClick={handleClick}>Click me</button>
@@ -488,6 +504,7 @@ const form = useForm({
 ### ARIA Attributes
 
 ✅ **DO**: Add ARIA labels when needed
+
 ```typescript
 <button aria-label="Close dialog" onClick={onClose}>
   <X className="h-4 w-4" />
@@ -497,6 +514,7 @@ const form = useForm({
 ### Keyboard Navigation
 
 ✅ **DO**: Support keyboard navigation
+
 ```typescript
 <div
   role="button"
@@ -515,6 +533,7 @@ const form = useForm({
 ### When to Comment
 
 ✅ **DO**: Comment complex logic
+
 ```typescript
 // Calculate commission based on tiered structure
 // Tier 1: 0-500k = 3%
@@ -524,6 +543,7 @@ const commission = calculateTieredCommission(price);
 ```
 
 ✅ **DO**: Document public APIs
+
 ```typescript
 /**
  * Formats a price value as USD currency
@@ -539,6 +559,7 @@ export function formatCurrency(value: number): string {
 ```
 
 ❌ **DON'T**: State the obvious
+
 ```typescript
 // Bad - obvious from code
 // Set the name

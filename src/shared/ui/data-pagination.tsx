@@ -47,7 +47,7 @@ export function DataPagination({
       }
     }
 
-    range.forEach((i) => {
+    range.forEach(i => {
       if (l) {
         if (i - l === 2) {
           rangeWithDots.push(l + 1);
@@ -76,13 +76,13 @@ export function DataPagination({
             <span className="hidden sm:inline">Show</span>
             <Select
               value={pageSize.toString()}
-              onValueChange={(value) => onPageSizeChange(Number(value))}
+              onValueChange={value => onPageSizeChange(Number(value))}
             >
               <SelectTrigger className="h-8 w-[70px]">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {pageSizeOptions.map((size) => (
+                {pageSizeOptions.map(size => (
                   <SelectItem key={size} value={size.toString()}>
                     {size}
                   </SelectItem>
@@ -106,7 +106,7 @@ export function DataPagination({
               <ChevronsLeft className="h-4 w-4" />
             </Button>
           </PaginationItem>
-          
+
           <PaginationItem>
             <Button
               variant="outline"
@@ -146,7 +146,7 @@ export function DataPagination({
               <ChevronRight className="h-4 w-4" />
             </Button>
           </PaginationItem>
-          
+
           <PaginationItem>
             <Button
               variant="outline"

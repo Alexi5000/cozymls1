@@ -4,18 +4,23 @@ import { Skeleton } from '@/shared/ui/skeleton';
 
 export function DealsOverview() {
   const { data: deals, isLoading } = useRecentDeals();
-  
-  const dealsByStage = (deals || []).reduce((acc, deal) => {
-    acc[deal.stage] = (acc[deal.stage] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
+
+  const dealsByStage = (deals || []).reduce(
+    (acc, deal) => {
+      acc[deal.stage] = (acc[deal.stage] || 0) + 1;
+      return acc;
+    },
+    {} as Record<string, number>
+  );
 
   const totalDeals = deals?.length || 0;
 
   return (
     <Card className="luxury-card hover-lift animate-scale-in">
       <CardHeader className="pb-4">
-        <CardTitle className="text-xl font-display font-bold text-foreground">Deals Pipeline</CardTitle>
+        <CardTitle className="text-xl font-display font-bold text-foreground">
+          Deals Pipeline
+        </CardTitle>
       </CardHeader>
       <CardContent>
         {isLoading ? (
@@ -31,7 +36,11 @@ export function DealsOverview() {
             {Object.entries(dealsByStage).map(([stage, count], index) => {
               const percentage = (count / totalDeals) * 100;
               return (
-                <div key={stage} className="space-y-3 animate-slide-up" style={{ animationDelay: `${index * 100}ms` }}>
+                <div
+                  key={stage}
+                  className="space-y-3 animate-slide-up"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
                   <div className="flex justify-between items-center">
                     <span className="capitalize font-semibold text-foreground">
                       {stage.replace('-', ' ')}
@@ -40,7 +49,7 @@ export function DealsOverview() {
                   </div>
                   <div className="relative overflow-hidden rounded-full">
                     <div className="h-3 bg-muted rounded-full">
-                      <div 
+                      <div
                         className="h-full bg-gradient-primary rounded-full transition-all duration-1000 ease-out animate-shimmer"
                         style={{ width: `${percentage}%` }}
                       />

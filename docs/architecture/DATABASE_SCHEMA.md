@@ -43,46 +43,46 @@ Stores real estate property listings.
 CREATE TABLE public.properties (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  
+
   -- Property Details
   title TEXT NOT NULL,
   description TEXT,
   property_type TEXT NOT NULL, -- 'residential', 'commercial', 'land'
   status TEXT NOT NULL, -- 'active', 'pending', 'sold', 'off-market'
-  
+
   -- Location
   address TEXT,
   city TEXT,
   state TEXT,
   zip_code TEXT,
   country TEXT DEFAULT 'USA',
-  
+
   -- Pricing
   price DECIMAL(12, 2),
   price_per_sqft DECIMAL(10, 2),
-  
+
   -- Property Features
   bedrooms INTEGER,
   bathrooms DECIMAL(3, 1),
   square_feet INTEGER,
   lot_size DECIMAL(10, 2),
   year_built INTEGER,
-  
+
   -- MLS Integration
   mls_number TEXT UNIQUE,
   mls_status TEXT,
-  
+
   -- Media
   images JSONB DEFAULT '[]'::jsonb,
   virtual_tour_url TEXT,
-  
+
   -- Relationships
   agent_id UUID REFERENCES auth.users(id),
-  
+
   -- Metadata
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  
+
   -- Indexes
   CONSTRAINT valid_status CHECK (status IN ('active', 'pending', 'sold', 'off-market')),
   CONSTRAINT valid_property_type CHECK (property_type IN ('residential', 'commercial', 'land'))
@@ -137,38 +137,38 @@ Stores client and lead information.
 CREATE TABLE public.contacts (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  
+
   -- Personal Information
   first_name TEXT NOT NULL,
   last_name TEXT NOT NULL,
   email TEXT,
   phone TEXT,
-  
+
   -- Contact Type
   contact_type TEXT NOT NULL, -- 'buyer', 'seller', 'both', 'lead'
   status TEXT DEFAULT 'active', -- 'active', 'inactive', 'archived'
-  
+
   -- Address
   address TEXT,
   city TEXT,
   state TEXT,
   zip_code TEXT,
-  
+
   -- Preferences
   preferences JSONB DEFAULT '{}'::jsonb,
   tags TEXT[] DEFAULT ARRAY[]::TEXT[],
-  
+
   -- Relationships
   assigned_agent_id UUID REFERENCES auth.users(id),
-  
+
   -- Notes
   notes TEXT,
-  
+
   -- Metadata
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   last_contacted_at TIMESTAMPTZ,
-  
+
   CONSTRAINT valid_contact_type CHECK (contact_type IN ('buyer', 'seller', 'both', 'lead'))
 );
 
@@ -195,30 +195,30 @@ Tracks sales pipeline and transactions.
 CREATE TABLE public.deals (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  
+
   -- Deal Information
   title TEXT NOT NULL,
   description TEXT,
   deal_value DECIMAL(12, 2),
   commission_rate DECIMAL(5, 2),
   commission_amount DECIMAL(12, 2),
-  
+
   -- Pipeline Stage
   stage TEXT NOT NULL, -- 'lead', 'qualified', 'proposal', 'negotiation', 'closed-won', 'closed-lost'
   probability INTEGER CHECK (probability >= 0 AND probability <= 100),
-  
+
   -- Relationships
   property_id UUID REFERENCES public.properties(id) ON DELETE SET NULL,
   contact_id UUID REFERENCES public.contacts(id) ON DELETE SET NULL,
-  
+
   -- Dates
   expected_close_date DATE,
   actual_close_date DATE,
-  
+
   -- Metadata
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  
+
   CONSTRAINT valid_stage CHECK (stage IN ('lead', 'qualified', 'proposal', 'negotiation', 'closed-won', 'closed-lost'))
 );
 
@@ -246,27 +246,27 @@ Activity timeline and history.
 CREATE TABLE public.activities (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  
+
   -- Activity Details
   activity_type TEXT NOT NULL, -- 'email', 'call', 'meeting', 'note', 'task'
   title TEXT NOT NULL,
   description TEXT,
-  
+
   -- Related Entities
   property_id UUID REFERENCES public.properties(id) ON DELETE SET NULL,
   contact_id UUID REFERENCES public.contacts(id) ON DELETE SET NULL,
   deal_id UUID REFERENCES public.deals(id) ON DELETE SET NULL,
-  
+
   -- Scheduling
   scheduled_at TIMESTAMPTZ,
   completed_at TIMESTAMPTZ,
   is_completed BOOLEAN DEFAULT false,
-  
+
   -- Metadata
   metadata JSONB DEFAULT '{}'::jsonb,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  
+
   CONSTRAINT valid_activity_type CHECK (activity_type IN ('email', 'call', 'meeting', 'note', 'task'))
 );
 
@@ -296,22 +296,22 @@ Custom report configurations.
 CREATE TABLE public.reports (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  
+
   -- Report Details
   name TEXT NOT NULL,
   description TEXT,
   report_type TEXT NOT NULL, -- 'sales', 'properties', 'contacts', 'custom'
-  
+
   -- Configuration
   config JSONB DEFAULT '{}'::jsonb,
   filters JSONB DEFAULT '{}'::jsonb,
-  
+
   -- Metadata
   is_favorite BOOLEAN DEFAULT false,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   last_run_at TIMESTAMPTZ,
-  
+
   CONSTRAINT valid_report_type CHECK (report_type IN ('sales', 'properties', 'contacts', 'custom'))
 );
 
@@ -347,17 +347,17 @@ $$ LANGUAGE plpgsql SET search_path = public;
 
 ## Data Types Reference
 
-| Column Type | PostgreSQL Type | Purpose |
-|-------------|----------------|---------|
-| UUID | `UUID` | Primary keys, foreign keys |
-| Text | `TEXT` | Variable-length strings |
-| Number | `INTEGER` | Whole numbers |
-| Decimal | `DECIMAL(p,s)` | Precise decimal values (prices) |
-| Date | `DATE` | Date only (no time) |
-| Timestamp | `TIMESTAMPTZ` | Date + time with timezone |
-| Boolean | `BOOLEAN` | True/false values |
-| JSON | `JSONB` | Structured data (binary, indexed) |
-| Array | `TEXT[]` | Array of text values |
+| Column Type | PostgreSQL Type | Purpose                           |
+| ----------- | --------------- | --------------------------------- |
+| UUID        | `UUID`          | Primary keys, foreign keys        |
+| Text        | `TEXT`          | Variable-length strings           |
+| Number      | `INTEGER`       | Whole numbers                     |
+| Decimal     | `DECIMAL(p,s)`  | Precise decimal values (prices)   |
+| Date        | `DATE`          | Date only (no time)               |
+| Timestamp   | `TIMESTAMPTZ`   | Date + time with timezone         |
+| Boolean     | `BOOLEAN`       | True/false values                 |
+| JSON        | `JSONB`         | Structured data (binary, indexed) |
+| Array       | `TEXT[]`        | Array of text values              |
 
 ## Naming Conventions
 
@@ -379,6 +379,7 @@ Migrations are managed through Supabase migrations:
 4. Deploy via Lovable Cloud
 
 Example migration file naming:
+
 ```
 20250115120000_create_properties_table.sql
 20250115120100_add_mls_fields.sql

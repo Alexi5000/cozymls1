@@ -21,23 +21,24 @@ export function SecuritySettings() {
   });
 
   const onSubmit = (data: PasswordFormData) => {
-    updatePassword.mutate({
-      currentPassword: data.currentPassword,
-      newPassword: data.newPassword
-    }, {
-      onSuccess: () => {
-        form.reset();
+    updatePassword.mutate(
+      {
+        currentPassword: data.currentPassword,
+        newPassword: data.newPassword,
       },
-    });
+      {
+        onSuccess: () => {
+          form.reset();
+        },
+      }
+    );
   };
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>Change Password</CardTitle>
-        <CardDescription>
-          Update your password to keep your account secure
-        </CardDescription>
+        <CardDescription>Update your password to keep your account secure</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>

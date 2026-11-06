@@ -1,2 +1,10 @@
 export { mockReportTemplates, mockReportData, mockReports } from './model/mock-data';
-export type { ReportTemplate, Report, ReportData, ReportConfig, ReportFilter, DashboardReport, ReportField } from './model/types';
+export type {
+  ReportTemplate,
+  Report,
+  ReportData,
+  ReportConfig,
+  ReportFilter,
+  DashboardReport,
+  ReportField,
+} from './model/types';

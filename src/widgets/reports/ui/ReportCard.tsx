@@ -2,17 +2,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
 import { Report as DbReport, useReportTemplate } from '@/integrations/supabase/hooks';
-import { 
-  BarChart3, 
-  LineChart, 
-  PieChart, 
-  AreaChart, 
-  Table, 
-  Download, 
-  Eye, 
+import {
+  BarChart3,
+  LineChart,
+  PieChart,
+  AreaChart,
+  Table,
+  Download,
+  Eye,
   MoreHorizontal,
   Calendar,
-  User
+  User,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -56,12 +56,18 @@ export function ReportCard({ report, onView, onDelete }: ReportCardProps) {
 
   const getCategoryColor = (category?: string) => {
     switch (category) {
-      case 'sales': return 'bg-blue-100 text-blue-800';
-      case 'properties': return 'bg-green-100 text-green-800';
-      case 'agents': return 'bg-purple-100 text-purple-800';
-      case 'market': return 'bg-orange-100 text-orange-800';
-      case 'financial': return 'bg-indigo-100 text-indigo-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'sales':
+        return 'bg-blue-100 text-blue-800';
+      case 'properties':
+        return 'bg-green-100 text-green-800';
+      case 'agents':
+        return 'bg-purple-100 text-purple-800';
+      case 'market':
+        return 'bg-orange-100 text-orange-800';
+      case 'financial':
+        return 'bg-indigo-100 text-indigo-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -97,28 +103,23 @@ export function ReportCard({ report, onView, onDelete }: ReportCardProps) {
                 <Download className="h-4 w-4 mr-2" />
                 Download
               </DropdownMenuItem>
-              <DropdownMenuItem 
-                onClick={() => onDelete?.(report.id)}
-                className="text-destructive"
-              >
+              <DropdownMenuItem onClick={() => onDelete?.(report.id)} className="text-destructive">
                 Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        
+
         <div className="flex items-center gap-2 mt-3">
           {template && (
-            <Badge className={getCategoryColor(template.category)}>
-              {template.category}
-            </Badge>
+            <Badge className={getCategoryColor(template.category)}>{template.category}</Badge>
           )}
           <Badge variant="outline" className="text-xs">
             {chartType}
           </Badge>
         </div>
       </CardHeader>
-      
+
       <CardContent className="pt-0">
         <div className="space-y-3">
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
@@ -129,35 +130,28 @@ export function ReportCard({ report, onView, onDelete }: ReportCardProps) {
               </span>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
               <User className="h-4 w-4" />
               <span>Generated</span>
             </div>
-            <div>
-              Created: {new Date(report.created_at).toLocaleDateString()}
-            </div>
+            <div>Created: {new Date(report.created_at).toLocaleDateString()}</div>
           </div>
-          
+
           <div className="text-sm">
-            <span className="font-medium">{Array.isArray(report.data) ? report.data.length : 0}</span> data points
+            <span className="font-medium">
+              {Array.isArray(report.data) ? report.data.length : 0}
+            </span>{' '}
+            data points
           </div>
-          
+
           <div className="flex gap-2 pt-2">
-            <Button 
-              size="sm" 
-              onClick={() => onView?.(report.id)}
-              className="flex-1"
-            >
+            <Button size="sm" onClick={() => onView?.(report.id)} className="flex-1">
               <Eye className="h-4 w-4 mr-2" />
               View Report
             </Button>
-            <Button 
-              size="sm" 
-              variant="outline" 
-              onClick={handleDownload}
-            >
+            <Button size="sm" variant="outline" onClick={handleDownload}>
               <Download className="h-4 w-4" />
             </Button>
           </div>

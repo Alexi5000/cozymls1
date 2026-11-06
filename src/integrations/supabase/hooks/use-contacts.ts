@@ -20,7 +20,7 @@ export interface ContactsQueryParams {
 
 export function useContacts(params?: ContactsQueryParams) {
   const { page = 1, pageSize = 20 } = params || {};
-  
+
   return useQuery({
     queryKey: ['contacts', page, pageSize],
     queryFn: async () => {
@@ -28,9 +28,7 @@ export function useContacts(params?: ContactsQueryParams) {
       const to = from + pageSize - 1;
 
       // Get total count
-      const { count } = await supabase
-        .from('contacts')
-        .select('*', { count: 'exact', head: true });
+      const { count } = await supabase.from('contacts').select('*', { count: 'exact', head: true });
 
       // Get paginated data
       const { data, error } = await supabase
@@ -38,9 +36,9 @@ export function useContacts(params?: ContactsQueryParams) {
         .select('*')
         .order('created_at', { ascending: false })
         .range(from, to);
-      
+
       if (error) throw error;
-      
+
       return {
         data: data || [],
         totalCount: count || 0,
@@ -48,7 +46,7 @@ export function useContacts(params?: ContactsQueryParams) {
         pageSize,
         totalPages: Math.ceil((count || 0) / pageSize),
       };
-    }
+    },
   });
 }
 
@@ -56,16 +54,12 @@ export function useContact(id: string) {
   return useQuery({
     queryKey: ['contact', id],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('contacts')
-        .select('*')
-        .eq('id', id)
-        .single();
-      
+      const { data, error } = await supabase.from('contacts').select('*').eq('id', id).single();
+
       if (error) throw error;
       return data;
     },
-    enabled: !!id
+    enabled: !!id,
   });
 }
 
@@ -75,12 +69,8 @@ export function useCreateContact() {
 
   return useMutation({
     mutationFn: async (contact: ContactInsert) => {
-      const { data, error } = await supabase
-        .from('contacts')
-        .insert(contact)
-        .select()
-        .single();
-      
+      const { data, error } = await supabase.from('contacts').insert(contact).select().single();
+
       if (error) throw error;
       return data;
     },
@@ -88,16 +78,16 @@ export function useCreateContact() {
       queryClient.invalidateQueries({ queryKey: ['contacts'] });
       toast({
         title: 'Success',
-        description: 'Contact created successfully'
+        description: 'Contact created successfully',
       });
     },
     onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to create contact',
-        variant: 'destructive'
+        variant: 'destructive',
       });
-    }
+    },
   });
 }
 
@@ -113,25 +103,25 @@ export function useUpdateContact() {
         .eq('id', id)
         .select()
         .single();
-      
+
       if (error) throw error;
       return data;
     },
-    onSuccess: (data) => {
+    onSuccess: data => {
       queryClient.invalidateQueries({ queryKey: ['contacts'] });
       queryClient.invalidateQueries({ queryKey: ['contact', data.id] });
       toast({
         title: 'Success',
-        description: 'Contact updated successfully'
+        description: 'Contact updated successfully',
       });
     },
     onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to update contact',
-        variant: 'destructive'
+        variant: 'destructive',
       });
-    }
+    },
   });
 }
 
@@ -141,26 +131,23 @@ export function useDeleteContact() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
-        .from('contacts')
-        .delete()
-        .eq('id', id);
-      
+      const { error } = await supabase.from('contacts').delete().eq('id', id);
+
       if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['contacts'] });
       toast({
         title: 'Success',
-        description: 'Contact deleted successfully'
+        description: 'Contact deleted successfully',
       });
     },
     onError: (error: Error) => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to delete contact',
-        variant: 'destructive'
+        variant: 'destructive',
       });
-    }
+    },
   });
 }

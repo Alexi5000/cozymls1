@@ -11,7 +11,7 @@ interface ErrorFallbackProps {
 
 /**
  * Enhanced Error Fallback Component with Logging
- * 
+ *
  * Displays a user-friendly error message and provides recovery options.
  * All errors are logged with full context for debugging.
  */
@@ -51,20 +51,12 @@ export function ErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps)
           </p>
 
           <div className="flex flex-col gap-3">
-            <Button 
-              onClick={handleTryAgain} 
-              className="w-full gap-2"
-              variant="default"
-            >
+            <Button onClick={handleTryAgain} className="w-full gap-2" variant="default">
               <RefreshCw className="w-4 h-4" />
               Try Again
             </Button>
-            
-            <Button 
-              onClick={handleGoHome} 
-              variant="outline"
-              className="w-full gap-2"
-            >
+
+            <Button onClick={handleGoHome} variant="outline" className="w-full gap-2">
               <Home className="w-4 h-4" />
               Go to Dashboard
             </Button>
